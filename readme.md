@@ -1,8 +1,11 @@
 # Portfolio Api
+
 A Laravel **project management** RESTful API with OAuth.
 
 # Description
-Deploys a Laravel dockerized backend. 
+
+Deploys a Laravel dockerized backend.
+
 * Laravel with Passport
 * php:7-fpm-alpine
 * nginx:alpine
@@ -10,6 +13,7 @@ Deploys a Laravel dockerized backend.
 * supervisord
 
 # Installation instructions
+
 * **Clone** project and step in its directory
 * Install required packages: `composer install`
 * **Copy .env.example** to **.env** `cp .env.example .env` _(Unix example)_
@@ -19,4 +23,5 @@ Deploys a Laravel dockerized backend.
 * Create your _OAuth_ private key ```docker-compose exec app php artisan passport:install```
 
  _**[http://0.0.0.0:8080](0.0.0.0)**_ to view. 
- Project currently lacks deployment devOps.
+ 
+ Project currently lacks production devOps.
