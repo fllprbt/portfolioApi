@@ -3,19 +3,26 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Auth\AuthenticationException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class Authenticate extends Middleware
 {
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
+     * Determine if the user is logged in to any of the given guards.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string
+     * @param  \Illuminate\Http\Request $request
+     * @param  array                    $guards
+     * @return void
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
      */
-    protected function redirectTo($request)
+    protected function authenticate($request, array $guards)
     {
-        if (! $request->expectsJson()) {
-            return route('login');
+        try {
+            parent::authenticate($request, $guards);
+        } catch (AuthenticationException $e) {
+            throw $e;
         }
     }
 }

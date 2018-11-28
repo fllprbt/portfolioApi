@@ -11,6 +11,8 @@ services:
     environment:
       - "DB_PORT=3306"
       - "DB_HOST=database"
+    networks:
+      backend:
 
   web:
     build:
@@ -21,6 +23,10 @@ services:
       - app
     ports:
       - 8080:80
+    networks:
+      backend:
+        aliases:
+          - api.dev
 
   database:
     image: mysql:5.7
@@ -33,6 +39,12 @@ services:
       - "MYSQL_ROOT_PASSWORD=secret"
     ports:
       - 33061:3306
+    networks:
+      backend:
 
 volumes:
   dbdata:
+
+networks:
+  backend:
+    driver: bridge
