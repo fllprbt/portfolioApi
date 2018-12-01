@@ -29,4 +29,7 @@ RUN rm /var/cache/apk/* && \
 
 COPY supervisord-app.conf /etc/supervisord.conf
 
+RUN adduser -D -u 1000 nonroot
+USER nonroot
+
 ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]

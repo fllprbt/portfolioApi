@@ -1,7 +1,10 @@
 #!/bin/bash
 
 # composer
-docker run --rm -v $(pwd):/app composer/composer install --ignore-platform-reqs
+docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs
+
+# npm
+docker run --rm -u $(id -u):$(id -g) -v  $(pwd):/app -w /app node npm install
 
 # copy defaults
 if [ ! -f ./.env ]; then
