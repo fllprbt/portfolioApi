@@ -6,10 +6,18 @@ A Laravel **project management** RESTful API with OAuth. Requires docker.
 
 Proxied, password granted OAuth. (Laravel Passport)
 
+##### Backend
+
 * php:7-fpm-alpine
 * nginx:alpine
 * mysql:5.7
 * supervisord
+
+##### Frontend (API registration views)
+* ReactJS with Material-UI
+* Typescript
+* SASS
+
 
 # Installation instructions
 
@@ -32,5 +40,10 @@ Proxied, password granted OAuth. (Laravel Passport)
 
 
  _**[http://0.0.0.0:8080](0.0.0.0)**_ to view.
+ 
+ 
+ # Development instructions
 
- Project is under development.
+ To tinker the front-end, run ```npm run watch``` or ```npm run hot```.
+ 
+ Project is under development. Does not support production builds.

@@ -14,16 +14,9 @@ const mix = require('laravel-mix');
 mix
    .ts("resources/js/app.tsx", "public/js")
    .sass("resources/sass/app.scss", "public/css")
-   .webpackConfig({
-      module: {
-         rules: [
-            {
-               test: /\.tsx$/,
-               loader: ['ts-loader', 'babel-loader'],
-            }
-         ]
-      },
-      resolve: {
-         extensions: ["*", ".js", ".jsx", ".ts", ".tsx"]
+   .options({
+      hmrOptions: {
+         host: '0.0.0.0',
+         port: 8088
       }
    });
