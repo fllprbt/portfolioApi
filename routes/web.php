@@ -12,3 +12,13 @@
 */
 
 Route::get('/', 'WelcomeController@index')->name('welcome');
+
+// registration 
+Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('register', 'Auth\RegisterController@register');
+
+// email verification
+Route::get('/verifyemail/{token}', 'Auth\RegisterController@verify');
+
+// resend email
+Route::post('/register/verification/{user}', 'Auth\RegisterController@resend_mail');
