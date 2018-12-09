@@ -12,4 +12,10 @@ import './bootstrap';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import './components/RegistrationForm/RegistrationForm';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import AuthForm from './components/';
+
+if (document.getElementById('app')) {
+    ReactDOM.render(<AuthForm />, document.getElementById('app'));
+} else console.error('Unable to load ReactJS application!');

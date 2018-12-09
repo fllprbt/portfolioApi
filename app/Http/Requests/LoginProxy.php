@@ -1,6 +1,6 @@
 <?php
 
-namespace App\HTTP;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Application;
 use Infrastructure\Auth\Exceptions\InvalidCredentialsException;

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use App\Http\LoginProxy;
+use App\Http\Requests\LoginProxy;
 use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
 
-class LoginController extends Controller
+class Login extends Controller
 {
     private $loginProxy;
 

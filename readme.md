@@ -37,7 +37,7 @@ Proxied, password granted OAuth. (Laravel Passport)
 10. **Copy** the second client data pair returned from ```passport:install``` (_Password Grant Credentials_) into ```.env``` in
   	* **PERSONAL_CLIENT_ID**
   	* **PERSONAL_CLIENT_SECRET**
-
+11. **Registration's verification mails**. It needs editing of the mail config in ```.env```. 
 
  _**[http://0.0.0.0:8080](0.0.0.0)**_ to view.
  

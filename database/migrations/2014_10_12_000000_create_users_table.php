@@ -15,13 +15,41 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
             $table->timestamps();
+
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('name')->nullable();
+
+            $table->tinyInteger('verified')->default(0);
+			$table->string('email_token')->nullable();
+			$table->rememberToken();
         });
+
+        Schema::create('password_resets', function (Blueprint $table) {
+            $table->string('email')->index();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+
+        Schema::create('jobs', function (Blueprint $table) {
+			$table->bigIncrements('id');
+			$table->string('queue')->index();
+			$table->longText('payload');
+			$table->unsignedTinyInteger('attempts');
+			$table->unsignedInteger('reserved_at')->nullable();
+			$table->unsignedInteger('available_at');
+			$table->unsignedInteger('created_at');
+		});
+
+		Schema::create('failed_jobs', function (Blueprint $table) {
+			$table->bigIncrements('id');
+			$table->text('connection');
+			$table->text('queue');
+			$table->longText('payload');
+			$table->longText('exception');
+			$table->timestamp('failed_at')->useCurrent();
+		});
     }
 
     /**
@@ -31,6 +59,9 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('failed_jobs');
+        Schema::dropIfExists('jobs');
+        Schema::dropIfExists('password_resets');
         Schema::dropIfExists('users');
     }
 }
