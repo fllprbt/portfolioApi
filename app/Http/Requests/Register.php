@@ -31,16 +31,16 @@ class Register extends FormRequest
             'email.required' => 'Email is required',
             'email.email' => 'Malformed email',
             'email.string' => 'Email should be a string',
-            'email.max:255' => 'Email exceeds 255 characters',
-            'email.unique:users' => 'Email exists',
+            'email.max' => 'Email exceeds 255 characters',
+            'email.unique' => 'Email exists',
 
             'password.required' => 'Password is required',
             'password.string' => 'Password should be a string',
-            'password.min:8' => 'Password exceeds 255 characters',
+            'password.min' => 'Password is less than 8 characters',
             'password.confirmed' => 'Passwords do not match',
 
-            'name:string' => 'Name should be a string',
-            'name:max:255' => 'Name exceeds 255 characters',
+            'name.string' => 'Name should be a string',
+            'name.max' => 'Name exceeds 255 characters',
         ];
     }
 }

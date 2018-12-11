@@ -40,6 +40,9 @@ const styles = (theme: Theme) =>
             width: '100%',
             marginTop: theme.spacing.unit * 3,
         },
+        snackbarClose: {
+            padding: theme.spacing.unit / 2,
+        },
     });
 
 export default styles;

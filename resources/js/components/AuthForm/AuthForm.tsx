@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
@@ -10,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import LockIcon from '@material-ui/icons/LockOutlined';
+import SimpleSnackBar from './SimpleSnackBar';
 
 import { formData, formErrors, formTypes } from '../../constants';
 import { emailExists, loginUser, registerUser } from '../../utils';
@@ -17,11 +19,13 @@ import { emailExists, loginUser, registerUser } from '../../utils';
 import styles from './styles';
 
 const emailRe = /\S+@\S+\.\S+/;
-const passWordRe = /^(?=.*[a-z])(?=.*[0-9])(?=.*[\W])(?=.{8,})/;
+const passWordRe = /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/;
 
 interface IProps extends WithStyles<typeof styles> {}
 
 interface IState {
+    apiResponse: string;
+    apiResponseLoading: boolean;
     formType: string;
     email: string;
     emailError: string;
@@ -29,12 +33,15 @@ interface IState {
     passwordError?: string;
     passwordConfirmation?: string;
     passwordConfirmationError?: string;
+    disabledSubmit: boolean;
 }
 
 class AuthForm extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
+            apiResponse: '',
+            apiResponseLoading: false,
             formType: formTypes.register,
             email: '',
             emailError: '',
@@ -42,7 +49,10 @@ class AuthForm extends React.Component<IProps, IState> {
             passwordError: '',
             passwordConfirmation: '',
             passwordConfirmationError: '',
+            disabledSubmit: false,
         };
+
+        this.onSnackbarClose = this.onSnackbarClose.bind(this);
     }
 
     private passwordConfirmationRef = React.createRef<HTMLInputElement>();
@@ -113,33 +123,53 @@ class AuthForm extends React.Component<IProps, IState> {
             !passwordError &&
             !passwordConfirmationError
         ) {
-            switch (this.state.formType) {
-                case formTypes.register:
-                    registerUser(email, password, passwordConfirmation).then(
-                        (resp) => {
+            if (!this.state.apiResponseLoading) {
+                this.setState({ apiResponseLoading: true });
+                switch (this.state.formType) {
+                    case formTypes.register:
+                        registerUser(email, password, passwordConfirmation)
+                            .then((response) => {
+                                this.setState({
+                                    apiResponse: response.data,
+                                    apiResponseLoading: false,
+                                    disabledSubmit: true,
+                                });
+                            })
+                            .catch((error) => {
+                                this.setState({
+                                    apiResponse: formErrors.apiResponseError,
+                                    apiResponseLoading: false,
+                                });
+                                console.log(error.response.data.errors);
+                            });
+                        break;
+                    case formTypes.login:
+                        loginUser(email, password).then((resp) => {
                             console.log(resp);
-                        }
-                    );
-                    break;
-                case formTypes.login:
-                    loginUser(email, password).then((resp) => {
-                        console.log(resp);
-                    });
-                    break;
-                case formTypes.resetPassword:
-                default:
-                    break;
+                        });
+                        break;
+                    case formTypes.resetPassword:
+                    default:
+                        break;
+                }
             }
         }
+    };
+
+    onSnackbarClose = (event) => {
+        this.setState({ apiResponse: '' });
     };
 
     render() {
         const { classes } = this.props;
         const {
+            apiResponse,
+            apiResponseLoading,
             formType,
             emailError,
             passwordError,
             passwordConfirmationError,
+            disabledSubmit,
         } = this.state;
         const { description, navigationLabel, linksToType } = formData[
             this.state.formType
@@ -161,6 +191,7 @@ class AuthForm extends React.Component<IProps, IState> {
                             {formData[linksToType].description}
                         </Button>
                     </div>
+                    {apiResponseLoading && <CircularProgress />}
                     <form className={classes.form}>
                         <FormControl
                             margin="normal"
@@ -242,11 +273,16 @@ class AuthForm extends React.Component<IProps, IState> {
                             color="primary"
                             className={classes.submit}
                             onClick={this.handleSubmit}
+                            disabled={disabledSubmit}
                         >
                             Register
                         </Button>
                     </form>
                 </Paper>
+                <SimpleSnackBar
+                    open={apiResponse}
+                    onSnackbarClose={this.onSnackbarClose}
+                />
             </main>
         );
     }
