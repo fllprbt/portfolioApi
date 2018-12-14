@@ -4,18 +4,20 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Register as RegisterRequest;
+use App\Http\Requests\Login as LoginRequest;
 use App\Http\Requests\EmailExists;
 use App\Jobs\SendVerificationEmail;
 use Illuminate\Auth\Events\Registered;
 
 use App\Models\User;
 use App\Models\Email;
-use response;
+use App\Http\Resources\User as UserResource;
+
+use Response;
 use Hash;
 
 class Register extends Controller
 {
-
 	/**
 	 * Create a new user instance after a valid registration.
 	 *
@@ -27,7 +29,7 @@ class Register extends Controller
 		return User::create([
 			'name' => array_key_exists('name', $data) ? $data['name'] : null,
 			'email' => $data['email'],
-			'password' => bcrypt($data['password']),
+			'password' => Hash::make($data['password']),
 			'email_token' => str_random(40),
 		]);
 	}
@@ -36,19 +38,51 @@ class Register extends Controller
 	* Handle a registration request for the application.
 	*
 	* @param \Illuminate\Http\Requests\Register $request
-	* @return \Illuminate\Http\Response
+	* @return \Illuminate\Http\Response|Illuminate\View\View
 	*/
 	public function register(RegisterRequest $request)
-	{        
-        $name = $request->has('name') ? $request->get('name') : null;
-        $email = $request->get('email');
-        $password = $request->get('password');
-		
-		event(new Registered($user = $this->create($request->all())));
+	{
+        event(new Registered($user = $this->create($request->all())));
+        dispatch(new SendVerificationEmail($user));
 
-		dispatch(new SendVerificationEmail($user));
+        return response()->json(['data' => new UserResource($user)], 202);
+	}
 
-		return response()->json('A verification email has been sent to ' . $email);
+	/**
+	* Handle a new verification request of a user.
+	*
+	* @param \Illuminate\Http\Requests\Login $request
+	* @return \Illuminate\Http\Response
+	*/
+	public function resendMail(LoginRequest $request)
+	{
+		$user = User::where(['email' => $request->email])->first();
+
+		if ($user)
+		{
+			if (Hash::check($request->password, $user->password))
+        	{
+				dispatch(new SendVerificationEmail($user));
+
+				return response()->json(['meta' => [
+						'status' => '202',
+						'title' => 'registered',
+						'description' => 'An email has been sent to ' . $user->email,
+				]]);
+			}
+			else
+			{
+				return response()->json(['errors' => [
+					'status' => '401',
+					'title' => 'Unauthenticated',
+				]], 401);
+			}
+		}
+
+		return response()->json(['errors' => [
+			'status' => '404',
+			'title' => 'User not found',
+		]], 404);
 	}
 
 	/**
@@ -60,7 +94,8 @@ class Register extends Controller
 	public function verify($token)
 	{
 		$user = User::where('email_token', $token)->first();
-		$user->verified = 1;
+        $user->verified = 1;
+
 		if ($user->save()) return view('email.emailconfirm',['user' => $user]);
 	}
 
@@ -71,13 +106,26 @@ class Register extends Controller
 	* @return \Illuminate\Http\Response
 	*/
     public function emailExists(EmailExists $request)
-    {	
-		$validated = $request->validated();
-        $email_exists = Email::exists($request->email);
-        
-        return response()->json([
-            'email' => $request->email,
-            'exists' => $email_exists
-        ]);
+    {
+        $email = $request->email;
+
+        if (Email::exists($email))
+        {
+            return response()->json(['meta' => [
+                'status' => '200',
+                'exists' => true,
+                'title' => 'Email exists',
+                'description' => 'The email ' . $email . ' exists in our database'
+            ]]);
+        }
+        else
+        {
+            return response()->json(['meta' => [
+                'status' => '200',
+                'exists' => false,
+                'title' => 'Email does not exist',
+                'description' => 'The email ' . $email . ' does not exist in our database'
+            ]]);
+        }
     }
 }

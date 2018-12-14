@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div id="welcome"></div>
+    <div id="authForm"></div>
 @endsection
 
 @section('scripts')

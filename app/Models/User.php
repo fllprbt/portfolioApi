@@ -6,6 +6,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Notifications\MailResetPasswordToken;
 
 class User extends Authenticatable
 {
@@ -32,9 +33,7 @@ class User extends Authenticatable
     public function verified()
 	{
 		 $this->verified = 1;
-
 		 $this->email_token = null;
-
 		 $this->save();
 	}
 

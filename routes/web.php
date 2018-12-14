@@ -13,3 +13,4 @@
 
 Route::get('/', 'WelcomeController@index')->name('welcome');
 Route::get('/verifyemail/{token}', 'Auth\Register@verify')->name('Verify user');
+Route::view('/authorize', 'register');

@@ -14,14 +14,20 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import SimpleSnackBar from './SimpleSnackBar';
 
 import { formData, formErrors, formTypes } from '../../constants';
-import { emailExists, loginUser, registerUser } from '../../utils';
+import {
+    emailExists,
+    loginUser,
+    onResendVerification,
+    registerUser,
+    resetPassword,
+} from '../../utils';
 
-import styles from './styles';
+import styles from '../../styles';
 
 const emailRe = /\S+@\S+\.\S+/;
 const passWordRe = /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/;
 
-interface IProps extends WithStyles<typeof styles> {}
+interface IProps extends WithStyles<typeof styles> { }
 
 interface IState {
     apiResponse: string;
@@ -61,38 +67,44 @@ class AuthForm extends React.Component<IProps, IState> {
         const { formType } = this.state;
         const email = event.target.value.trim();
 
-        let emailError = '';
-        if (!email.match(emailRe)) {
-            if (email) emailError = formErrors.malformedEmail;
-        } else if (formType === formTypes.register) {
-            emailExists(email).then((resp) => {
-                if (resp.data.exists) emailError = formErrors.existingEmail;
-                this.setState({ email, emailError });
-                return;
-            });
-        }
+        if (email) {
+            let emailError = '';
+            if (!email.match(emailRe)) {
+                emailError = formErrors.malformedEmail;
+            } else if (formType === formTypes.register) {
+                emailExists(email).then((resp) => {
+                    if (resp.data.exists) emailError = formErrors.existingEmail;
+                    this.setState({ email, emailError });
+                    return;
+                });
+            }
 
-        this.setState({ email, emailError });
+            this.setState({ email, emailError });
+        }
     };
 
     handlePasswordChange = (event) => {
         const password = event.target.value.trim();
-
-        let passwordError = '';
-        if (!password.match(passWordRe)) {
-            if (password) passwordError = formErrors.malformedPassword;
-        }
-
-        const passwordConfirmationRef = this.passwordConfirmationRef.current;
-        const passwordConfirmationValue = passwordConfirmationRef
-            ? passwordConfirmationRef.value
-            : '';
-        const passwordConfirmationError =
-            passwordConfirmationValue && password !== passwordConfirmationValue
-                ? formErrors.notMatchingPasswords
+        if (password) {
+            const passwordError = !password.match(passWordRe)
+                ? formErrors.malformedPassword
                 : '';
 
-        this.setState({ password, passwordError, passwordConfirmationError });
+            const confirmedRefTarget = this.passwordConfirmationRef.current;
+            const confirmedValue =
+                confirmedRefTarget && confirmedRefTarget.value;
+
+            const passwordConfirmationError =
+                confirmedValue && password !== confirmedValue
+                    ? formErrors.notMatchingPasswords
+                    : '';
+
+            this.setState({
+                password,
+                passwordError,
+                passwordConfirmationError,
+            });
+        }
     };
 
     handlePasswordConfirmation = (event) => {
@@ -106,6 +118,22 @@ class AuthForm extends React.Component<IProps, IState> {
         this.setState({ passwordConfirmation, passwordConfirmationError });
     };
 
+    handleTransition = () => {
+        this.setState({
+            formType: formData[this.state.formType].linksToType,
+            disabledSubmit: false,
+        });
+    };
+
+    resetPasswordTransition = () => {
+        this.setState({ formType: formTypes.resetPassword });
+    };
+
+    onVerificationRequest = () => {
+        const { email, password } = this.state;
+        if (password) onResendVerification(email, password);
+    };
+
     handleSubmit = () => {
         const {
             email,
@@ -116,17 +144,18 @@ class AuthForm extends React.Component<IProps, IState> {
             passwordConfirmationError,
         } = this.state;
 
-        if (
-            password &&
-            passwordConfirmation &&
-            !emailError &&
-            !passwordError &&
-            !passwordConfirmationError
-        ) {
-            if (!this.state.apiResponseLoading) {
-                this.setState({ apiResponseLoading: true });
-                switch (this.state.formType) {
-                    case formTypes.register:
+        if (!this.state.apiResponseLoading) {
+            this.setState({ apiResponseLoading: true });
+            switch (this.state.formType) {
+                case formTypes.register:
+                    if (
+                        email &&
+                        password &&
+                        passwordConfirmation &&
+                        !emailError &&
+                        !passwordError &&
+                        !passwordConfirmationError
+                    ) {
                         registerUser(email, password, passwordConfirmation)
                             .then((response) => {
                                 this.setState({
@@ -142,16 +171,53 @@ class AuthForm extends React.Component<IProps, IState> {
                                 });
                                 console.log(error.response.data.errors);
                             });
-                        break;
-                    case formTypes.login:
-                        loginUser(email, password).then((resp) => {
-                            console.log(resp);
-                        });
-                        break;
-                    case formTypes.resetPassword:
-                    default:
-                        break;
-                }
+                    }
+                    break;
+                case formTypes.login:
+                    if (email && password && !emailError && !passwordError) {
+                        loginUser(email, password)
+                            .then((response) => {
+                                this.setState({
+                                    apiResponse: response.data,
+                                    apiResponseLoading: false,
+                                    disabledSubmit: false,
+                                });
+                            })
+                            .catch((error) => {
+                                const { response } = error;
+                                const apiResponseError =
+                                    response && response.status === 403
+                                        ? formErrors.accountUnverified
+                                        : formErrors.apiResponseError;
+                                this.setState({
+                                    apiResponse: apiResponseError,
+                                    apiResponseLoading: false,
+                                });
+                                console.log(error.response.data);
+                            });
+                    }
+                    break;
+                case formTypes.resetPassword:
+                    if (email && !emailError) {
+                        resetPassword(email)
+                            .then((response) => {
+                                this.setState({
+                                    apiResponse: response.data,
+                                    apiResponseLoading: false,
+                                    disabledSubmit: true,
+                                });
+                            })
+                            .catch((error) => {
+                                this.setState({
+                                    apiResponse: formErrors.apiResponseError,
+                                    apiResponseLoading: false,
+                                });
+                                console.log(error.response.data.errors);
+                            });
+                    }
+                    break;
+                default:
+                    break;
             }
         }
     };
@@ -171,8 +237,8 @@ class AuthForm extends React.Component<IProps, IState> {
             passwordConfirmationError,
             disabledSubmit,
         } = this.state;
-        const { description, navigationLabel, linksToType } = formData[
-            this.state.formType
+        const { action, description, navigationLabel, linksToType } = formData[
+            formType
         ];
 
         return (
@@ -187,7 +253,11 @@ class AuthForm extends React.Component<IProps, IState> {
                     </Typography>
                     <div className={classes.testAuthContainer}>
                         <InputLabel>{navigationLabel}</InputLabel>
-                        <Button color="primary">
+                        <Button
+                            variant={disabledSubmit ? 'contained' : 'text'}
+                            color="primary"
+                            onClick={this.handleTransition}
+                        >
                             {formData[linksToType].description}
                         </Button>
                     </div>
@@ -218,18 +288,18 @@ class AuthForm extends React.Component<IProps, IState> {
                         </FormControl>
                         {(formType === formTypes.register ||
                             formType === formTypes.login) && (
-                            <FormControl
-                                margin="normal"
-                                required={true}
-                                fullWidth={true}
-                            >
-                                <InputLabel htmlFor="password">
-                                    Password
+                                <FormControl
+                                    margin="normal"
+                                    required={true}
+                                    fullWidth={true}
+                                >
+                                    <InputLabel htmlFor="password">
+                                        Password
                                 </InputLabel>
-                                <Input
-                                    name="password"
-                                    type="password"
-                                    id="password"
+                                    <Input
+                                        name="password"
+                                        type="password"
+                                        id="password"
                                     autoComplete="current-password"
                                     onChange={this.handlePasswordChange}
                                     error={passwordError !== ''}
@@ -241,6 +311,16 @@ class AuthForm extends React.Component<IProps, IState> {
                                     </Typography>
                                 )}
                             </FormControl>
+                        )}
+                        {formType === formTypes.login && (
+                            <Button
+                                variant="text"
+                                color="secondary"
+                                fullWidth={true}
+                                onClick={this.resetPasswordTransition}
+                            >
+                                {formData[formTypes.resetPassword].description}
+                            </Button>
                         )}
                         {formType === formTypes.register && (
                             <FormControl
@@ -275,12 +355,13 @@ class AuthForm extends React.Component<IProps, IState> {
                             onClick={this.handleSubmit}
                             disabled={disabledSubmit}
                         >
-                            Register
+                            {action}
                         </Button>
                     </form>
                 </Paper>
                 <SimpleSnackBar
                     open={apiResponse}
+                    onSnackbarClick={this.onVerificationRequest}
                     onSnackbarClose={this.onSnackbarClose}
                 />
             </main>

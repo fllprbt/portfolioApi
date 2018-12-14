@@ -1,18 +1,18 @@
 <?php
- 
+
 namespace App\Notifications;
- 
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
- 
+
 class MailResetPasswordToken extends Notification
 {
     use Queueable;
- 
+
     public $token;
- 
+
     /**
      * Create a new notification instance.
      *
@@ -22,7 +22,7 @@ class MailResetPasswordToken extends Notification
     {
         $this->token = $token;
     }
- 
+
     /**
      * Get the notification's delivery channels.
      *
@@ -33,7 +33,7 @@ class MailResetPasswordToken extends Notification
     {
         return ['mail'];
     }
- 
+
     /**
      * Get the mail representation of the notification.
      *
@@ -47,5 +47,5 @@ class MailResetPasswordToken extends Notification
             ->action('Reset Password', url(config('app.root').route('password.reset', $this->token, false)))
             ->line('If you did not request a password reset, no further action is required.');
     }
- 
+
 }

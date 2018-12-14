@@ -18,4 +18,19 @@ class Login extends FormRequest
             'password' => 'required'
         ];
     }
+
+     /**
+     * Custom message for validation
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'email.required' => 'Email is required',
+            'email.email' => 'Malformed email',
+            
+            'password.required' => 'Password is required',
+        ];
+    }
 }

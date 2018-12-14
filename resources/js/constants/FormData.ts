@@ -16,7 +16,7 @@ const formData = {
     [formTypes.resetPassword]: {
         description: 'Reset password',
         action: 'Reset',
-        navigationLabel: 'Forgot your password?',
+        navigationLabel: 'Account reset?',
         linksToType: formTypes.login,
     },
 };

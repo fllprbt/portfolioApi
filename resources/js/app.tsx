@@ -14,8 +14,16 @@ import './bootstrap';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import AuthForm from './components/';
 
-if (document.getElementById('app')) {
-    ReactDOM.render(<AuthForm />, document.getElementById('app'));
+import { AuthForm, Welcome } from './components/';
+
+import { withTheme } from './utils/';
+
+if (document.getElementById('authForm')) {
+    ReactDOM.render(
+        withTheme(<AuthForm />),
+        document.getElementById('authForm')
+    );
+} else if (document.getElementById('welcome')) {
+    ReactDOM.render(withTheme(<Welcome />), document.getElementById('welcome'));
 } else console.error('Unable to load ReactJS application!');

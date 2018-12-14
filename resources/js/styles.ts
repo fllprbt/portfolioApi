@@ -33,6 +33,13 @@ const styles = (theme: Theme) =>
         submit: {
             marginTop: theme.spacing.unit * 3,
         },
+        button: {
+            marginTop: theme.spacing.unit,
+            marginBottom: theme.spacing.unit,
+        },
+        subheading: {
+            marginTop: theme.spacing.unit,
+        },
         testAuthContainer: {
             display: 'flex',
             alignItems: 'center',
@@ -42,6 +49,9 @@ const styles = (theme: Theme) =>
         },
         snackbarClose: {
             padding: theme.spacing.unit / 2,
+        },
+        italic: {
+            fontStyle: 'italic',
         },
     });
 

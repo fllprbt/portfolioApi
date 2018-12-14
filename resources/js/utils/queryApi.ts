@@ -17,10 +17,29 @@ const registerUser = (
 };
 
 const loginUser = (email: string, password: string) => {
-    return (window as any).axios.post(`${window.location.href}login`, {
+    return (window as any).axios.post(`${window.location.href}testLogin`, {
         email,
         password,
     });
 };
 
-export { emailExists, registerUser, loginUser };
+const resetPassword = (email: string) => {
+    return (window as any).axios.post(`${window.location.href}resetPassword`, {
+        email,
+    });
+};
+
+const onResendVerification = (email: string, password: string) => {
+    return (window as any).axios.post(`${window.location.href}login/refresh`, {
+        email,
+        password,
+    });
+};
+
+export {
+    emailExists,
+    registerUser,
+    loginUser,
+    resetPassword,
+    onResendVerification,
+};

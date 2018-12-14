@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Application;
 use Infrastructure\Auth\Exceptions\InvalidCredentialsException;
-use App\User;
+use App\Models\User;
 use GuzzleHttp\Client;
 
 class LoginProxy
@@ -31,6 +31,7 @@ class LoginProxy
      *
      * @param string $email
      * @param string $password
+     * @return \Illuminate\Http\Response
      */
     public function attemptLogin($email, $password)
     {
@@ -42,13 +43,20 @@ class LoginProxy
                 'password' => $password
             ]);
         }
-
-        throw new InvalidCredentialsException();
+        else
+        {
+            return response()->json(['errors' => [
+                'status' => '404',
+                'title' => 'User not found',
+            ]], 404);
+        }
     }
 
     /**
      * Attempt to refresh the access token used a refresh token that
      * has been saved in a cookie
+     *
+     * @return \Illuminate\Http\Response
      */
     public function attemptRefresh()
     {
@@ -67,8 +75,8 @@ class LoginProxy
      */
     public function proxy($grantType, array $data = [])
     {
-        try {
-
+        try
+        {
             $data = array_merge([
                 'client_id'     => getenv('PERSONAL_CLIENT_ID'),
                 'client_secret' => getenv('PERSONAL_CLIENT_SECRET'),
@@ -101,10 +109,19 @@ class LoginProxy
                 true // HttpOnly
             );
 
-            return [
-                'accessToken'            => $response->access_token,
-                'accessTokenExpiration'  => $response->expires_in
-            ];
+            return response()->json(['meta' => [
+                'status' => '200',
+                'accessToken' => $response->access_token,
+                'accessTokenExpiration' => $response->expires_in
+            ]]);
+        }
+        else
+        {
+            return response()->json(['meta' => [
+                'status' => '200',
+                'accessToken' => $response->access_token,
+                'accessTokenExpiration' => $response->expires_in
+            ]]);
         }
     }
 

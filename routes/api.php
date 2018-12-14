@@ -12,11 +12,15 @@
 */
 
 Route::post('/emailExists', 'Auth\Register@emailExists')->name('Email exists');
-Route::post('/register', 'Auth\Register@register')->name('Register User');
+Route::post('/register', 'Auth\Register@register')->name('Register user');
 
-// Route::post('/login', 'Auth\Login@login');
-// Route::post('/login/refresh', 'Auth\Login@refresh');
-// Route::post('/register/verification/{user}', 'Auth\Register@resend_mail');
+Route::post('/resetPassword', 'Auth\ForgotPassword@index')->name('Reset password');
+
+Route::post('/testLogin', 'Auth\Login@testLogin')->name('Test login status');
+Route::post('/testLogin', 'Auth\Login@testLogin')->name('Reset verification');
+
+Route::post('/login', 'Auth\Login@login')->name('OAuth login');
+Route::post('/login/refresh', 'Auth\Register@resendMail')->name('Refresh login');
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/logout', 'Auth\Login@logout');
