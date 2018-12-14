@@ -9,14 +9,18 @@ import CloseIcon from '@material-ui/icons/Close';
 import styles from '../../styles';
 
 interface IProps extends WithStyles<typeof styles> {
-    open: string;
-    onSnackbarClick?: (event: React.SyntheticEvent) => void;
+    open: boolean;
+    notification: string;
     onSnackbarClose: (event: React.SyntheticEvent) => void;
+    onClickLabel?: string;
+    onSnackbarClick?: (event: React.SyntheticEvent) => void;
 }
 
 const SimpleSnackBar: React.SFC<IProps> = ({
     open,
+    notification,
     onSnackbarClose,
+    onClickLabel,
     classes,
     onSnackbarClick,
 }) => (
@@ -32,16 +36,20 @@ const SimpleSnackBar: React.SFC<IProps> = ({
             ContentProps={{
                 'aria-describedby': 'message-id',
             }}
-            message={<span id="message-id">{open}</span>}
+            message={<span id="message-id">{notification}</span>}
             action={[
-                <Button
-                    key="undo"
-                    color="secondary"
-                    size="small"
-                    onClick={onSnackbarClick}
-                >
-                    > UNDO
-                </Button>,
+                <>
+                    {onSnackbarClick && onSnackbarClose && (
+                        <Button
+                            key="undo"
+                            color="secondary"
+                            size="small"
+                            onClick={onSnackbarClick}
+                        >
+                            {onClickLabel || 'OK'}
+                        </Button>
+                    )}
+                </>,
                 <IconButton
                     key="close"
                     aria-label="Close"

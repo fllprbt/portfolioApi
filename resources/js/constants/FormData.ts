@@ -1,6 +1,6 @@
 import formTypes from './FormTypes';
 
-const formData = {
+const formNavigation = {
     [formTypes.register]: {
         description: 'Register to API',
         action: 'Register',
@@ -21,4 +21,4 @@ const formData = {
     },
 };
 
-export default formData;
+export default formNavigation;
