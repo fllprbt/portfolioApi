@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 
 use Auth;
+use Hash;
 
 class Login extends Controller
 {
@@ -19,6 +20,12 @@ class Login extends Controller
         $this->loginProxy = $loginProxy;
     }
 
+    /**
+	 * Test the login status of a user.
+	 *
+	 * @param \Illuminate\Http\Requests\Login $request
+	 * @return \Illuminate\Http\Response
+	*/
     public function testLogin(LoginRequest $request)
     {
         $user = User::where(['email' => $request->email])->first();
@@ -33,17 +40,16 @@ class Login extends Controller
                             'status' => '200',
                             'verified' => true,
                             'title' => 'Verified',
-                            'description' => 'User at email ' . $user->email . ' has been verified',
-                    ]]);
+                            'description' => 'User with email ' . $user->email . ' can access the API',
+                    ]], 200);
                 }
                 else
                 {
-                    return response()->json(['meta' => [
-                        'status' => '200',
-                        'verified' => false,
+                    return response()->json(['errors' => [
+                        'status' => '403',
                         'title' => 'Unverified',
-                        'description' => 'User at email ' . $user->email . ' is not verified',
-                    ]]);
+                        'description' => 'User with email ' . $user->email . ' is not verified',
+                    ]], 403);
                 }
             }
             else
@@ -51,6 +57,7 @@ class Login extends Controller
                 return response()->json(['errors' => [
                     'status' => '401',
                     'title' => 'Unauthenticated',
+                    'description' => 'The password of ' . $user->email . ' is wrong',
                 ]], 401);
             }
         }
@@ -58,6 +65,7 @@ class Login extends Controller
         return response()->json(['errors' => [
             'status' => '404',
             'title' => 'User not found',
+            'description' => 'No user with ' . $request->email . ' is found',
         ]], 404);
     }
 

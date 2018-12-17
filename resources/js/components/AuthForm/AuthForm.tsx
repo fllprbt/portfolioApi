@@ -11,22 +11,25 @@ import {
     Paper,
     Typography,
     withStyles,
-    WithStyles
+    WithStyles,
 } from '@material-ui/core/';
 import LockIcon from '@material-ui/icons/LockOutlined';
 
 import styles from '../../styles';
-import SimpleSnackBar from './SimpleSnackBar';
+import { SimpleSnackBar } from '../SimpleSnackBar';
 
 import { formMessages, formNavigation, formTypes } from '../../constants';
-import { IAuthData } from '../../interfaces';
+import { IApiResponse, IAuthData } from '../../interfaces';
 import {
     AuthRegEx,
+    canLogin,
+    canRegister,
+    canReset,
     emailExists,
-    // loginUser,
+    loginUser,
     onResendVerification,
     registerUser,
-    // resetPassword,
+    resetPasswordEmail,
 } from '../../utils';
 
 export interface IProps extends WithStyles<typeof styles> { }
@@ -38,7 +41,7 @@ export interface IState {
     disabledRegistration?: boolean;
     apiLoading?: boolean;
     snackBar?: boolean;
-    lastApiResponse?: string;
+    lastApiResponse: IApiResponse;
 }
 
 class AuthForm extends React.Component<IProps, IState> {
@@ -54,7 +57,10 @@ class AuthForm extends React.Component<IProps, IState> {
                 password: '',
                 passwordConfirmation: '',
             },
-            lastApiResponse: '',
+            lastApiResponse: {
+                status: 200,
+                response: '',
+            },
             snackBar: false,
             apiLoading: false,
             errors: {
@@ -79,15 +85,19 @@ class AuthForm extends React.Component<IProps, IState> {
                 emailError = formMessages.malformedEmail;
             } else if (formType === formTypes.register) {
                 // async
-                emailExists(email).then((response) => {
-                    const { meta } = response.data;
-                    if (meta.exists) emailError = meta.description;
-                    this.setState({
-                        formData: { ...formData, email },
-                        errors: { ...errors, email: emailError },
+                emailExists(email)
+                    .then((response) => {
+                        const { meta } = response.data;
+                        if (meta.exists) emailError = meta.description;
+                        this.setState({
+                            formData: { ...formData, email },
+                            errors: { ...errors, email: emailError },
+                        });
+                        return;
+                    })
+                    .catch((error) => {
+                        console.log(error.response.data.errors);
                     });
-                    return;
-                });
             }
 
             this.setState({
@@ -111,24 +121,21 @@ class AuthForm extends React.Component<IProps, IState> {
             const confirmedRefTarget = this.passwordConfirmationRef.current;
             confirmedPassword = confirmedRefTarget
                 ? confirmedRefTarget.value
-                : '';
+                : formData.passwordConfirmation || '';
 
             const passwordConfirmationError =
                 confirmedPassword && password !== confirmedPassword
                     ? formMessages.notMatchingPasswords
                     : '';
             this.setState({
-                formData: {
-                    ...formData,
-                    password,
-                },
+                formData: { ...formData, password },
                 errors: {
                     ...errors,
                     password: passwordError,
                     passwordConfirmation: passwordConfirmationError,
                 },
             });
-        }
+        } else this.setState({ formData: { ...formData, password } });
     };
 
     handlePasswordConfirmation = (event) => {
@@ -142,10 +149,7 @@ class AuthForm extends React.Component<IProps, IState> {
                 : '';
 
         this.setState({
-            formData: {
-                ...formData,
-                passwordConfirmation,
-            },
+            formData: { ...formData, passwordConfirmation },
             errors: {
                 ...errors,
                 passwordConfirmation: passwordConfirmationError,
@@ -165,7 +169,27 @@ class AuthForm extends React.Component<IProps, IState> {
     };
 
     onVerificationRequest = () => {
-        onResendVerification(this.state.formData);
+        const { lastApiResponse } = this.state;
+        this.setState({ apiLoading: true, snackBar: false });
+
+        onResendVerification(this.state.formData)
+            .then((response) => {
+                const { meta } = response.data;
+                this.setState({
+                    lastApiResponse: {
+                        ...lastApiResponse,
+                        ...{
+                            status: +meta.status,
+                            response: meta.description,
+                        },
+                    },
+                    apiLoading: false,
+                    snackBar: true,
+                });
+            })
+            .catch((error) => {
+                this.setState({ apiLoading: false });
+            });
     };
 
     onSnackBarClose = () => {
@@ -173,25 +197,23 @@ class AuthForm extends React.Component<IProps, IState> {
     };
 
     handleSubmit = () => {
-        const { formData, errors, apiLoading } = this.state;
+        const { formData, errors, apiLoading, lastApiResponse } = this.state;
 
         if (!apiLoading) {
             switch (this.state.formType) {
                 case formTypes.register:
-                    if (
-                        !Object.keys(errors).filter((key) =>
-                            Boolean(errors[key])
-                        ).length
-                    ) {
+                    if (canRegister(formData, errors)) {
                         this.setState({ apiLoading: true });
                         registerUser(formData)
                             .then((response) => {
-                                const lastApiResponse =
-                                    response.status === 201
-                                        ? formMessages.userCreated
-                                        : '';
                                 this.setState({
-                                    lastApiResponse,
+                                    lastApiResponse: {
+                                        ...lastApiResponse,
+                                        ...{
+                                            status: +response.status,
+                                            response: formMessages.userCreated,
+                                        },
+                                    },
                                     apiLoading: false,
                                     disabledRegistration: true,
                                     snackBar: true,
@@ -199,66 +221,105 @@ class AuthForm extends React.Component<IProps, IState> {
                             })
                             .catch((error) => {
                                 const apiErrors = error.response.data.errors;
-                                const lastApiResponse = apiErrors
-                                    ? apiErrors.title
-                                    : formMessages.apiResponseFallback;
+                                const status = +apiErrors.status;
+                                let response = formMessages.apiResponseFallback;
+
+                                if (apiErrors && status !== 422) {
+                                    response = apiErrors.description;
+                                } else if (status === 422) {
+                                    response = apiErrors.title;
+                                }
 
                                 this.setState({
-                                    lastApiResponse,
+                                    lastApiResponse: {
+                                        ...lastApiResponse,
+                                        ...{ status, response },
+                                    },
                                     apiLoading: false,
                                     snackBar: true,
                                 });
                             });
                     }
                     break;
-                // case formTypes.login:
-                //     if (email && password && !emailError && !passwordError) {
-                //         loginUser(email, password)
-                //             .then((response) => {
-                //                 this.setState({
-                //                     apiResponse: response.data,
-                //                     apiResponseLoading: false,
-                //                     disabledSubmit: false,
-                //                 });
-                //             })
-                //             .catch((error) => {
-                //                 const { response } = error;
-                //                 const apiResponseError =
-                //                     response && response.status === 403
-                //                         ? formMessages.accountUnverified
-                //                         : formMessages.apiResponseError;
-                //                 this.setState({
-                //                     apiResponse: apiResponseError,
-                //                     apiResponseLoading: false,
-                //                 });
-                //                 console.log(error.response.data);
-                //             });
-                //     }
-                //     break;
-                // case formTypes.resetPassword:
-                //     if (email && !emailError) {
-                //         resetPassword(email)
-                //             .then((response) => {
-                //                 this.setState({
-                //                     apiResponse: response.data,
-                //                     apiResponseLoading: false,
-                //                     disabledSubmit: true,
-                //                 });
-                //             })
-                //             .catch((error) => {
-                //                 this.setState({
-                //                     apiResponse: formMessages.apiResponseError,
-                //                     apiResponseLoading: false,
-                //                 });
-                //                 console.log(error.response.data.errors);
-                //             });
-                //     }
-                //     break;
+                case formTypes.login:
+                    if (canLogin(formData, errors)) {
+                        this.setState({ apiLoading: true });
+                        loginUser(formData)
+                            .then((response) => {
+                                this.setState({
+                                    lastApiResponse: {
+                                        ...lastApiResponse,
+                                        ...{
+                                            status: +response.status,
+                                            response: response.data.description,
+                                        },
+                                    },
+                                    apiLoading: false,
+                                    snackBar: true,
+                                });
+                            })
+                            .catch((error) => {
+                                const apiErrors = error.response.data.errors;
+                                const status = +apiErrors.status;
+                                let response = formMessages.apiResponseFallback;
+
+                                if (apiErrors && status !== 422) {
+                                    response = apiErrors.description;
+                                } else if (status === 422) {
+                                    response = apiErrors.title;
+                                }
+
+                                this.setState({
+                                    lastApiResponse: {
+                                        ...lastApiResponse,
+                                        ...{ status, response },
+                                    },
+                                    apiLoading: false,
+                                    snackBar: true,
+                                });
+                            });
+                    }
+                    break;
+                case formTypes.resetPassword:
+                    const { email } = formData;
+                    if (canReset(email, errors.email)) {
+                        this.setState({ apiLoading: true });
+                        resetPasswordEmail(email)
+                            .then((response) => {
+                                const { meta } = response.data;
+                                this.setState({
+                                    lastApiResponse: {
+                                        ...lastApiResponse,
+                                        ...{
+                                            status: +meta.status,
+                                            response: meta.description,
+                                        },
+                                    },
+                                    apiLoading: false,
+                                    snackBar: true,
+                                });
+                            })
+                            .catch((error) => {
+                                const apiErrors = error.response.data.errors;
+                                this.setState({
+                                    lastApiResponse: {
+                                        ...lastApiResponse,
+                                        ...{
+                                            status: +apiErrors.status,
+                                            response:
+                                                formMessages.apiResponseFallback,
+                                        },
+                                    },
+                                    apiLoading: false,
+                                    snackBar: true,
+                                });
+                            });
+                    }
+                    break;
                 default:
                     break;
             }
         }
-        this.setState({ apiLoading: true });
     };
 
     render() {
@@ -266,10 +327,11 @@ class AuthForm extends React.Component<IProps, IState> {
         const {
             formType,
             apiLoading,
-            lastApiResponse,
+            lastApiResponse: { status, response },
             snackBar,
             errors,
             disabledRegistration,
+            formData: { password, passwordConfirmation },
         } = this.state;
         const {
             action,
@@ -277,7 +339,15 @@ class AuthForm extends React.Component<IProps, IState> {
             navigationLabel,
             linksToType,
         } = formNavigation[formType];
-        const emailError = errors.email;
+
+        let emailError = errors.email;
+        if (
+            formType !== formTypes.register &&
+            emailError !== formMessages.malformedEmail
+        ) {
+            emailError = '';
+        }
+
         const passwordError = errors.password;
         const passwordConfirmationError = errors.passwordConfirmation;
 
@@ -319,7 +389,7 @@ class AuthForm extends React.Component<IProps, IState> {
                                 autoComplete="email"
                                 autoFocus={true}
                                 onChange={this.handleEmailChange}
-                                error={emailError !== ''}
+                                error={!!emailError}
                                 required={true}
                             />
                             {emailError && (
@@ -341,32 +411,20 @@ class AuthForm extends React.Component<IProps, IState> {
                                     <Input
                                         name="password"
                                         type="password"
-                                    id="password"
-                                    autoComplete="current-password"
-                                    onChange={this.handlePasswordChange}
-                                    error={passwordError !== ''}
-                                    required={true}
-                                />
-                                {passwordError && (
-                                    <Typography color="error">
-                                        {passwordError}
-                                    </Typography>
-                                )}
-                            </FormControl>
-                        )}
-                        {formType === formTypes.login && (
-                            <Button
-                                variant="text"
-                                color="secondary"
-                                fullWidth={true}
-                                onClick={this.resetPasswordTransition}
-                            >
-                                {
-                                    formNavigation[formTypes.resetPassword]
-                                        .description
-                                }
-                            </Button>
-                        )}
+                                        id="password"
+                                        autoComplete="current-password"
+                                        onChange={this.handlePasswordChange}
+                                        error={!!passwordError}
+                                        required={true}
+                                        value={password}
+                                    />
+                                    {passwordError && (
+                                        <Typography color="error">
+                                            {passwordError}
+                                        </Typography>
+                                    )}
+                                </FormControl>
+                            )}
                         {formType === formTypes.register && (
                             <FormControl
                                 margin="normal"
@@ -382,8 +440,9 @@ class AuthForm extends React.Component<IProps, IState> {
                                     autoComplete="confirmation-password"
                                     inputRef={this.passwordConfirmationRef}
                                     onChange={this.handlePasswordConfirmation}
-                                    error={passwordConfirmationError !== ''}
+                                    error={!!passwordConfirmationError}
                                     required={true}
+                                    value={passwordConfirmation}
                                 />
                                 {passwordConfirmationError && (
                                     <Typography color="error">
@@ -402,14 +461,33 @@ class AuthForm extends React.Component<IProps, IState> {
                         >
                             {action}
                         </Button>
+                        {formType === formTypes.login && (
+                            <Button
+                                variant="text"
+                                color="secondary"
+                                fullWidth={true}
+                                className={classes.submit}
+                                onClick={this.resetPasswordTransition}
+                            >
+                                {
+                                    formNavigation[formTypes.resetPassword]
+                                        .description
+                                }
+                            </Button>
+                        )}
                     </form>
                 </Paper>
-                {snackBar && lastApiResponse && (
+                {snackBar && response && (
                     <SimpleSnackBar
                         open={snackBar}
-                        notification={lastApiResponse}
+                        notification={response}
                         onSnackbarClose={this.onSnackBarClose}
-                        onSnackbarClick={this.onVerificationRequest}
+                        onClickLabel="Resend"
+                        onSnackbarClick={
+                            formType === formTypes.login && status === 403
+                                ? this.onVerificationRequest
+                                : undefined
+                        }
                     />
                 )}
             </main>

@@ -12,5 +12,13 @@
 */
 
 Route::get('/', 'WelcomeController@index')->name('welcome');
-Route::get('/verifyemail/{token}', 'Auth\Register@verify')->name('Verify user');
-Route::view('/authorize', 'register');
+
+/* Includes registration form, login test, reset password */
+Route::view('/authorize', 'register'); /* Account creation and status management */
+
+Route::post('/register', 'Auth\Register@register')->name('user.register');
+Route::get('/verifyemail/{token}', 'Auth\Register@verify')->name('user.verify');
+
+Route::get('/reset/{token}', 'Auth\ResetPassword@showResetForm')->name('password.reset');
+Route::post('/password/email', 'Auth\ForgotPassword@sendResetLinkEmail')->name('password.email');
+Route::post('/password/reset', 'Auth\ResetPassword@reset')->name('password.update');

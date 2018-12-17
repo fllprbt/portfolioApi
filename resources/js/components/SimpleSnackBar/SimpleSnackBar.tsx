@@ -38,10 +38,9 @@ const SimpleSnackBar: React.SFC<IProps> = ({
             }}
             message={<span id="message-id">{notification}</span>}
             action={[
-                <>
-                    {onSnackbarClick && onSnackbarClose && (
+                <React.Fragment key="undo">
+                    {onSnackbarClick && (
                         <Button
-                            key="undo"
                             color="secondary"
                             size="small"
                             onClick={onSnackbarClick}
@@ -49,7 +48,7 @@ const SimpleSnackBar: React.SFC<IProps> = ({
                             {onClickLabel || 'OK'}
                         </Button>
                     )}
-                </>,
+                </React.Fragment>,
                 <IconButton
                     key="close"
                     aria-label="Close"

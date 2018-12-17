@@ -45,7 +45,10 @@ class Register extends Controller
         event(new Registered($user = $this->create($request->all())));
         dispatch(new SendVerificationEmail($user));
 
-        return response()->json(['data' => new UserResource($user)], 201);
+        return response()->json([
+            'status' => '201',
+            'data' => new UserResource($user)
+        ], 201);
 	}
 
 	/**
