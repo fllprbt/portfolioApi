@@ -1,6 +1,11 @@
 # Portfolio Api
 
-A Laravel **project management** RESTful API with OAuth. Requires docker.
+A Laravel **project management** RESTful API with OAuth. Under development.
+
+-   [Description](#description)
+-   [Requirements](#requirements)
+-   [Installation instructions](#installation-instructions)
+-   [Development instructions](#development-instructions)
 
 # Description
 
@@ -18,6 +23,11 @@ Proxied, password granted OAuth. (Laravel Passport)
 -   ReactJS with Material-UI
 -   Typescript
 -   SASS
+
+# Requirements
+
+-   docker & docker-compose
+-   being able to run docker as user (`sudo usermod -aG docker $USER` & reboot)
 
 # Installation instructions
 
@@ -44,6 +54,4 @@ _**[http://0.0.0.0:8080](0.0.0.0)**_ to view.
 
 # Development instructions
 
-To tinker the front-end, run `npm run watch` or `npm run hot` (needs **Node** and change of **permissions** of your _node_modules_).
-
-Project is under development. Does not support production builds.
+To tinker the front-end, run `npm run watch` or `npm run hot` (needs **Node**).
