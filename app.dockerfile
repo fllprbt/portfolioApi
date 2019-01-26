@@ -19,13 +19,11 @@ RUN apk --update add wget \
 
 RUN docker-php-ext-install mysqli mbstring pdo pdo_mysql
 RUN pecl channel-update pecl.php.net \
-    && pecl install mcrypt-1.0.1 \
-    && pecl install memcached \
-    && docker-php-ext-enable memcached \
-    && docker-php-ext-enable mcrypt
+  && pecl install memcached \
+  && docker-php-ext-enable memcached
 
 RUN rm /var/cache/apk/* && \
-    mkdir -p /var/www
+  mkdir -p /var/www
 
 COPY supervisord-app.conf /etc/supervisord.conf
 

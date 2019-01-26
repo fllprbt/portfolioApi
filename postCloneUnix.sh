@@ -4,7 +4,7 @@
 docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs
 
 # npm
-docker run --rm -u $(id -u):$(id -g) -v  $(pwd):/app -w /app node npm install
+docker run --rm -u $(id -u):$(id -g) -v  $(pwd):/app -w /app node npm install && npm rebuild node-sass && npm run dev
 
 # copy defaults
 if [ ! -f ./.env ]; then
