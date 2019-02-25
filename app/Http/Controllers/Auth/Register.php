@@ -19,6 +19,16 @@ use Hash;
 class Register extends Controller
 {
 	/**
+	 * Default route for registration view.
+	 *
+	 * @return \Illuminate\Http\Response|Illuminate\View\View
+	 */
+	public function index()
+  	{
+    	return view('app')->with('view_name', 'register');
+	}
+	  
+	/**
 	 * Create a new user instance after a valid registration.
 	 *
 	 * @param  array  $data
@@ -38,7 +48,7 @@ class Register extends Controller
 	* Handle a registration request for the application.
 	*
 	* @param \Illuminate\Http\Requests\Register $request
-	* @return \Illuminate\Http\Response|Illuminate\View\View
+	* @return \Illuminate\Http\Response
 	*/
 	public function register(RegisterRequest $request)
 	{
@@ -65,13 +75,22 @@ class Register extends Controller
 		{
 			if (Hash::check($request->password, $user->password))
         	{
-				dispatch(new SendVerificationEmail($user));
+				if (!$user->verified) {
+					dispatch(new SendVerificationEmail($user));
 
-				return response()->json(['meta' => [
-						'status' => '202',
-						'title' => 'registered',
-						'description' => 'An email has been sent to ' . $user->email,
-				]]);
+					return response()->json(['meta' => [
+							'status' => '202',
+							'title' => 'registered',
+							'description' => 'An email has been sent to ' . $user->email,
+					]]);
+				}
+				else
+				{
+					return response()->json(['errors' => [
+						'status' => '401',
+						'title' => 'Unauthenticated',
+					]], 401);
+				}
 			}
 			else
 			{
@@ -89,17 +108,19 @@ class Register extends Controller
 	}
 
 	/**
-	* Handle a registration request for the application.
+	* Handle an email verification request for the application. 
+	* Pass a different view name based on whether the user was already verified.
 	*
 	* @param $token
-	* @return \Illuminate\Http\Response
+	* @return \Illuminate\Http\Response|Illuminate\View\View
 	*/
 	public function verify($token)
 	{
 		$user = User::where('email_token', $token)->first();
-        $user->verified = 1;
+		if ($user->verified) return view('app')->with('view_name', 'already_verified');
 
-		if ($user->save()) return view('email.emailconfirm',['user' => $user]);
+		$user->verified = 1;
+		if ($user->save()) return view('app')->with('view_name', 'verified');
 	}
 
     /**
@@ -108,7 +129,7 @@ class Register extends Controller
 	* @param \Illuminate\Http\Requests\EmailExists $request
 	* @return \Illuminate\Http\Response
 	*/
-    public function emailExists(EmailExists $request)
+    public function testEmail(EmailExists $request)
     {
         $email = $request->email;
 
@@ -124,11 +145,23 @@ class Register extends Controller
         else
         {
             return response()->json(['meta' => [
-                'status' => '200',
-                'exists' => false,
-                'title' => 'Email does not exist',
-                'description' => 'The email ' . $email . ' does not exist in our database'
+                'status' => '400',
+                'title' => 'Email verified',
+                'description' => 'The email ' . $email . ' is already verified'
             ]]);
         }
-    }
+	}
+	
+	/**
+	* Check if an email exists
+	*
+	* @param \Illuminate\Http\Requests\EmailExists $request
+	* @return \Illuminate\Http\Response
+	*/
+    public function emailExists(EmailExists $request)
+    {
+		$email = $request->email;
+
+        return Email::exists($email);
+	}
 }

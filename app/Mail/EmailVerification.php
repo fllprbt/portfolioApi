@@ -31,7 +31,7 @@ class EmailVerification extends Mailable
      */
     public function build()
     {
-        return $this->markdown('email')->with([
+        return $this->markdown('templates.email')->with([
         	'user' => $this->user,
         ]);
     }

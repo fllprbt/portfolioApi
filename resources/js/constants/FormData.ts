@@ -1,24 +1,26 @@
-import formTypes from './FormTypes';
+import FormTypes from './FormTypes';
 
-const formNavigation = {
-    [formTypes.register]: {
-        description: 'Register to API',
-        action: 'Register',
-        navigationLabel: 'Account owner?',
-        linksToType: formTypes.login,
+const { login, register, verify, verified, resetPassword } = FormTypes;
+
+const FormData = {
+    [register]: {
+        title: 'Register to API',
+        linksToType: login,
     },
-    [formTypes.login]: {
-        description: 'Test Login',
-        action: 'Login',
-        navigationLabel: 'Need account?',
-        linksToType: formTypes.register,
+    [login]: {
+        title: 'Test login',
+        linksToType: register,
     },
-    [formTypes.resetPassword]: {
-        description: 'Reset password',
-        action: 'Reset',
-        navigationLabel: 'Account reset?',
-        linksToType: formTypes.login,
+    [verify]: {
+        linksToType: login,
+    },
+    [verified]: {
+        linksToType: login,
+    },
+    [resetPassword]: {
+        title: 'Password Reset',
+        linksToType: login,
     },
 };
 
-export default formNavigation;
+export default FormData;

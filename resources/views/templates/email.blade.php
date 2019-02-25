@@ -4,7 +4,7 @@
 
 Please click the following button to verify your account.
 
-@component('mail::button', ['url' => env('APP_URL') . '/verifyemail/' . $user->email_token])
+@component('mail::button', ['url' => env('APP_URL') . '/verify/' . $user->email_token])
 
 Verify
 
@@ -12,6 +12,6 @@ Verify
 
 Thanks,<br>
 
-Fllprbt
+PortfolioApi
 
 @endcomponent

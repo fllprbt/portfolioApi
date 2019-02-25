@@ -30,13 +30,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function verified()
-	{
-		 $this->verified = 1;
-		 $this->email_token = null;
-		 $this->save();
-	}
-
 	/**
 	 * Send a password reset email to the user
 	 */

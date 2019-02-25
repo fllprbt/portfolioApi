@@ -21,6 +21,16 @@ class Login extends Controller
     }
 
     /**
+	 * Default route for login view.
+	 *
+	 * @return \Illuminate\Http\Response|Illuminate\View\View
+	 */
+    public function index()
+    {
+      return view('app')->with('view_name', 'login');
+    }
+
+    /**
 	 * Test the login status of a user.
 	 *
 	 * @param \Illuminate\Http\Requests\Login $request
@@ -34,7 +44,7 @@ class Login extends Controller
         {
             if (Hash::check($request->password, $user->password))
             {
-                if ($user->verified())
+                if ($user->verified)
                 {
                     return response()->json(['meta' => [
                             'status' => '200',

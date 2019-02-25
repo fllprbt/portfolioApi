@@ -1,3 +1,3 @@
-export { default as formTypes } from './FormTypes';
-export { default as formNavigation } from './FormData';
-export { default as formMessages } from './FormMessages';
+export { default as FormData } from './FormData';
+export { default as FormMessages } from './FormMessages';
+export { default as FormTypes } from './FormTypes';

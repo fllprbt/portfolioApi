@@ -41,21 +41,27 @@ class ResetPassword extends Controller
      */
     public function reset(ResetPasswordRequest $request)
     {
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
         $response = $this->broker()->reset(
             $this->credentials($request), function ($user, $password) {
                 $this->resetPassword($user, $password);
             }
         );
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
         return $response == Password::PASSWORD_RESET
                     ? $this->sendResetResponse($response)
                     : $this->sendResetFailedResponse($request, $response);
+    }
+
+    /**
+     * Resets the password but does not log the user in the system.
+     *
+     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
+     * @param  string  $password
+     * @return void
+     */
+    protected function resetPassword($user, $password)
+    {
+        $user->forceFill(['password' => bcrypt($password)])->save();
     }
 
     /**
@@ -67,7 +73,7 @@ class ResetPassword extends Controller
     protected function credentials(Request $request)
     {
         return $request->only(
-            'password', 'password_confirmation', 'token'
+            'email', 'password', 'password_confirmation', 'token'
         );
     }
 
@@ -99,8 +105,8 @@ class ResetPassword extends Controller
         return response()->json(['errors' => [
             'status' => '500',
             'title' => 'Reset failure',
-            'description' => trans($response),
-        ]]);
+            'description' => 'Encountered problem while reseting your password',
+        ]], 500);
     }
 
     /**
@@ -114,6 +120,9 @@ class ResetPassword extends Controller
      */
     public function showResetForm(Request $request, $token = null)
     {
-        return view('resetPassword');
+        return view('app', [
+            'view_name' => 'reset_password',
+            'token' => $token,
+        ]);
     }
 }

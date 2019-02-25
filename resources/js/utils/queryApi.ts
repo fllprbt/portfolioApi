@@ -1,57 +1,75 @@
-import { IAuthData } from './../interfaces';
+import {
+    ILoginFormData,
+    IPasswordResetFormData,
+    IRegistrationFormData,
+} from '../interfaces';
 
-const { env } = process;
-const APP_URL =
-    env.NODE_ENV === 'development' ? env.MIX_APP_DOCKER_URL : 'missingProdUrl';
+const {
+    env: { NODE_ENV, MIX_APP_URL },
+} = process;
+const APP_URL = NODE_ENV === 'development' ? MIX_APP_URL : 'missingProdUrl';
 
-const emailExists = (email: string) => {
-    return (window as any).axios.post(`${APP_URL}/email`, {
-        email,
-    });
-};
-
-const registerUser = ({ passwordConfirmation, ...other }: IAuthData) => {
-    return (window as any).axios.post(`${APP_URL}/register`, {
+/**
+ * Sends a request to register a new user in the API
+ * @param {Object} - the object with the registration data
+ * @returns {Promise} the request promise
+ */
+const registerUser = ({
+    passwordConfirmation,
+    ...other
+}: IRegistrationFormData): Promise<void> =>
+    (window as any).axios.post(`${APP_URL}/register`, {
         ...other,
         password_confirmation: passwordConfirmation,
     });
-};
 
-const loginUser = (loginData: IAuthData) => {
-    return (window as any).axios.post(`${APP_URL}/test/login`, {
+/**
+ * Sends a request to test the login credentials of a user in the API
+ * @param {Object} - the object with the login data
+ * @returns {Promise} the request promise
+ */
+const loginUser = (loginData: ILoginFormData): Promise<void> =>
+    (window as any).axios.post(`${APP_URL}/test/login`, {
         ...loginData,
     });
-};
 
-const resetPasswordEmail = (email: string) => {
-    return (window as any).axios.post(`${APP_URL}/password/email`, {
-        email,
+/**
+ * Sends a request for a new verification email
+ * @param {Object} - the object with the login data
+ * @returns {Promise} the request promise
+ */
+const resendVerification = (loginData: ILoginFormData): Promise<void> =>
+    (window as any).axios.post(`${APP_URL}/resend`, {
+        ...loginData,
     });
+
+/**
+ * Sends a request for a password reset email
+ * @param {string} email - the email of the user whose password should be reset
+ * @returns {Promise} the request promise
+ */
+const sendPasswordResetEmail = (email: string): Promise<void> => {
+    return (window as any).axios.post(`${APP_URL}/password/email`, { email });
 };
 
-const resetPassword = (
-    password: string,
-    passwordConfirmation: string,
-    token: string
-) => {
-    return (window as any).axios.post(`${APP_URL}/password/reset`, {
-        password,
+/**
+ * Sends a request with the new password credentials of a user
+ * @param {string} email - the email of the user whose password should be reset
+ * @returns {Promise} the request promise
+ */
+const resetPassword = ({
+    passwordConfirmation,
+    ...other
+}: IPasswordResetFormData) =>
+    (window as any).axios.post(`${APP_URL}/password/reset`, {
+        ...other,
         password_confirmation: passwordConfirmation,
-        token,
     });
-};
-
-const onResendVerification = (loginData: IAuthData) => {
-    return (window as any).axios.post(`${APP_URL}/login/refresh`, {
-        ...loginData,
-    });
-};
 
 export {
-    emailExists,
     registerUser,
     loginUser,
-    resetPasswordEmail,
+    sendPasswordResetEmail,
     resetPassword,
-    onResendVerification,
+    resendVerification,
 };

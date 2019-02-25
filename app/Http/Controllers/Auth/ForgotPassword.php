@@ -39,7 +39,7 @@ class ForgotPassword extends Controller
      */
     public function showLinkRequestForm()
     {
-        return view('resetPassword');
+        return view('app')->with('view_name', 'reset_password');
     }
 
     /**
@@ -71,7 +71,7 @@ class ForgotPassword extends Controller
         return response()->json(['meta' => [
             'status' => '202',
             'title' => 'sent',
-            'description' => 'A reset email has been sent',
+            'description' => 'A reset password email has been sent',
         ]]);
     }
 
@@ -87,7 +87,7 @@ class ForgotPassword extends Controller
         return response()->json(['errors' => [
             'status' => '500',
             'title' => 'unsent mail',
-            'description' => trans($response),
-        ]]);
+            'description' => 'Failed to send reset mail. Contact support',
+        ]], 500);
     }
 }
