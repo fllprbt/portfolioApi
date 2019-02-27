@@ -18,4 +18,12 @@ mix.ts('resources/js/app.tsx', 'public/js')
             host: '0.0.0.0',
             port: 8088
         }
-    });
+    })
+    .webpackConfig({
+        resolve: {
+            alias: {
+                api: path.resolve(__dirname, 'resources/js')
+            }
+        }
+    })
+    .sourceMaps();

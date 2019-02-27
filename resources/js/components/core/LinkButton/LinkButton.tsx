@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { Button, withStyles, WithStyles } from '@material-ui/core/';
 
-import { ResetNavigationConsumer } from '../../../app';
+import { ResetNavigationConsumer } from 'api/app';
 
 import styles from './styles';
 

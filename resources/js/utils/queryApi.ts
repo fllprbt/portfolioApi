@@ -2,7 +2,7 @@ import {
     ILoginFormData,
     IPasswordResetFormData,
     IRegistrationFormData,
-} from '../interfaces';
+} from 'api/interfaces';
 
 const {
     env: { NODE_ENV, MIX_APP_URL },

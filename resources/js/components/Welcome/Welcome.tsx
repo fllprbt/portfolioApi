@@ -9,11 +9,14 @@ import {
     IconButton,
     Paper,
     Typography,
+    withStyles,
+    WithStyles,
 } from '@material-ui/core/';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+
 import { GithubCircle } from 'mdi-material-ui';
 
-import { FormTypes } from '../../constants';
+import { FormTypes } from 'api/constants';
+
 import styles from './styles';
 
 interface IProps extends WithStyles<typeof styles> {}

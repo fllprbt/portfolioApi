@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import theme from '../theme';
+import theme from 'api/theme';
 
 /**
  * Wraps a component with a MaterialUI theme

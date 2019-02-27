@@ -1,5 +1,4 @@
 import * as React from 'react';
-import LinkButton from '../LinkButton';
 
 import {
     Avatar,
@@ -9,9 +8,12 @@ import {
     WithStyles,
     withStyles,
 } from '@material-ui/core/';
+
 import CheckIcon from '@material-ui/icons/CheckCircleOutlined';
 
-import { FormData, FormMessages, FormTypes } from '../../../constants/';
+import LinkButton from 'api/components/core/LinkButton';
+
+import { FormData, FormMessages, FormTypes } from 'api/constants/';
 
 import styles from './styles';
 

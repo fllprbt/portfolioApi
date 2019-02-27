@@ -2,16 +2,17 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './bootstrap';
-import { FormTypes } from './constants';
-import { withTheme } from './utils/';
+
+import { FormTypes } from 'api/constants';
+import { withTheme } from 'api/utils/';
 
 import {
     LoginForm,
     PasswordResetForm,
     RegistrationForm,
     Welcome,
-} from './components';
-import { SuccessCard } from './components/core';
+} from 'api/components';
+import { SuccessCard } from 'api/components/core';
 
 interface IProps {
     viewName: string;

@@ -1,9 +1,13 @@
 import * as React from 'react';
 
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import {
+    Button,
+    IconButton,
+    Snackbar,
+    WithStyles,
+    withStyles,
+} from '@material-ui/core/';
+
 import CloseIcon from '@material-ui/icons/Close';
 
 import styles from './styles';

@@ -2,9 +2,11 @@ import * as React from 'react';
 
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 
-import { FormData, FormMessages, FormTypes } from '../../../constants';
-import { IRegistrationFormData } from '../../../interfaces';
-import { Form } from '../../core/';
+import { Form } from 'api/components/core/';
+
+import { IRegistrationFormData } from 'api/interfaces';
+
+import { FormData, FormMessages, FormTypes } from 'api/constants';
 
 interface IState {
     disabled: boolean;

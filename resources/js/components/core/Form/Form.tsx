@@ -7,25 +7,24 @@ import {
     WithStyles,
     withStyles,
 } from '@material-ui/core/';
+
 import AccountIcon from '@material-ui/icons/AccountCircleOutlined';
 import LockedIcon from '@material-ui/icons/LockOutlined';
 
-import LinkButton from '../LinkButton';
-import SimpleSnackbar from '../SimpleSnackbar';
-import SubmitButton from '../SubmitButton';
+import { LinkButton, SimpleSnackbar, SubmitButton } from 'api/components/core';
 
 import {
     FormData as FormInformation,
     FormMessages,
     FormTypes,
-} from '../../../constants';
+} from 'api/constants';
 
 import {
     IApiResponsePayload,
     ILoginFormData,
     IPasswordResetFormData,
     IRegistrationFormData,
-} from '../../../interfaces';
+} from 'api/interfaces';
 
 import {
     isLoginData,
@@ -37,7 +36,7 @@ import {
     resendVerification,
     resetPassword,
     sendPasswordResetEmail,
-} from '../../../utils';
+} from 'api/utils';
 
 import styles from './styles';
 

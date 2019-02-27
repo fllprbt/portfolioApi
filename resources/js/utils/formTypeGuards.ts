@@ -2,7 +2,7 @@ import {
     ILoginFormData,
     IPasswordResetFormData,
     IRegistrationFormData,
-} from '../interfaces';
+} from 'api/interfaces';
 
 /**
  * Checks if the passed attribute is of IRegistrationFormData type
