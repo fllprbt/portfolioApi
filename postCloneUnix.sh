@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# should run as root
+if [ "$EUID" -ne 0 ]
+  then echo "Please run this script as root"
+  exit
+fi
+
 # composer
 docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs
 
@@ -12,7 +18,7 @@ if [ ! -f ./.env ]; then
 fi
 
 # set permissions locally
-sudo chmod -R 777 storage bootstrap/cache
+chmod -R 777 storage bootstrap/cache
 
 # start component in background
 docker-compose up -d
@@ -28,6 +34,9 @@ docker-compose exec app php artisan migrate
 
 # add test user (mail: test@user.com, pass: test)
 docker-compose exec app php artisan db:seed
+
+# generate passport encryption keys
+docker-compose exec app php artisan passport:install
 
 # open output of containers and ensure they will be terminated on SIGINT
 docker-compose logs -f || docker-compose down

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Infrastructure\Auth\Exceptions\InvalidCredentialsException;
 use App\Models\User;
 use GuzzleHttp\Client;
+use DB;
 
 class LoginProxy
 {
@@ -77,9 +78,15 @@ class LoginProxy
     {
         try
         {
+            $password_granted = 
+                DB::table('oauth_clients')
+                    ->having('password_client', '=', 1)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+            
             $data = array_merge([
-                'client_id'     => getenv('PERSONAL_CLIENT_ID'),
-                'client_secret' => getenv('PERSONAL_CLIENT_SECRET'),
+                'client_id'     => $password_granted->id,
+                'client_secret' => $password_granted->secret,
                 'grant_type'    => $grantType
             ], $data);
 
@@ -94,6 +101,22 @@ class LoginProxy
         }
 
         $response = json_decode($guzzleResponse->getBody());
+        if (property_exists($response, "error")) {
+            $user = User::where(['email' => $data['username']])->first();
+            if (!$user->verified)
+            {
+                return response()->json(['errors' => [
+                    'status' => '403',
+                    'title' => 'Unverified',
+                    'description' => 'User with email ' . $user->email . ' is not verified',
+                ]], 403);
+            }
+            
+            return response()->json(['errors' => [
+                'status' => '404',
+                'title' => 'User not found',
+            ]], 404);
+        }
 
         if (property_exists($response, "access_token")) {
             $cookie = app()->make('cookie');

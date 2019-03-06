@@ -25,7 +25,7 @@ RUN pecl channel-update pecl.php.net \
 RUN rm /var/cache/apk/* && \
   mkdir -p /var/www
 
-COPY supervisord-app.conf /etc/supervisord.conf
+COPY server_config/supervisord-app.conf /etc/supervisord.conf
 
 RUN adduser -D -u 1000 nonroot
 USER nonroot
