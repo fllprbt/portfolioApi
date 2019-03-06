@@ -1,15 +1,15 @@
 #!/bin/bash
 
+echo "\nCopying .env.example to .env\n"
+if [ ! -f ./.env ]; then
+   cp .env.example .env
+fi
+
 echo "\nInstalling composer dependencies\n"
 docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs
 
 echo "\nInstalling node dependencies\n"
 docker run --rm -u $(id -u):$(id -g) -v  $(pwd):/app -w /app node npm install && npm rebuild node-sass && npm run dev
-
-echo "\nCopying .env.example to .env\n"
-if [ ! -f ./.env ]; then
-   cp .env.example .env
-fi
 
 echo "\nNeed superuser privileges to set permissions, please login\n"
 sudo chmod -R 777 storage bootstrap/cache

@@ -13,6 +13,7 @@ class UsersTableSeeder extends Seeder
           'name'     => 'test',
           'email'    => 'test@user.com',
           'password' => Hash::make('test'),
+          'verified' => 1,
       ));
   }
 }
