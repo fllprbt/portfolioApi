@@ -2,10 +2,10 @@
 
 A Laravel **project management** RESTful API with OAuth. Under development.
 
--   [Description](#description)
--   [Requirements](#requirements)
--   [Installation instructions](#installation-instructions)
--   [Development instructions](#development-instructions)
+- [Description](#description)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Development instructions](#development-instructions)
 
 # Description
 
@@ -13,27 +13,27 @@ Proxied, password granted OAuth. (Laravel Passport)
 
 ##### Backend
 
--   php:7-fpm-alpine
--   nginx:alpine
--   mysql:5.7
--   supervisord
+- php:7-fpm-alpine
+- nginx:alpine
+- mysql:5.7
+- supervisord
 
 ##### Frontend (API registration views)
 
--   ReactJS with Material-UI
--   Typescript
--   SASS
+- ReactJS with Material-UI
+- Typescript
+- SASS
 
 # Requirements
 
--   docker & docker-compose
--   being able to run docker as user (`sudo usermod -aG docker $USER` & reboot)
+- docker & docker-compose
+- being able to run docker as user (`sudo usermod -aG docker $USER` & reboot)
 
-# Installation instructions
+# Installation
 
-### Deployment & Configuration
+### Deployment & Configuration (step 5 requires su)
 
-##### Are you on UNIX? Just run this [script](https://github.com/fllprbt/portfolioApi/blob/master/postCloneUnix.sh) and jump to step 10 below, else :
+##### Are you on UNIX? Just run this [script](https://github.com/fllprbt/portfolioApi/blob/master/postCloneUnix.sh) and jump to the last step below, else :
 
 1. **Clone** project and **step** in its directory
 2. **Install php deps** `docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs`
@@ -45,10 +45,7 @@ Proxied, password granted OAuth. (Laravel Passport)
 8. **Migrate** `docker-compose exec app php artisan migrate`
 9. **Seed db** `docker-compose exec app php artisan db:seed` (test@user.com, password: test)
 10. **Setup Passport (crypto keys & client data)** `docker-compose exec app php artisan passport:install`
-11. **Copy** the second client data pair returned from `passport:install` (_Password Grant Credentials_) into `.env` in
-    - **PERSONAL_CLIENT_ID**
-    - **PERSONAL_CLIENT_SECRET**
-12. **Registration's verification mails**. It needs editing of the mail config in `.env`.
+11. **Registration's verification mails**. It needs editing of the mail config in `.env`.
 
 _**[http://0.0.0.0:8080](0.0.0.0)**_ to view.
 

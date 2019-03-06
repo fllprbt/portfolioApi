@@ -1,33 +1,34 @@
 #!/bin/bash
 
-# composer
-docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs
-
-# npm
-docker run --rm -u $(id -u):$(id -g) -v  $(pwd):/app -w /app node npm install && npm rebuild node-sass && npm run dev
-
-# copy defaults
+echo "\nCopying .env.example to .env\n"
 if [ ! -f ./.env ]; then
    cp .env.example .env
 fi
 
-# set permissions locally
+echo "\nInstalling composer dependencies\n"
+docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs
+
+echo "\nInstalling node dependencies\n"
+docker run --rm -u $(id -u):$(id -g) -v  $(pwd):/app -w /app node npm install && npm rebuild node-sass && npm run dev
+
+echo "\nNeed superuser privileges to set permissions, please login\n"
 sudo chmod -R 777 storage bootstrap/cache
 
-# start component in background
+echo "\nFire containers in background\n"
 docker-compose up -d
 
-# wait containers to be running
 echo 'Waiting database'; while [ $(docker inspect --format "{{json .State.Health.Status }}" database) != "\"healthy\"" ]; do printf "."; sleep 1; done
 
-# generate app key
+echo "\nGenerating API key\n"
 docker-compose exec app php artisan key:generate
 
-# run migrations
+echo "\nRunning migrations\n"
 docker-compose exec app php artisan migrate
 
-# add test user (mail: test@user.com, pass: test)
+echo "\nAdding test user\n(mail: test@user.com, pass: test)\n"
 docker-compose exec app php artisan db:seed
 
-# open output of containers and ensure they will be terminated on SIGINT
+echo "\nGenerating Laravel Passport keys\n"
+docker-compose exec app php artisan passport:install
+
 docker-compose logs -f || docker-compose down
