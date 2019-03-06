@@ -4,7 +4,7 @@ A Laravel **project management** RESTful API with OAuth. Under development.
 
 - [Description](#description)
 - [Requirements](#requirements)
-- [Installation instructions](#installation-instructions)
+- [Installation](#installation)
 - [Development instructions](#development-instructions)
 
 # Description
@@ -29,9 +29,9 @@ Proxied, password granted OAuth. (Laravel Passport)
 - docker & docker-compose
 - being able to run docker as user (`sudo usermod -aG docker $USER` & reboot)
 
-# Installation instructions
+# Installation
 
-### Deployment & Configuration
+### Deployment & Configuration (step 5 requires su)
 
 ##### Are you on UNIX? Just run this [script](https://github.com/fllprbt/portfolioApi/blob/master/postCloneUnix.sh) and jump to the last step below, else :
 

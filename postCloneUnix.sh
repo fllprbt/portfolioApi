@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if ! [ $(id -u) = 0 ]; then
-  echo "\nPlease run this script as root\n"
-  exit 1
-fi
-
 echo "\nInstalling composer dependencies\n"
 docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs
 
@@ -16,8 +11,8 @@ if [ ! -f ./.env ]; then
    cp .env.example .env
 fi
 
-echo "\nSetting permissions\n"
-chmod -R 777 storage bootstrap/cache
+echo "\nNeed superuser privileges to set permissions, please login\n"
+sudo chmod -R 777 storage bootstrap/cache
 
 echo "\nFire containers in background\n"
 docker-compose up -d
