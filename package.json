@@ -15,12 +15,11 @@
         }
     },
     "lint-staged": {
-        "resources/**/*.{js,jsx,ts,tsx,json,css}": [
-            "prettier --write"
-        ],
-        "resources/**/*.{ts,tsx}": [
-            "tslint --fix resources/**/*.{ts,tsx}"
-        ]
+        "concurrent": false,
+        "linters": {
+            "resources/**/*.{js,jsx,ts,tsx,json,css}": "prettier --write",
+            "resources/**/*.{ts,tsx}": "tslint --fix resources/**/*.{ts,tsx}"
+        }
     },
     "dependencies": {
         "@material-ui/core": "^3.9.2",
