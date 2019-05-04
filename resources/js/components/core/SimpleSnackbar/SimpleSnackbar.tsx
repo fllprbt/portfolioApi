@@ -5,7 +5,7 @@ import {
     IconButton,
     Snackbar,
     WithStyles,
-    withStyles,
+    withStyles
 } from '@material-ui/core/';
 
 import CloseIcon from '@material-ui/icons/Close';
@@ -17,7 +17,7 @@ interface IProps extends WithStyles<typeof styles> {
     open: boolean;
     notification: string;
 
-    onSnackbarClose: ((event: React.SyntheticEvent, reason: string) => void);
+    onSnackbarClose: (event: React.SyntheticEvent, reason: string) => void;
     onSnackbarClick?: ((event: React.SyntheticEvent) => void) | null;
 }
 
@@ -27,7 +27,7 @@ const SimpleSnackbar: React.SFC<IProps> = ({
     notification,
     onSnackbarClose,
     classes,
-    onSnackbarClick,
+    onSnackbarClick
 }) => (
     <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
@@ -56,14 +56,14 @@ const SimpleSnackbar: React.SFC<IProps> = ({
                 onClick={(e) => onSnackbarClose(e, 'closeButtonClick')}
             >
                 <CloseIcon />
-            </IconButton>,
+            </IconButton>
         ]}
     />
 );
 
 SimpleSnackbar.defaultProps = {
     clickLabel: 'Resend',
-    onSnackbarClick: null,
+    onSnackbarClick: null
 };
 
 export default withStyles(styles)(SimpleSnackbar);

@@ -4,7 +4,7 @@ export { default as objValuesToString } from './helpers';
 export {
     isRegistrationData,
     isLoginData,
-    isPasswordResetData,
+    isPasswordResetData
 } from './formTypeGuards';
 
 export {
@@ -12,5 +12,5 @@ export {
     loginUser,
     resendVerification,
     resetPassword,
-    sendPasswordResetEmail,
+    sendPasswordResetEmail
 } from './queryApi';

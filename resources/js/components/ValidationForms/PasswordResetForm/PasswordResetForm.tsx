@@ -31,10 +31,10 @@ class PasswordResetForm extends React.Component<IProps, IState> {
                 email: '',
                 password: '',
                 passwordConfirmation: '',
-                token: props.token,
+                token: props.token
             },
             disabled: false,
-            submitted: false,
+            submitted: false
         };
 
         this.formRef = React.createRef();
@@ -74,7 +74,7 @@ class PasswordResetForm extends React.Component<IProps, IState> {
         const {
             requiredField,
             notMatchingPasswords,
-            malformedEmail,
+            malformedEmail
         } = FormMessages;
 
         return (

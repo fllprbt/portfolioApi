@@ -5,8 +5,8 @@ const styles = (theme: Theme) =>
     createStyles({
         submit: {
             marginTop: theme.spacing.unit * 3,
-            width: '50%',
-        },
+            width: '50%'
+        }
     });
 
 export default styles;

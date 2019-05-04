@@ -5,8 +5,8 @@ const theme = createMuiTheme({
     typography: { useNextVariants: true },
     palette: {
         primary: blue,
-        secondary: pink,
-    },
+        secondary: pink
+    }
 });
 
 export default theme;

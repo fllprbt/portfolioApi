@@ -26,10 +26,10 @@ class RegistrationForm extends React.Component<{}, IState> {
             registerFormData: {
                 email: '',
                 password: '',
-                passwordConfirmation: '',
+                passwordConfirmation: ''
             },
             disabled: false,
-            submitted: false,
+            submitted: false
         };
 
         this.formRef = React.createRef();
@@ -69,7 +69,7 @@ class RegistrationForm extends React.Component<{}, IState> {
         const {
             requiredField,
             malformedEmail,
-            notMatchingPasswords,
+            notMatchingPasswords
         } = FormMessages;
 
         return (
