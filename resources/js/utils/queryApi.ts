@@ -1,11 +1,11 @@
 import {
     ILoginFormData,
     IPasswordResetFormData,
-    IRegistrationFormData,
+    IRegistrationFormData
 } from 'api/interfaces';
 
 const {
-    env: { NODE_ENV, MIX_APP_URL },
+    env: { NODE_ENV, MIX_APP_URL }
 } = process;
 const APP_URL = NODE_ENV === 'development' ? MIX_APP_URL : 'missingProdUrl';
 
@@ -20,7 +20,7 @@ const registerUser = ({
 }: IRegistrationFormData): Promise<void> =>
     (window as any).axios.post(`${APP_URL}/register`, {
         ...other,
-        password_confirmation: passwordConfirmation,
+        password_confirmation: passwordConfirmation
     });
 
 /**
@@ -30,7 +30,7 @@ const registerUser = ({
  */
 const loginUser = (loginData: ILoginFormData): Promise<void> =>
     (window as any).axios.post(`${APP_URL}/test/login`, {
-        ...loginData,
+        ...loginData
     });
 
 /**
@@ -40,7 +40,7 @@ const loginUser = (loginData: ILoginFormData): Promise<void> =>
  */
 const resendVerification = (loginData: ILoginFormData): Promise<void> =>
     (window as any).axios.post(`${APP_URL}/resend`, {
-        ...loginData,
+        ...loginData
     });
 
 /**
@@ -63,7 +63,7 @@ const resetPassword = ({
 }: IPasswordResetFormData) =>
     (window as any).axios.post(`${APP_URL}/password/reset`, {
         ...other,
-        password_confirmation: passwordConfirmation,
+        password_confirmation: passwordConfirmation
     });
 
 export {
@@ -71,5 +71,5 @@ export {
     loginUser,
     sendPasswordResetEmail,
     resetPassword,
-    resendVerification,
+    resendVerification
 };

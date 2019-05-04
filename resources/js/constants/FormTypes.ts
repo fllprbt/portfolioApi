@@ -3,7 +3,7 @@ const FormTypes = {
     register: 'register',
     verify: 'verify',
     verified: 'verified',
-    resetPassword: 'resetPassword',
+    resetPassword: 'resetPassword'
 };
 
 export default FormTypes;

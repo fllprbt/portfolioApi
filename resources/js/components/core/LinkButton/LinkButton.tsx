@@ -29,7 +29,7 @@ const LinkButton = ({ classes, link, label }: IProps) => (
 
 LinkButton.defaultProps = {
     link: '/',
-    label: '',
+    label: ''
 };
 
 export default withStyles(styles)(LinkButton);

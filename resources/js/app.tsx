@@ -10,7 +10,7 @@ import {
     LoginForm,
     PasswordResetForm,
     RegistrationForm,
-    Welcome,
+    Welcome
 } from 'api/components';
 import { SuccessCard } from 'api/components/core';
 
@@ -36,7 +36,7 @@ class App extends React.Component<IProps, IState> {
 
         this.state = {
             viewName: props.viewName,
-            token: props.token,
+            token: props.token
         };
     }
 
