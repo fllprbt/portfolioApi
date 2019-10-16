@@ -33,7 +33,8 @@ Proxied, password granted OAuth. (Laravel Passport)
 
 ### Deployment & Configuration (step 5 requires su)
 
-##### Are you on UNIX? Just run this [script](https://github.com/fllprbt/portfolioApi/blob/master/postCloneUnix.sh) and jump to the last step below, else :
+##### -Are you on UNIX?
+Just run this [script](https://github.com/fllprbt/portfolioApi/blob/master/postCloneUnix.sh) and jump to the **last step** below, else :
 
 1. **Clone** project and **step** in its directory
 2. **Install php deps** `docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs`

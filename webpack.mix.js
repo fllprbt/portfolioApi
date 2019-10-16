@@ -1,4 +1,13 @@
+require('dotenv').config();
 const mix = require('laravel-mix');
+let webpack = require('webpack')
+
+let dotenvplugin = new webpack.DefinePlugin({
+    'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+        APP_URL: JSON.stringify(process.env.APP_URL),
+    }
+})
 
 /*
  |--------------------------------------------------------------------------
@@ -19,5 +28,8 @@ mix.ts('resources/js/app.tsx', 'public/js')
     .webpackConfig({
         resolve: {
             alias: { api: path.resolve(__dirname, 'resources/js') }
-        }
+        },
+        plugins: [
+            dotenvplugin,
+        ]
     });

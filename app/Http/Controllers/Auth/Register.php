@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Register as RegisterRequest;
 use App\Http\Requests\Login as LoginRequest;
 use App\Http\Requests\EmailExists;
+use App\Http\Responses\ErrorResponse;
 use App\Jobs\SendVerificationEmail;
 use Illuminate\Auth\Events\Registered;
 
@@ -53,12 +54,17 @@ class Register extends Controller
 	public function register(RegisterRequest $request)
 	{
         event(new Registered($user = $this->create($request->all())));
-        dispatch(new SendVerificationEmail($user));
+		try {
+			dispatch(new SendVerificationEmail($user));
 
-        return response()->json([
-            'status' => '201',
-            'data' => new UserResource($user)
-        ], 201);
+			return response()->json([
+				'status' => '201',
+				'data' => new UserResource($user)
+			], 201);
+		}
+		catch (\Swift_TransportException $e) {
+            return ErrorResponse::generateResponse();
+        }
 	}
 
 	/**
@@ -76,13 +82,18 @@ class Register extends Controller
 			if (Hash::check($request->password, $user->password))
         	{
 				if (!$user->verified) {
-					dispatch(new SendVerificationEmail($user));
+					try {
+						dispatch(new SendVerificationEmail($user));
 
-					return response()->json(['meta' => [
-							'status' => '202',
-							'title' => 'registered',
-							'description' => 'An email has been sent to ' . $user->email,
-					]]);
+						return response()->json(['meta' => [
+								'status' => '202',
+								'title' => 'registered',
+								'description' => 'An email has been sent to ' . $user->email,
+						]]);
+					}
+					catch (\Swift_TransportException $e) {
+						return ErrorResponse::generateResponse();
+					}
 				}
 				else
 				{
