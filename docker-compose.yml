@@ -2,6 +2,7 @@ version: '2.1'
 
 services:
   app:
+    container_name: app
     build:
       context: ./
       dockerfile: ./dockerfiles/app.dockerfile

@@ -13,7 +13,7 @@ Proxied, password granted OAuth. (Laravel Passport)
 
 ##### Backend
 
-- php:7-fpm-alpine
+- php:7.2-fpm-alpine
 - nginx:alpine
 - mysql:5.7
 - supervisord
@@ -33,9 +33,13 @@ Proxied, password granted OAuth. (Laravel Passport)
 
 ### Deployment & Configuration (step 5 requires su)
 
-##### -Are you on UNIX?
-Just run this [script](https://github.com/fllprbt/portfolioApi/blob/master/postCloneUnix.sh) and jump to the **last step** below, else :
+##### -Are you on Mac?
+Ensure that the directory where you cloned the project is listed in your docker app -> Preferences -> File Sharing and proceed with the section beneath
 
+##### -Are you on UNIX?
+Just run this [script](https://github.com/fllprbt/portfolioApi/blob/master/postCloneUnix.sh) and jump to the **last step** of the section beneath:
+
+##### Manual deployment
 1. **Clone** project and **step** in its directory
 2. **Install php deps** `docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs`
 3. **Install node deps & build** `docker run --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app node npm install && npm rebuild node-sass && npm run dev`
