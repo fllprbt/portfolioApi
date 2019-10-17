@@ -13,7 +13,7 @@ echo "\n\nInstalling composer dependencies\n"
 docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs
 
 echo "\n\nInstalling node dependencies\n"
-docker run --rm -u $(id -u):$(id -g) -v  $(pwd):/app -w /app node npm install && npm run dev
+docker run -it --rm -u node: -v $(pwd):/app -w /app node:11-slim && npm run dev
 
 echo "\n\nNeed superuser privileges to set permissions, you may need to login\n"
 sudo chmod -R 777 storage bootstrap/cache
