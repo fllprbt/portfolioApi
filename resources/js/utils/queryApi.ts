@@ -17,8 +17,8 @@ const URL = NODE_ENV === 'development' ? APP_URL : 'missingProdUrl';
 const registerUser = ({
     passwordConfirmation,
     ...other
-}: IRegistrationFormData): Promise<void> =>
-    (window as any).axios.post(`${URL}/register`, {
+}: IRegistrationFormData) =>
+    window.axios.post(`${URL}/register`, {
         ...other,
         password_confirmation: passwordConfirmation
     });
@@ -28,8 +28,8 @@ const registerUser = ({
  * @param {Object} - the object with the login data
  * @returns {Promise} the request promise
  */
-const loginUser = (loginData: ILoginFormData): Promise<void> =>
-    (window as any).axios.post(`${URL}/test/login`, {
+const loginUser = (loginData: ILoginFormData) =>
+    window.axios.post(`${URL}/test/login`, {
         ...loginData
     });
 
@@ -38,8 +38,8 @@ const loginUser = (loginData: ILoginFormData): Promise<void> =>
  * @param {Object} - the object with the login data
  * @returns {Promise} the request promise
  */
-const resendVerification = (loginData: ILoginFormData): Promise<void> =>
-    (window as any).axios.post(`${URL}/resend`, {
+const resendVerification = (loginData: ILoginFormData) =>
+    window.axios.post(`${URL}/resend`, {
         ...loginData
     });
 
@@ -48,8 +48,8 @@ const resendVerification = (loginData: ILoginFormData): Promise<void> =>
  * @param {string} email - the email of the user whose password should be reset
  * @returns {Promise} the request promise
  */
-const sendPasswordResetEmail = (email: string): Promise<void> => {
-    return (window as any).axios.post(`${URL}/password/email`, { email });
+const sendPasswordResetEmail = (email: string) => {
+    return window.axios.post(`${URL}/password/email`, { email });
 };
 
 /**
@@ -61,7 +61,7 @@ const resetPassword = ({
     passwordConfirmation,
     ...other
 }: IPasswordResetFormData) =>
-    (window as any).axios.post(`${URL}/password/reset`, {
+    window.axios.post(`${URL}/password/reset`, {
         ...other,
         password_confirmation: passwordConfirmation
     });

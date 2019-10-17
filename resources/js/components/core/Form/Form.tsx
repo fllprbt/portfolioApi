@@ -19,12 +19,9 @@ import {
     FormTypes
 } from 'api/constants';
 
-import {
-    IApiResponsePayload,
-    ILoginFormData,
-    IPasswordResetFormData,
-    IRegistrationFormData
-} from 'api/interfaces';
+import { IApiResponsePayload } from 'api/interfaces';
+
+import { TFormPayload } from 'api/utils/formTypeGuards';
 
 import {
     isLoginData,
@@ -44,7 +41,7 @@ interface IProps extends WithStyles<typeof styles> {
     title?: string;
     children?: React.ReactNode;
     type: string;
-    formData?: ILoginFormData | IRegistrationFormData | IPasswordResetFormData;
+    formData: TFormPayload;
     disabled?: boolean;
 
     onMenuChange: () => void;
@@ -91,7 +88,7 @@ class Form extends React.Component<IProps, IState> {
     /**
      * Disallows the snackbar from closing when clicking somewhere else
      */
-    handleSnackbarClose = (e: React.SyntheticEvent, reason: string): void => {
+    handleSnackbarClose = (_, reason: string): void => {
         if (reason !== 'clickaway') this.setState({ snackbar: false });
     };
 

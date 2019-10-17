@@ -4,12 +4,19 @@ import {
     IRegistrationFormData
 } from 'api/interfaces';
 
+export type TFormPayload =
+    | IRegistrationFormData
+    | ILoginFormData
+    | IPasswordResetFormData;
+
 /**
  * Checks if the passed attribute is of IRegistrationFormData type
  * @param {Object} data - the object to test
  * @returns {boolean} the result of typeguarding
  */
-export function isRegistrationData(data: any): data is IRegistrationFormData {
+export function isRegistrationData(
+    data: TFormPayload
+): data is IRegistrationFormData {
     return (
         'email' in data && 'password' in data && 'passwordConfirmation' in data
     );
@@ -20,7 +27,7 @@ export function isRegistrationData(data: any): data is IRegistrationFormData {
  * @param {Object} data - the object to test
  * @returns {boolean} the result of typeguarding
  */
-export function isLoginData(data: any): data is ILoginFormData {
+export function isLoginData(data: TFormPayload): data is ILoginFormData {
     return 'email' in data && 'password' in data;
 }
 
@@ -29,7 +36,9 @@ export function isLoginData(data: any): data is ILoginFormData {
  * @param {Object} data - the object to test
  * @returns {boolean} the result of typeguarding
  */
-export function isPasswordResetData(data: any): data is IPasswordResetFormData {
+export function isPasswordResetData(
+    data: TFormPayload
+): data is IPasswordResetFormData {
     return (
         'email' in data &&
         'password' in data &&

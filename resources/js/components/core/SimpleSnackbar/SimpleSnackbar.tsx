@@ -16,7 +16,6 @@ interface IProps extends WithStyles<typeof styles> {
     clickLabel?: string;
     open: boolean;
     notification: string;
-
     onSnackbarClose: (event: React.SyntheticEvent, reason: string) => void;
     onSnackbarClick?: ((event: React.SyntheticEvent) => void) | null;
 }

@@ -33,7 +33,8 @@ const styles = (theme: Theme) =>
         buttonWrapper: {
             display: 'flex',
             width: '100%',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            paddingTop: theme.spacing.unit * 3
         }
     });
 
