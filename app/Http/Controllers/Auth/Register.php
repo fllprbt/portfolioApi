@@ -129,7 +129,7 @@ class Register extends Controller
 	{
 		$user = User::where('email_token', $token)->first();
 		if ($user->verified) return redirect()->route('already_verified');
-		
+
 		$user->verified = 1;
 		if ($user->save()) return redirect()->route('verification_success');
 	}
