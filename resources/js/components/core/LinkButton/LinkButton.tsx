@@ -1,16 +1,15 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from '@material-ui/core/';
 
 import { NavigationContext } from 'api/app';
-
-import { Button } from '@material-ui/core/';
 
 interface IProps {
     link: string;
     label?: string;
 }
 
-const LinkButton = ({ link, label }: IProps) => (
+export const LinkButton = ({ link, label }: IProps) => (
     <Button
         component={(props) => <Link to={link} {...props} />}
         color="primary"
@@ -19,10 +18,3 @@ const LinkButton = ({ link, label }: IProps) => (
         {label}
     </Button>
 );
-
-LinkButton.defaultProps = {
-    link: '/',
-    label: '',
-};
-
-export default LinkButton;

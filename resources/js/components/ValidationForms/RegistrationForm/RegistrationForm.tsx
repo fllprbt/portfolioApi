@@ -1,12 +1,11 @@
 import * as React from 'react';
-
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
-
-import { Form } from 'api/components/core/';
 
 import { IRegistrationFormData } from 'api/interfaces';
 
 import { FormData, FormMessages, FormTypes } from 'api/constants';
+
+import { Form } from 'api/components/core/';
 
 interface IState {
     disabled: boolean;
@@ -16,7 +15,7 @@ interface IState {
 
 const TYPE = FormTypes.register;
 
-class RegistrationForm extends React.Component<{}, IState> {
+export class RegistrationForm extends React.Component<{}, IState> {
     private formRef: React.RefObject<HTMLInputElement>;
 
     constructor(props: {}) {
@@ -121,5 +120,3 @@ class RegistrationForm extends React.Component<{}, IState> {
         );
     }
 }
-
-export default RegistrationForm;

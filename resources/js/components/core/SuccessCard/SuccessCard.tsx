@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import CheckIcon from '@material-ui/icons/CheckCircleOutlined';
 import {
     Avatar,
     Button,
@@ -9,13 +9,11 @@ import {
     withStyles,
 } from '@material-ui/core/';
 
-import CheckIcon from '@material-ui/icons/CheckCircleOutlined';
-
-import LinkButton from 'api/components/core/LinkButton';
-
 import { FormData, FormMessages, FormTypes } from 'api/constants/';
 
-import styles from './styles';
+import { styles } from './styles';
+
+import { LinkButton } from 'api/components/core/LinkButton';
 
 interface IProps extends WithStyles<typeof styles> {
     type: string;
@@ -32,11 +30,11 @@ const TYPES = {
     },
 };
 
-const SuccessCard: React.SFC<IProps> = ({
+const BaseSuccessCard: React.SFC<IProps> = ({
     type,
     classes: { main, paper, avatar, buttonContainer, button },
 }) => {
-    const { title, description } = TYPES[type];
+    const { title, description } = TYPES[type || FormTypes.verify];
     const { linksToType } = FormData[type];
     return (
         <main className={main}>
@@ -67,8 +65,4 @@ const SuccessCard: React.SFC<IProps> = ({
     );
 };
 
-SuccessCard.defaultProps = {
-    type: FormTypes.verify,
-};
-
-export default withStyles(styles)(SuccessCard);
+export const SuccessCard = withStyles(styles)(BaseSuccessCard);

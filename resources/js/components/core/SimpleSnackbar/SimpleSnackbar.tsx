@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import CloseIcon from '@material-ui/icons/Close';
 import {
     Button,
     IconButton,
@@ -8,19 +8,17 @@ import {
     withStyles,
 } from '@material-ui/core/';
 
-import CloseIcon from '@material-ui/icons/Close';
-
-import styles from './styles';
+import { styles } from './styles';
 
 interface IProps extends WithStyles<typeof styles> {
-    clickLabel?: string;
     open: boolean;
     notification: string;
+    clickLabel?: string;
     onSnackbarClose: (event: React.SyntheticEvent, reason: string) => void;
     onSnackbarClick?: ((event: React.SyntheticEvent) => void) | null;
 }
 
-const SimpleSnackbar: React.SFC<IProps> = ({
+const BaseSimpleSnackbar: React.SFC<IProps> = ({
     clickLabel,
     open,
     notification,
@@ -60,9 +58,4 @@ const SimpleSnackbar: React.SFC<IProps> = ({
     />
 );
 
-SimpleSnackbar.defaultProps = {
-    clickLabel: 'Resend',
-    onSnackbarClick: null,
-};
-
-export default withStyles(styles)(SimpleSnackbar);
+export const SimpleSnackbar = withStyles(styles)(BaseSimpleSnackbar);

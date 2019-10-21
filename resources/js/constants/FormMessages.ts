@@ -1,4 +1,4 @@
-const FormMessages = {
+export const FormMessages = {
     userSubmitted: 'Registration submitted',
     userCreated:
         'Registration successful. Please check your mail for verification',
@@ -21,5 +21,3 @@ const FormMessages = {
         'Password needs at minimum eight characters with at least one letter and one number',
     notMatchingPasswords: 'Passwords do not match',
 };
-
-export default FormMessages;

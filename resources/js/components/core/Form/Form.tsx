@@ -1,5 +1,6 @@
 import * as React from 'react';
-
+import AccountIcon from '@material-ui/icons/AccountCircleOutlined';
+import LockedIcon from '@material-ui/icons/LockOutlined';
 import {
     Avatar,
     Paper,
@@ -8,11 +9,6 @@ import {
     withStyles,
 } from '@material-ui/core/';
 
-import AccountIcon from '@material-ui/icons/AccountCircleOutlined';
-import LockedIcon from '@material-ui/icons/LockOutlined';
-
-import { LinkButton, SimpleSnackbar, SubmitButton } from 'api/components/core';
-
 import {
     FormData as FormInformation,
     FormMessages,
@@ -20,8 +16,6 @@ import {
 } from 'api/constants';
 
 import { IApiResponsePayload } from 'api/interfaces';
-
-import { TFormPayload } from 'api/utils/formTypeGuards';
 
 import {
     isLoginData,
@@ -33,17 +27,19 @@ import {
     resendVerification,
     resetPassword,
     sendPasswordResetEmail,
+    TFormPayload,
 } from 'api/utils';
 
-import styles from './styles';
+import { styles } from './styles';
+
+import { LinkButton, SimpleSnackbar, SubmitButton } from 'api/components/core';
 
 interface IProps extends WithStyles<typeof styles> {
-    title?: string;
-    children?: React.ReactNode;
     type: string;
     formData: TFormPayload;
+    title?: string;
+    children?: React.ReactNode;
     disabled?: boolean;
-
     onMenuChange: () => void;
     onSubmit: (handleSubmit: () => void) => void;
 }
@@ -57,7 +53,7 @@ interface IState {
     snackbarAction: (() => void) | null;
 }
 
-class Form extends React.Component<IProps, IState> {
+class BaseForm extends React.Component<IProps, IState> {
     static defaultProps = {
         title: '',
         children: null,
@@ -246,4 +242,4 @@ class Form extends React.Component<IProps, IState> {
     }
 }
 
-export default withStyles(styles)(Form);
+export const Form = withStyles(styles)(BaseForm);

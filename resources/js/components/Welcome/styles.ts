@@ -1,7 +1,7 @@
 import { createStyles } from '@material-ui/core/';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 
-const styles = (theme: Theme) =>
+export const styles = (theme: Theme) =>
     createStyles({
         main: {
             width: 'auto',
@@ -33,5 +33,3 @@ const styles = (theme: Theme) =>
             marginTop: theme.spacing.unit,
         },
     });
-
-export default styles;

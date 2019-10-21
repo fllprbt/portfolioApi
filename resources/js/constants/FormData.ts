@@ -1,8 +1,8 @@
-import FormTypes from './FormTypes';
+import { FormTypes } from './FormTypes';
 
 const { login, register, verify, verified, resetPassword } = FormTypes;
 
-const FormData = {
+export const FormData = {
     [register]: {
         title: 'Register to API',
         linksToType: login,
@@ -22,5 +22,3 @@ const FormData = {
         linksToType: login,
     },
 };
-
-export default FormData;

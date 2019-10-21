@@ -1,8 +1,7 @@
 import * as React from 'react';
-
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-
+import { GithubCircle } from 'mdi-material-ui';
 import {
     Button,
     CssBaseline,
@@ -13,17 +12,15 @@ import {
     WithStyles,
 } from '@material-ui/core/';
 
-import { GithubCircle } from 'mdi-material-ui';
-
 import { FormTypes } from 'api/constants';
 
-import styles from './styles';
+import { styles } from './styles';
 
 interface IProps extends WithStyles<typeof styles> {}
 
 const toRegister = (props) => <Link to={`/${FormTypes.register}`} {...props} />;
 
-const Welcome = ({
+const BaseWelcome = ({
     classes: { main, button, paper, italic, subheading },
 }: IProps) => (
     <main className={main}>
@@ -57,4 +54,4 @@ const Welcome = ({
     </main>
 );
 
-export default withStyles(styles)(Welcome);
+export const Welcome = withStyles(styles)(BaseWelcome);
