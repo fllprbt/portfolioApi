@@ -24,6 +24,18 @@ type TNavigationContext = () => void | null;
 
 export const NavigationContext = createContext<TNavigationContext>(() => null);
 
+const getComponentFromViewName = (viewName: string, token?: string) => {
+    if (viewName === 'verified') {
+        return <SuccessCard type={FormTypes.verify} />;
+    } else if (viewName === 'already_verified') {
+        return <SuccessCard type={FormTypes.verified} />;
+    } else if (viewName === 'reset_password' && token) {
+        return <PasswordResetForm token={token} />;
+    }
+
+    return <React.Fragment />;
+};
+
 const App: React.FC<IProps> = ({
     viewName: viewNameProp,
     token: tokenProp,
@@ -41,21 +53,6 @@ const App: React.FC<IProps> = ({
         createContext(resetAppState);
     }, []);
 
-    const renderComponentFromViewName = (
-        name: string | null
-    ): React.ReactElement => {
-        let component = <React.Fragment />;
-        if (name === 'verified') {
-            component = <SuccessCard type={FormTypes.verify} />;
-        } else if (name === 'already_verified') {
-            component = <SuccessCard type={FormTypes.verified} />;
-        } else if (name === 'reset_password' && token) {
-            component = <PasswordResetForm token={token} />;
-        }
-
-        return component;
-    };
-
     return (
         <NavigationContext.Provider value={resetAppState}>
             <Router>
@@ -66,7 +63,7 @@ const App: React.FC<IProps> = ({
                         component={RegistrationForm}
                     />
                     <Route path={`/${FormTypes.login}`} component={LoginForm} />
-                    {renderComponentFromViewName(viewName)}
+                    {getComponentFromViewName(viewName, token)}
                 </>
             </Router>
         </NavigationContext.Provider>
