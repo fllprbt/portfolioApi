@@ -27,7 +27,7 @@ export class RegistrationForm extends React.Component<{}, IState> {
                 password: '',
                 passwordConfirmation: '',
             },
-            disabled: false,
+            disabled: true,
             submitted: false,
         };
 

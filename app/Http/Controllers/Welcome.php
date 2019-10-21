@@ -6,6 +6,6 @@ class Welcome extends Controller {
 
   public function index()
   {
-    return view('app')->with('view_name', 'welcome');
+    return view('app');
   }
 }

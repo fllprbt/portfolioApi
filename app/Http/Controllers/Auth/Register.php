@@ -26,7 +26,7 @@ class Register extends Controller
 	 */
 	public function index()
   	{
-    	return view('app')->with('view_name', 'register');
+    	return view('app');
 	}
 	  
 	/**
@@ -120,18 +120,18 @@ class Register extends Controller
 
 	/**
 	* Handle an email verification request for the application. 
-	* Pass a different view name based on whether the user was already verified.
+	* Redirect on different route, based on whether the user was already verified
 	*
 	* @param $token
-	* @return \Illuminate\Http\Response|Illuminate\View\View
+	* @return \Illuminate\Routing\Route
 	*/
 	public function verify($token)
 	{
 		$user = User::where('email_token', $token)->first();
-		if ($user->verified) return view('app')->with('view_name', 'already_verified');
+		if ($user->verified) return redirect()->route('already_verified');
 
 		$user->verified = 1;
-		if ($user->save()) return view('app')->with('view_name', 'verified');
+		if ($user->save()) return redirect()->route('verification_success');
 	}
 
     /**
