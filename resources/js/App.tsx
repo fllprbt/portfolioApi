@@ -16,7 +16,6 @@ import {
 import { SuccessCard } from 'api/components/core';
 
 interface IProps {
-    viewName?: string;
     token?: string;
 }
 
@@ -24,30 +23,10 @@ type TNavigationContext = () => void | null;
 
 export const NavigationContext = createContext<TNavigationContext>(() => null);
 
-const getComponentFromViewName = (viewName: string, token?: string) => {
-    if (viewName === 'verified') {
-        return <SuccessCard type={FormTypes.verify} />;
-    } else if (viewName === 'already_verified') {
-        return <SuccessCard type={FormTypes.verified} />;
-    } else if (viewName === 'reset_password' && token) {
-        return <PasswordResetForm token={token} />;
-    }
+const App: React.FC<IProps> = ({ token: tokenProp }) => {
+    const [token, setToken] = useState(tokenProp || '');
 
-    return <React.Fragment />;
-};
-
-const App: React.FC<IProps> = ({
-    viewName: viewNameProp,
-    token: tokenProp,
-}) => {
-    const [state, setState] = useState({
-        viewName: viewNameProp || '',
-        token: tokenProp || '',
-    });
-
-    const { token, viewName } = state;
-
-    const resetAppState = () => setState({ viewName: '', token: '' });
+    const resetAppState = () => setToken('');
 
     useEffect(() => {
         createContext(resetAppState);
@@ -63,7 +42,19 @@ const App: React.FC<IProps> = ({
                         component={RegistrationForm}
                     />
                     <Route path={`/${FormTypes.login}`} component={LoginForm} />
-                    {getComponentFromViewName(viewName, token)}
+                    <Route
+                        path={`/${FormTypes.verified}`}
+                        component={() => (
+                            <SuccessCard type={FormTypes.verified} />
+                        )}
+                    />
+                    <Route
+                        path={`/${FormTypes.alreadyVerified}`}
+                        component={() => (
+                            <SuccessCard type={FormTypes.alreadyVerified} />
+                        )}
+                    />
+                    {token && <PasswordResetForm token={token} />}
                 </>
             </Router>
         </NavigationContext.Provider>
@@ -72,9 +63,9 @@ const App: React.FC<IProps> = ({
 
 const app = document.getElementById('app');
 if (app) {
-    const { viewname, token } = app.dataset;
+    const { token } = app.dataset;
     ReactDOM.render(
-        withTheme(<App viewName={viewname} token={token} />),
+        withTheme(<App token={token} />),
         document.getElementById('app')
     );
 } else throw new Error('Unable to load ReactJS application!');

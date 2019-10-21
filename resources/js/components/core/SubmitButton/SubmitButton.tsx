@@ -15,7 +15,7 @@ const BaseSubmitButton = ({ children, disabled, onClick, classes }: IProps) => (
         color="primary"
         className={classes.submit}
         onClick={onClick}
-        disabled={disabled || true}
+        disabled={disabled || false}
     >
         {children}
     </Button>

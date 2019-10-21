@@ -20,11 +20,11 @@ interface IProps extends WithStyles<typeof styles> {
 }
 
 const TYPES = {
-    [FormTypes.verify]: {
+    [FormTypes.verified]: {
         title: FormMessages.verifiedTitle,
         description: FormMessages.verifiedDescription,
     },
-    [FormTypes.verified]: {
+    [FormTypes.alreadyVerified]: {
         title: FormMessages.alreadyVerifiedTitle,
         description: FormMessages.alreadyVerifiedDescription,
     },
@@ -34,7 +34,7 @@ const BaseSuccessCard: React.SFC<IProps> = ({
     type,
     classes: { main, paper, avatar, buttonContainer, button },
 }) => {
-    const { title, description } = TYPES[type || FormTypes.verify];
+    const { title, description } = TYPES[type || FormTypes.verified];
     const { linksToType } = FormData[type];
     return (
         <main className={main}>

@@ -1,6 +1,6 @@
 import { FormTypes } from './FormTypes';
 
-const { login, register, verify, verified, resetPassword } = FormTypes;
+const { login, register, alreadyVerified, verified, resetPassword } = FormTypes;
 
 export const FormData = {
     [register]: {
@@ -11,10 +11,10 @@ export const FormData = {
         title: 'Test login',
         linksToType: register,
     },
-    [verify]: {
+    [verified]: {
         linksToType: login,
     },
-    [verified]: {
+    [alreadyVerified]: {
         linksToType: login,
     },
     [resetPassword]: {
