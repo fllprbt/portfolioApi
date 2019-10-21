@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import * as ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './bootstrap';

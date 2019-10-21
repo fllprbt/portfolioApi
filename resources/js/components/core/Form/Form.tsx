@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import AccountIcon from '@material-ui/icons/AccountCircleOutlined';
 import LockedIcon from '@material-ui/icons/LockOutlined';
 import {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 import {
     Button,
