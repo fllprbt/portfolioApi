@@ -11,12 +11,12 @@ const styles = (theme: Theme) =>
             [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
                 width: 400,
                 marginLeft: 'auto',
-                marginRight: 'auto'
-            }
+                marginRight: 'auto',
+            },
         },
         button: {
             marginTop: theme.spacing.unit,
-            marginBottom: theme.spacing.unit
+            marginBottom: theme.spacing.unit,
         },
         paper: {
             marginTop: theme.spacing.unit * 8,
@@ -24,14 +24,14 @@ const styles = (theme: Theme) =>
             flexDirection: 'column',
             alignItems: 'center',
             padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit *
-                3}px ${theme.spacing.unit * 3}px`
+                3}px ${theme.spacing.unit * 3}px`,
         },
         italic: {
-            fontStyle: 'italic'
+            fontStyle: 'italic',
         },
         subheading: {
-            marginTop: theme.spacing.unit
-        }
+            marginTop: theme.spacing.unit,
+        },
     });
 
 export default styles;

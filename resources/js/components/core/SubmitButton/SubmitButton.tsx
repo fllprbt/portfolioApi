@@ -27,7 +27,7 @@ SubmitButton.defaultProps = {
     children: '',
     disabled: true,
 
-    onClick: () => null
+    onClick: () => null,
 };
 
 export default withStyles(styles)(SubmitButton);

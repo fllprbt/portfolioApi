@@ -10,7 +10,7 @@ import {
     Paper,
     Typography,
     withStyles,
-    WithStyles
+    WithStyles,
 } from '@material-ui/core/';
 
 import { GithubCircle } from 'mdi-material-ui';
@@ -24,7 +24,7 @@ interface IProps extends WithStyles<typeof styles> {}
 const toRegister = (props) => <Link to={`/${FormTypes.register}`} {...props} />;
 
 const Welcome = ({
-    classes: { main, button, paper, italic, subheading }
+    classes: { main, button, paper, italic, subheading },
 }: IProps) => (
     <main className={main}>
         <CssBaseline />

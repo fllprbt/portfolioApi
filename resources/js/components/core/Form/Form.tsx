@@ -5,7 +5,7 @@ import {
     Paper,
     Typography,
     WithStyles,
-    withStyles
+    withStyles,
 } from '@material-ui/core/';
 
 import AccountIcon from '@material-ui/icons/AccountCircleOutlined';
@@ -16,7 +16,7 @@ import { LinkButton, SimpleSnackbar, SubmitButton } from 'api/components/core';
 import {
     FormData as FormInformation,
     FormMessages,
-    FormTypes
+    FormTypes,
 } from 'api/constants';
 
 import { IApiResponsePayload } from 'api/interfaces';
@@ -32,7 +32,7 @@ import {
     registerUser,
     resendVerification,
     resetPassword,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
 } from 'api/utils';
 
 import styles from './styles';
@@ -65,12 +65,12 @@ class Form extends React.Component<IProps, IState> {
         formData: {
             email: '',
             password: '',
-            passwordConfirmation: ''
+            passwordConfirmation: '',
         },
         disabled: false,
 
         onMenuChange: () => null,
-        onSubmit: () => null
+        onSubmit: () => null,
     };
 
     constructor(props: IProps) {
@@ -81,7 +81,7 @@ class Form extends React.Component<IProps, IState> {
             snackbar: false,
             snackbarAction: null,
             response: '',
-            pendingRequest: false
+            pendingRequest: false,
         };
     }
 
@@ -132,7 +132,7 @@ class Form extends React.Component<IProps, IState> {
      */
     handleSubmitErrors = (payload): void => {
         const {
-            errors
+            errors,
         }: { errors: IApiResponsePayload } = payload.response.data;
         const response = this.responseToString(errors);
         this.storeLastResponse(response, errors.status);
@@ -186,7 +186,7 @@ class Form extends React.Component<IProps, IState> {
             response,
             pendingRequest: false,
             snackbar: true,
-            status
+            status,
         });
 
     render() {
@@ -196,7 +196,7 @@ class Form extends React.Component<IProps, IState> {
             classes,
             disabled,
             onSubmit,
-            type
+            type,
         } = this.props;
         const { pendingRequest, snackbar, response, status } = this.state;
         const { main, paper, avatar, buttonWrapper } = classes;

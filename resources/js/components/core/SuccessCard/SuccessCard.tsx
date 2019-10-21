@@ -6,7 +6,7 @@ import {
     Paper,
     Typography,
     WithStyles,
-    withStyles
+    withStyles,
 } from '@material-ui/core/';
 
 import CheckIcon from '@material-ui/icons/CheckCircleOutlined';
@@ -24,17 +24,17 @@ interface IProps extends WithStyles<typeof styles> {
 const TYPES = {
     [FormTypes.verify]: {
         title: FormMessages.verifiedTitle,
-        description: FormMessages.verifiedDescription
+        description: FormMessages.verifiedDescription,
     },
     [FormTypes.verified]: {
         title: FormMessages.alreadyVerifiedTitle,
-        description: FormMessages.alreadyVerifiedDescription
-    }
+        description: FormMessages.alreadyVerifiedDescription,
+    },
 };
 
 const SuccessCard: React.SFC<IProps> = ({
     type,
-    classes: { main, paper, avatar, buttonContainer, button }
+    classes: { main, paper, avatar, buttonContainer, button },
 }) => {
     const { title, description } = TYPES[type];
     const { linksToType } = FormData[type];
@@ -68,7 +68,7 @@ const SuccessCard: React.SFC<IProps> = ({
 };
 
 SuccessCard.defaultProps = {
-    type: FormTypes.verify
+    type: FormTypes.verify,
 };
 
 export default withStyles(styles)(SuccessCard);

@@ -1,6 +1,7 @@
-import * as React from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+
 import './bootstrap';
 
 import { FormTypes } from 'api/constants';
@@ -10,76 +11,67 @@ import {
     LoginForm,
     PasswordResetForm,
     RegistrationForm,
-    Welcome
+    Welcome,
 } from 'api/components';
 import { SuccessCard } from 'api/components/core';
 
 interface IProps {
-    viewName: string;
-    token: string;
+    viewName?: string;
+    token?: string;
 }
 
-interface IState {
-    viewName: string | null;
-    token: string | null;
-}
+type TNavigationContext = () => void | null;
 
-// tslint:disable-next-line
-const ResetNavigation = React.createContext(() => {});
-export const ResetNavigationConsumer = ResetNavigation.Consumer;
+export const NavigationContext = createContext<TNavigationContext>(() => null);
 
-class App extends React.Component<IProps, IState> {
-    static defaultProps = { viewName: '', token: '' };
+const App: React.FC<IProps> = ({
+    viewName: viewNameProp,
+    token: tokenProp,
+}) => {
+    const [state, setState] = useState({
+        viewName: viewNameProp || '',
+        token: tokenProp || '',
+    });
 
-    constructor(props: IProps) {
-        super(props);
+    const { token, viewName } = state;
 
-        this.state = {
-            viewName: props.viewName,
-            token: props.token
-        };
-    }
+    const resetAppState = () => setState({ viewName: '', token: '' });
 
-    resetAppState = () => this.setState({ viewName: null, token: null });
+    useEffect(() => {
+        createContext(resetAppState);
+    }, []);
 
-    renderComponentFromViewName = (
-        viewName: string | null
+    const renderComponentFromViewName = (
+        name: string | null
     ): React.ReactElement => {
-        const { token } = this.state;
         let component = <React.Fragment />;
-        if (viewName === 'verified') {
+        if (name === 'verified') {
             component = <SuccessCard type={FormTypes.verify} />;
-        } else if (viewName === 'already_verified') {
+        } else if (name === 'already_verified') {
             component = <SuccessCard type={FormTypes.verified} />;
-        } else if (viewName === 'reset_password' && token) {
+        } else if (name === 'reset_password' && token) {
             component = <PasswordResetForm token={token} />;
         }
 
         return component;
     };
 
-    render() {
-        const { viewName } = this.state;
-        return (
-            <ResetNavigation.Provider value={this.resetAppState}>
-                <Router>
-                    <>
-                        <Route exact={true} path="/" component={Welcome} />
-                        <Route
-                            path={`/${FormTypes.register}`}
-                            component={RegistrationForm}
-                        />
-                        <Route
-                            path={`/${FormTypes.login}`}
-                            component={LoginForm}
-                        />
-                        {this.renderComponentFromViewName(viewName)}
-                    </>
-                </Router>
-            </ResetNavigation.Provider>
-        );
-    }
-}
+    return (
+        <NavigationContext.Provider value={resetAppState}>
+            <Router>
+                <>
+                    <Route exact={true} path="/" component={Welcome} />
+                    <Route
+                        path={`/${FormTypes.register}`}
+                        component={RegistrationForm}
+                    />
+                    <Route path={`/${FormTypes.login}`} component={LoginForm} />
+                    {renderComponentFromViewName(viewName)}
+                </>
+            </Router>
+        </NavigationContext.Provider>
+    );
+};
 
 const app = document.getElementById('app');
 if (app) {
@@ -88,4 +80,4 @@ if (app) {
         withTheme(<App viewName={viewname} token={token} />),
         document.getElementById('app')
     );
-} else console.error('Unable to load ReactJS application!');
+} else throw new Error('Unable to load ReactJS application!');

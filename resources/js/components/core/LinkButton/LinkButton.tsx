@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button } from '@material-ui/core/';
+import { NavigationContext } from 'api/app';
 
-import { ResetNavigationConsumer } from 'api/app';
+import { Button } from '@material-ui/core/';
 
 interface IProps {
     link: string;
@@ -11,22 +11,18 @@ interface IProps {
 }
 
 const LinkButton = ({ link, label }: IProps) => (
-    <ResetNavigationConsumer>
-        {(resetNavigation) => (
-            <Button
-                component={(props) => <Link to={link} {...props} />}
-                color="primary"
-                onClick={resetNavigation}
-            >
-                {label}
-            </Button>
-        )}
-    </ResetNavigationConsumer>
+    <Button
+        component={(props) => <Link to={link} {...props} />}
+        color="primary"
+        onClick={React.useContext(NavigationContext)}
+    >
+        {label}
+    </Button>
 );
 
 LinkButton.defaultProps = {
     link: '/',
-    label: ''
+    label: '',
 };
 
 export default LinkButton;

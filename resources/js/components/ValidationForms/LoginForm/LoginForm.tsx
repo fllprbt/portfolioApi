@@ -25,7 +25,7 @@ class LoginForm extends React.Component<{}, IState> {
         this.state = {
             loginFormData: { email: '', password: '' },
             disabled: false,
-            submitted: false
+            submitted: false,
         };
 
         this.formRef = React.createRef();

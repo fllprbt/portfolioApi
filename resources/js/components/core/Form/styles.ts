@@ -11,8 +11,8 @@ const styles = (theme: Theme) =>
             [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
                 width: 400,
                 marginLeft: 'auto',
-                marginRight: 'auto'
-            }
+                marginRight: 'auto',
+            },
         },
         paper: {
             marginTop: theme.spacing.unit * 8,
@@ -20,22 +20,22 @@ const styles = (theme: Theme) =>
             flexDirection: 'column',
             alignItems: 'center',
             padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit *
-                3}px ${theme.spacing.unit * 3}px`
+                3}px ${theme.spacing.unit * 3}px`,
         },
         avatar: {
             margin: theme.spacing.unit,
-            backgroundColor: theme.palette.secondary.main
+            backgroundColor: theme.palette.secondary.main,
         },
         form: {
             width: '100%', // Fix IE 11 issue.
-            marginTop: theme.spacing.unit
+            marginTop: theme.spacing.unit,
         },
         buttonWrapper: {
             display: 'flex',
             width: '100%',
             justifyContent: 'space-between',
-            paddingTop: theme.spacing.unit * 3
-        }
+            paddingTop: theme.spacing.unit * 3,
+        },
     });
 
 export default styles;

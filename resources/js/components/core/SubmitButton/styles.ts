@@ -4,8 +4,8 @@ import { Theme } from '@material-ui/core/styles/createMuiTheme';
 const styles = (theme: Theme) =>
     createStyles({
         submit: {
-            width: '50%'
-        }
+            width: '50%',
+        },
     });
 
 export default styles;
