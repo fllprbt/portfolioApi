@@ -3,10 +3,8 @@
  * @param {Object} object - the initial object
  * @returns {string} the object values string
  */
-const objValuesToString = (object): string =>
+export const objValuesToString = (object): string =>
     Object.keys(object)
         .map((e) => object[e])
         .concat()
         .join('. ');
-
-export default objValuesToString;

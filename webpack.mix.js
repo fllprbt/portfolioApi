@@ -9,7 +9,7 @@ let dotenvplugin = new webpack.DefinePlugin({
     }
 })
 
-mix.ts('resources/js/app.tsx', 'public/js')
+mix.ts('resources/js/App.tsx', 'public/js')
     .options({
         hmrOptions: { host: '0.0.0.0', port: 8088 },
         processCssUrls: false

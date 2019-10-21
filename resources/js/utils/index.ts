@@ -1,10 +1,11 @@
-export { default as withTheme } from './withTheme';
-export { default as objValuesToString } from './helpers';
+export { withTheme } from './withTheme';
+export { objValuesToString } from './helpers';
 
 export {
     isRegistrationData,
     isLoginData,
-    isPasswordResetData
+    isPasswordResetData,
+    TFormPayload,
 } from './formTypeGuards';
 
 export {
@@ -12,5 +13,5 @@ export {
     loginUser,
     resendVerification,
     resetPassword,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
 } from './queryApi';

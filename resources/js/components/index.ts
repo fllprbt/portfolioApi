@@ -1,7 +1,7 @@
-export { default as Welcome } from './Welcome';
+export { Welcome } from './Welcome';
 
 export {
     RegistrationForm,
     LoginForm,
-    PasswordResetForm
+    PasswordResetForm,
 } from './ValidationForms';

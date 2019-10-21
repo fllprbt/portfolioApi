@@ -1,26 +1,24 @@
-import FormTypes from './FormTypes';
+import { FormTypes } from './FormTypes';
 
 const { login, register, verify, verified, resetPassword } = FormTypes;
 
-const FormData = {
+export const FormData = {
     [register]: {
         title: 'Register to API',
-        linksToType: login
+        linksToType: login,
     },
     [login]: {
         title: 'Test login',
-        linksToType: register
+        linksToType: register,
     },
     [verify]: {
-        linksToType: login
+        linksToType: login,
     },
     [verified]: {
-        linksToType: login
+        linksToType: login,
     },
     [resetPassword]: {
         title: 'Password Reset',
-        linksToType: login
-    }
+        linksToType: login,
+    },
 };
-
-export default FormData;

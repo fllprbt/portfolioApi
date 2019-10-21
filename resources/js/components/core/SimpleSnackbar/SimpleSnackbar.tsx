@@ -1,32 +1,30 @@
-import * as React from 'react';
-
+import React from 'react';
+import CloseIcon from '@material-ui/icons/Close';
 import {
     Button,
     IconButton,
     Snackbar,
     WithStyles,
-    withStyles
+    withStyles,
 } from '@material-ui/core/';
 
-import CloseIcon from '@material-ui/icons/Close';
-
-import styles from './styles';
+import { styles } from './styles';
 
 interface IProps extends WithStyles<typeof styles> {
-    clickLabel?: string;
     open: boolean;
     notification: string;
+    clickLabel?: string;
     onSnackbarClose: (event: React.SyntheticEvent, reason: string) => void;
     onSnackbarClick?: ((event: React.SyntheticEvent) => void) | null;
 }
 
-const SimpleSnackbar: React.SFC<IProps> = ({
+const BaseSimpleSnackbar: React.SFC<IProps> = ({
     clickLabel,
     open,
     notification,
     onSnackbarClose,
     classes,
-    onSnackbarClick
+    onSnackbarClick,
 }) => (
     <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
@@ -55,14 +53,9 @@ const SimpleSnackbar: React.SFC<IProps> = ({
                 onClick={(e) => onSnackbarClose(e, 'closeButtonClick')}
             >
                 <CloseIcon />
-            </IconButton>
+            </IconButton>,
         ]}
     />
 );
 
-SimpleSnackbar.defaultProps = {
-    clickLabel: 'Resend',
-    onSnackbarClick: null
-};
-
-export default withStyles(styles)(SimpleSnackbar);
+export const SimpleSnackbar = withStyles(styles)(BaseSimpleSnackbar);

@@ -1,12 +1,11 @@
-import * as React from 'react';
-
+import React from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
-
-import { Form } from 'api/components/core/';
 
 import { ILoginFormData } from 'api/interfaces';
 
 import { FormData, FormMessages, FormTypes } from 'api/constants';
+
+import { Form } from 'api/components/core/';
 
 interface IState {
     disabled: boolean;
@@ -16,7 +15,7 @@ interface IState {
 
 const TYPE = FormTypes.login;
 
-class LoginForm extends React.Component<{}, IState> {
+export class LoginForm extends React.Component<{}, IState> {
     private formRef: React.RefObject<HTMLInputElement>;
 
     constructor(props: {}) {
@@ -25,7 +24,7 @@ class LoginForm extends React.Component<{}, IState> {
         this.state = {
             loginFormData: { email: '', password: '' },
             disabled: false,
-            submitted: false
+            submitted: false,
         };
 
         this.formRef = React.createRef();
@@ -94,5 +93,3 @@ class LoginForm extends React.Component<{}, IState> {
         );
     }
 }
-
-export default LoginForm;

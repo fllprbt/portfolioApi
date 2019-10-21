@@ -1,12 +1,11 @@
-import * as React from 'react';
-
+import React from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
-
-import { Form } from 'api/components/core/';
 
 import { IPasswordResetFormData } from 'api/interfaces';
 
 import { FormData, FormMessages, FormTypes } from 'api/constants';
+
+import { Form } from 'api/components/core/';
 
 interface IProps {
     token: string;
@@ -20,7 +19,7 @@ interface IState {
 
 const TYPE = FormTypes.resetPassword;
 
-class PasswordResetForm extends React.Component<IProps, IState> {
+export class PasswordResetForm extends React.Component<IProps, IState> {
     private formRef: React.RefObject<HTMLInputElement>;
 
     constructor(props: IProps) {
@@ -31,10 +30,10 @@ class PasswordResetForm extends React.Component<IProps, IState> {
                 email: '',
                 password: '',
                 passwordConfirmation: '',
-                token: props.token
+                token: props.token,
             },
             disabled: false,
-            submitted: false
+            submitted: false,
         };
 
         this.formRef = React.createRef();
@@ -74,7 +73,7 @@ class PasswordResetForm extends React.Component<IProps, IState> {
         const {
             requiredField,
             notMatchingPasswords,
-            malformedEmail
+            malformedEmail,
         } = FormMessages;
 
         return (
@@ -126,5 +125,3 @@ class PasswordResetForm extends React.Component<IProps, IState> {
         );
     }
 }
-
-export default PasswordResetForm;
