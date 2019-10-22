@@ -21,4 +21,5 @@ mix.ts('resources/js/App.tsx', 'public/js')
         plugins: [
             dotenvplugin,
         ]
-    });
+    })
+    .disableNotifications();

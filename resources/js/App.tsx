@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
@@ -25,12 +25,7 @@ export const NavigationContext = createContext<TNavigationContext>(() => null);
 
 const App: React.FC<IProps> = ({ token: tokenProp }) => {
     const [token, setToken] = useState(tokenProp || '');
-
     const resetAppState = () => setToken('');
-
-    useEffect(() => {
-        createContext(resetAppState);
-    }, []);
 
     return (
         <NavigationContext.Provider value={resetAppState}>
