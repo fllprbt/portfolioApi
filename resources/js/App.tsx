@@ -1,11 +1,9 @@
 import React, { createContext, useState } from 'react';
-import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './bootstrap';
 
 import { FormTypes } from 'api/constants';
-import { withTheme } from 'api/utils/';
 
 import {
     LoginForm,
@@ -19,11 +17,9 @@ interface IProps {
     token?: string;
 }
 
-type TNavigationContext = () => void | null;
+export const NavigationContext = createContext<() => void | null>(() => null);
 
-export const NavigationContext = createContext<TNavigationContext>(() => null);
-
-const App: React.FC<IProps> = ({ token: tokenProp }) => {
+export const App: React.FC<IProps> = ({ token: tokenProp }) => {
     const [token, setToken] = useState(tokenProp || '');
     const resetAppState = () => setToken('');
 
@@ -55,12 +51,3 @@ const App: React.FC<IProps> = ({ token: tokenProp }) => {
         </NavigationContext.Provider>
     );
 };
-
-const app = document.getElementById('app');
-if (app) {
-    const { token } = app.dataset;
-    ReactDOM.render(
-        withTheme(<App token={token} />),
-        document.getElementById('app')
-    );
-} else throw new Error('Unable to load ReactJS application!');

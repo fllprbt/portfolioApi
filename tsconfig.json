@@ -28,16 +28,5 @@
         "resolveJsonModule": true,
         "isolatedModules": false
     },
-    "exclude": [
-        "node_modules",
-        "build",
-        "scripts",
-        "acceptance-tests",
-        "webpack",
-        "jest",
-        "src/setupTests.ts",
-        "src/GlobalStyle.ts",
-        "server.js"
-    ],
     "include": ["resources/js/**/*"]
 }

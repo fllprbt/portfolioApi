@@ -5,4 +5,7 @@ module.exports = {
   "transform": {
     "^.+\\.tsx?$": "ts-jest"
   },
+  "moduleNameMapper": {
+    "(:?^|\s)api\/(.*)$": "<rootDir>/resources/js/$2"
+  }
 }
