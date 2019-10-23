@@ -1,10 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-import { withTheme } from './utils';
-
-import { App } from './App';
-
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
@@ -22,8 +15,7 @@ interface ICSRF extends Element {
     content: string;
 }
 
-const env = process.env.NODE_ENV;
-if (env !== 'test') {
+if (process.env.NODE_ENV !== 'test') {
     const csrfToken = document.head.querySelector(
         'meta[name="csrf-token"]'
     ) as ICSRF;
@@ -35,10 +27,4 @@ if (env !== 'test') {
             'No CSRF token: https://laravel.com/docs/csrf#csrf-x-csrf-token'
         );
     }
-
-    const app = document.getElementById('app');
-    if (app) {
-        const { token: passwordResetToken } = app.dataset;
-        ReactDOM.render(withTheme(<App token={passwordResetToken} />), app);
-    } else throw new Error('Unable to load ReactJS application!');
 }
