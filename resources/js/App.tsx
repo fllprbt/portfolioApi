@@ -1,9 +1,12 @@
 import React, { createContext, useState } from 'react';
+import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './bootstrap';
 
 import { FormTypes } from 'api/constants';
+
+import { withTheme } from './utils';
 
 import {
     LoginForm,
@@ -27,12 +30,19 @@ export const App: React.FC<IProps> = ({ token: tokenProp }) => {
         <NavigationContext.Provider value={resetAppState}>
             <Router>
                 <>
-                    <Route exact={true} path="/" component={Welcome} />
+                    <Route
+                        exact={true}
+                        path="/"
+                        component={() => <Welcome />}
+                    />
                     <Route
                         path={`/${FormTypes.register}`}
-                        component={RegistrationForm}
+                        component={() => <RegistrationForm />}
                     />
-                    <Route path={`/${FormTypes.login}`} component={LoginForm} />
+                    <Route
+                        path={`/${FormTypes.login}`}
+                        component={() => <LoginForm />}
+                    />
                     <Route
                         path={`/${FormTypes.verified}`}
                         component={() => (
@@ -51,3 +61,14 @@ export const App: React.FC<IProps> = ({ token: tokenProp }) => {
         </NavigationContext.Provider>
     );
 };
+
+if (process.env.NODE_ENV !== 'test') {
+    const app = document.getElementById('app');
+    if (app) {
+        const { token } = app.dataset;
+        ReactDOM.render(
+            withTheme(<App token={token} />),
+            document.getElementById('app')
+        );
+    } else throw new Error('Unable to load ReactJS application!');
+}

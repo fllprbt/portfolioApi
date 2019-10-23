@@ -1,16 +1,23 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
+import { useTheme } from '@material-ui/core';
 
 import { withTheme } from 'api/utils/';
+import { theme } from 'api/theme';
 
-import { App } from 'api/App';
+const Child = () => {
+    expect(useTheme().palette.primary.main).toMatch(theme.palette.primary.main);
+    return null;
+};
 
 describe('Theme provider', () => {
-    it('Wraps element with the theme provider', () => {
-        const ThemedApp = shallow(withTheme(<App />));
-        const AppComponent = ThemedApp.find(App);
+    it('Passes the theme to a child', () => {
+        const ThemedChild = mount(withTheme(<Child />, theme));
 
+        const AppComponent = ThemedChild.find(Child);
         expect(AppComponent.length).toEqual(1);
-        expect(AppComponent.equals(<App />));
+        expect(AppComponent.equals(<Child />));
+
+        ThemedChild.unmount();
     });
 });

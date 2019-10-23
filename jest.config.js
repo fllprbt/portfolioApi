@@ -7,5 +7,6 @@ module.exports = {
   },
   "moduleNameMapper": {
     "(:?^|\s)api\/(.*)$": "<rootDir>/resources/js/$2"
-  }
+  },
+  "setupFilesAfterEnv": ["<rootDir>resources/js/setupTests.ts"]
 }

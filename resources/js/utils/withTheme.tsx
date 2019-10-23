@@ -1,7 +1,7 @@
 import React from 'react';
+import { MuiThemeProvider, Theme } from '@material-ui/core/styles';
 
-import { MuiThemeProvider } from '@material-ui/core/styles';
-import { theme } from 'api/theme';
+import { theme as defaultTheme } from 'api/theme';
 
 /**
  * Wraps a component with a MaterialUI theme
@@ -9,7 +9,10 @@ import { theme } from 'api/theme';
  * @returns {React.ReactElement} the themed component
  */
 export const withTheme = (
-    component: React.ReactElement
+    component: React.ReactElement,
+    theme?: Theme
 ): React.ReactElement => (
-    <MuiThemeProvider theme={theme}>{component}</MuiThemeProvider>
+    <MuiThemeProvider theme={theme || defaultTheme}>
+        {component}
+    </MuiThemeProvider>
 );
