@@ -9,8 +9,12 @@ interface IProps {
     label?: string;
 }
 
-export const LinkButton = (props: IProps) => (
-    <Button color="primary" onClick={React.useContext(NavigationContext)}>
-        <Link to={props.link} {...props} />
+export const LinkButton = ({ link, label }: IProps) => (
+    <Button
+        component={(props) => <Link to={link} {...props} />}
+        color="primary"
+        onClick={React.useContext(NavigationContext)}
+    >
+        {label}
     </Button>
 );
