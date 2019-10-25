@@ -13,7 +13,7 @@
 # docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs
 
 echo "\n\nInstalling node dependencies\n"
-docker run -it --rm -u node: -v $(pwd):/usr/src/app -w /usr/src/app node:11-slim /bin/bash -c 'echo $USER && sudo ls -la'
+docker run -it --rm -u node: -v $(pwd):/usr/src/app -w /usr/src/app node:11-slim /bin/sh -c 'echo $USER && sudo ls -la'
 
 # echo "\n\nNeed superuser privileges to set permissions, you may need to login\n"
 # sudo chmod -R 777 storage bootstrap/cache
