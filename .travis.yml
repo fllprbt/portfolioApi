@@ -1,0 +1,7 @@
+os:
+  - linux
+  
+install: ./postCloneUnix.sh
+
+script:
+- npm run tdd
