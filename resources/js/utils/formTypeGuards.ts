@@ -18,7 +18,10 @@ export function isRegistrationData(
     data: TFormPayload
 ): data is IRegistrationFormData {
     return (
-        'email' in data && 'password' in data && 'passwordConfirmation' in data
+        !!data.email &&
+        !!data.password &&
+        'passwordConfirmation' in data &&
+        !!data.passwordConfirmation
     );
 }
 
@@ -28,7 +31,7 @@ export function isRegistrationData(
  * @returns {boolean} the result of typeguarding
  */
 export function isLoginData(data: TFormPayload): data is ILoginFormData {
-    return 'email' in data && 'password' in data;
+    return !!data.email && !!data.password;
 }
 
 /**
@@ -40,9 +43,11 @@ export function isPasswordResetData(
     data: TFormPayload
 ): data is IPasswordResetFormData {
     return (
-        'email' in data &&
-        'password' in data &&
+        !!data.email &&
+        !!data.password &&
         'passwordConfirmation' in data &&
-        'token' in data
+        !!data.passwordConfirmation &&
+        'token' in data &&
+        !!data.token
     );
 }

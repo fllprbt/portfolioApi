@@ -5,9 +5,19 @@ import {
 } from 'api/interfaces';
 
 const {
-    env: { NODE_ENV, APP_URL },
+    env: {
+        NODE_ENV,
+        APP_URL,
+        ROUTE_REGISTER,
+        ROUTE_LOGIN,
+        ROUTE_RESEND_VERIFICATION,
+        ROUTE_SEND_PASSWORD_RESET_EMAIL,
+        ROUTE_RESET_PASSWORD,
+    },
 } = process;
-const URL = NODE_ENV === 'development' ? APP_URL : 'missingProdUrl';
+
+export const baseUrl =
+    NODE_ENV === 'development' ? `${APP_URL}/` : 'productionUrl';
 
 /**
  * Sends a request to register a new user in the API
@@ -18,7 +28,7 @@ const registerUser = ({
     passwordConfirmation,
     ...other
 }: IRegistrationFormData) =>
-    window.axios.post(`${URL}/register`, {
+    window.axios.post(`${baseUrl}${ROUTE_REGISTER}`, {
         ...other,
         password_confirmation: passwordConfirmation,
     });
@@ -29,7 +39,7 @@ const registerUser = ({
  * @returns {Promise} the request promise
  */
 const loginUser = (loginData: ILoginFormData) =>
-    window.axios.post(`${URL}/test/login`, {
+    window.axios.post(`${baseUrl}${ROUTE_LOGIN}`, {
         ...loginData,
     });
 
@@ -39,7 +49,7 @@ const loginUser = (loginData: ILoginFormData) =>
  * @returns {Promise} the request promise
  */
 const resendVerification = (loginData: ILoginFormData) =>
-    window.axios.post(`${URL}/resend`, {
+    window.axios.post(`${baseUrl}${ROUTE_RESEND_VERIFICATION}`, {
         ...loginData,
     });
 
@@ -48,9 +58,10 @@ const resendVerification = (loginData: ILoginFormData) =>
  * @param {string} email - the email of the user whose password should be reset
  * @returns {Promise} the request promise
  */
-const sendPasswordResetEmail = (email: string) => {
-    return window.axios.post(`${URL}/password/email`, { email });
-};
+const sendPasswordResetEmail = (email: string) =>
+    window.axios.post(`${baseUrl}${ROUTE_SEND_PASSWORD_RESET_EMAIL}`, {
+        email,
+    });
 
 /**
  * Sends a request with the new password credentials of a user
@@ -61,7 +72,7 @@ const resetPassword = ({
     passwordConfirmation,
     ...other
 }: IPasswordResetFormData) =>
-    window.axios.post(`${URL}/password/reset`, {
+    window.axios.post(`${baseUrl}${ROUTE_RESET_PASSWORD}`, {
         ...other,
         password_confirmation: passwordConfirmation,
     });
