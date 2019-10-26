@@ -2,8 +2,6 @@ import React, { createContext, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import './bootstrap';
-
 import { FormTypes } from 'api/constants';
 
 import { withTheme } from './utils';

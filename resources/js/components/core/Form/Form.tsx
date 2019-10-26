@@ -44,7 +44,6 @@ interface IState {
     pendingRequest: boolean;
     snackbar: boolean;
     status: string;
-
     snackbarAction: (() => void) | null;
 }
 

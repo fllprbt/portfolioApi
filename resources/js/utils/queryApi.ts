@@ -1,8 +1,12 @@
+const axios = require('axios');
+
 import {
     ILoginFormData,
     IPasswordResetFormData,
     IRegistrationFormData,
 } from 'api/interfaces';
+
+const addCsrf = require('./addCsrf');
 
 const {
     env: {
@@ -16,8 +20,10 @@ const {
     },
 } = process;
 
+if (NODE_ENV !== 'test') addCsrf();
+
 export const baseUrl =
-    NODE_ENV === 'development' ? `${APP_URL}/` : 'productionUrl';
+    NODE_ENV === 'production' ? 'productionUrl' : `${APP_URL}/`;
 
 /**
  * Sends a request to register a new user in the API
@@ -28,7 +34,7 @@ const registerUser = ({
     passwordConfirmation,
     ...other
 }: IRegistrationFormData) =>
-    window.axios.post(`${baseUrl}${ROUTE_REGISTER}`, {
+    axios.post(`${baseUrl}${ROUTE_REGISTER}`, {
         ...other,
         password_confirmation: passwordConfirmation,
     });
@@ -39,7 +45,7 @@ const registerUser = ({
  * @returns {Promise} the request promise
  */
 const loginUser = (loginData: ILoginFormData) =>
-    window.axios.post(`${baseUrl}${ROUTE_LOGIN}`, {
+    axios.post(`${baseUrl}${ROUTE_LOGIN}`, {
         ...loginData,
     });
 
@@ -49,7 +55,7 @@ const loginUser = (loginData: ILoginFormData) =>
  * @returns {Promise} the request promise
  */
 const resendVerification = (loginData: ILoginFormData) =>
-    window.axios.post(`${baseUrl}${ROUTE_RESEND_VERIFICATION}`, {
+    axios.post(`${baseUrl}${ROUTE_RESEND_VERIFICATION}`, {
         ...loginData,
     });
 
@@ -59,7 +65,7 @@ const resendVerification = (loginData: ILoginFormData) =>
  * @returns {Promise} the request promise
  */
 const sendPasswordResetEmail = (email: string) =>
-    window.axios.post(`${baseUrl}${ROUTE_SEND_PASSWORD_RESET_EMAIL}`, {
+    axios.post(`${baseUrl}${ROUTE_SEND_PASSWORD_RESET_EMAIL}`, {
         email,
     });
 
@@ -72,7 +78,7 @@ const resetPassword = ({
     passwordConfirmation,
     ...other
 }: IPasswordResetFormData) =>
-    window.axios.post(`${baseUrl}${ROUTE_RESET_PASSWORD}`, {
+    axios.post(`${baseUrl}${ROUTE_RESET_PASSWORD}`, {
         ...other,
         password_confirmation: passwordConfirmation,
     });

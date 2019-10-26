@@ -10,7 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "test": "cross-env NODE_ENV=test jest --setupFiles dotenv/config",
         "tdd": "npm run test -- --watchAll --notify",
-        "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
+        "coveralls": "cross-env NODE_ENV=test jest --setupFiles dotenv/config --coverage && cat ./coverage/lcov.info | coveralls"
     },
     "husky": {
         "hooks": {
