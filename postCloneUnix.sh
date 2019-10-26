@@ -1,19 +1,12 @@
 #!/bin/bash
-if [ $(id -u) = 0 ]; then
-   echo "\nPlease dont run this script as root.\nRoot access will be asked later on in order to modify some permissions.\n"
-   exit 1
-fi
+echo "\n\nCreating volume for node modules\n"
+make setup
 
-echo "\nCopying .env.example to .env\n"
-if [ ! -f ./.env ]; then
-   cp .env.example .env
-fi
+echo "\n\nInstalling node dependencies\n"
+make install
 
 echo "\n\nInstalling composer dependencies\n"
 docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs
-
-echo "\n\nInstalling node dependencies\n"
-docker run -it --rm -u node: -v $(pwd):/app -w /app node:11-slim npm install && npm run dev
 
 echo "\n\nNeed superuser privileges to set permissions, you may need to login\n"
 sudo chmod -R 777 storage bootstrap/cache

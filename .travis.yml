@@ -1,0 +1,10 @@
+os:
+  - linux
+  
+before_install:
+  - chmod +x postCloneUnix.sh
+
+install: ./postCloneUnix.sh
+
+script:
+- make test
