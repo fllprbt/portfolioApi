@@ -1,6 +1,9 @@
-# Portfolio Api
+[![Build Status](https://travis-ci.com/fllprbt/portfolioApi.svg?branch=master)](https://travis-ci.com/fllprbt/portfolioApi)
 
-A Laravel **project management** RESTful API with OAuth. Under development.
+# Portfolio Api  
+
+A Laravel **project management** RESTful API with OAuth. Under development. 
+
 
 - [Description](#description)
 - [Requirements](#requirements)
