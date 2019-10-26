@@ -6,8 +6,8 @@ services:
     build:
       context: ./
       dockerfile: ./dockerfiles/app.dockerfile
-    working_dir: /var/www/html
     volumes:
+      - ${PWD}/.env.example:/var/www/html/.env
       - ./:/var/www/html
     environment:
       - 'DB_PORT=3306'
@@ -19,7 +19,6 @@ services:
     build:
       context: ./
       dockerfile: ./dockerfiles/web.dockerfile
-    working_dir: /var/www/html
     volumes_from:
       - app
     ports:
@@ -57,7 +56,19 @@ services:
       timeout: 20s
       retries: 10
 
+  node:
+    container_name: node
+    image: node:11-slim
+    volumes_from:
+      - app
+    volumes:
+      - nodemodules:/var/www/html/node_modules'
+    working_dir: /var/www/html
+    command: npm run watch
+
 volumes:
+  nodemodules:
+    external: true
   dbdata:
 
 networks:

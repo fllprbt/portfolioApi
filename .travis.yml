@@ -7,4 +7,4 @@ before_install:
 install: ./postCloneUnix.sh
 
 script:
-- npm run tdd
+- make test

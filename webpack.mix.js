@@ -13,7 +13,6 @@ const {
         ROUTE_RESET_PASSWORD,
     },
 } = process;
-
 let dotenvplugin = new webpack.DefinePlugin({
     'process.env': {
         NODE_ENV: JSON.stringify(NODE_ENV || 'development'),
@@ -33,7 +32,7 @@ mix.ts('resources/js/App.tsx', 'public/js')
     })
     .webpackConfig({
         resolve: {
-            alias: { api: path.resolve(__dirname, 'resources/js') }
+            alias: { api: path.resolve('', 'resources/js') }
         },
         plugins: [
             dotenvplugin,
