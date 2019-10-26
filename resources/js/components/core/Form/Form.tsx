@@ -1,13 +1,7 @@
 import React from 'react';
 import AccountIcon from '@material-ui/icons/AccountCircleOutlined';
 import LockedIcon from '@material-ui/icons/LockOutlined';
-import {
-    Avatar,
-    Paper,
-    Typography,
-    WithStyles,
-    withStyles,
-} from '@material-ui/core/';
+import { WithStyles, withStyles } from '@material-ui/core/';
 
 import {
     FormData as FormInformation,
@@ -32,7 +26,8 @@ import {
 
 import { styles } from './styles';
 
-import { LinkButton, SimpleSnackbar, SubmitButton } from 'api/components/core';
+import { SimpleSnackbar } from 'api/components/core';
+import { FormContent } from './FormContent/FormContent';
 
 interface IProps extends WithStyles<typeof styles> {
     type: string;
@@ -189,43 +184,27 @@ class BaseForm extends React.Component<IProps, IState> {
         const {
             title,
             children,
-            classes,
             disabled,
             onSubmit,
             type,
+            classes: { main },
         } = this.props;
         const { pendingRequest, snackbar, response, status } = this.state;
-        const { main, paper, avatar, buttonWrapper } = classes;
         const { linksToType } = FormInformation[type];
+        const formIcon =
+            type === FormTypes.register ? <AccountIcon /> : <LockedIcon />;
 
         return (
             <main className={main}>
-                <Paper className={paper}>
-                    <Avatar className={avatar}>
-                        {type === FormTypes.register ? (
-                            <AccountIcon />
-                        ) : (
-                            <LockedIcon />
-                        )}
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        {title}
-                    </Typography>
-                    <br />
+                <FormContent
+                    title={title}
+                    disabled={disabled || pendingRequest}
+                    icon={formIcon}
+                    linksTo={linksToType}
+                    onSubmit={() => onSubmit(this.handleSubmit)}
+                >
                     {children}
-                    <div className={buttonWrapper}>
-                        <LinkButton
-                            link={`/${linksToType}`}
-                            label={FormInformation[linksToType].title}
-                        />
-                        <SubmitButton
-                            onClick={() => onSubmit(this.handleSubmit)}
-                            disabled={disabled || pendingRequest}
-                        >
-                            Submit
-                        </SubmitButton>
-                    </div>
-                </Paper>
+                </FormContent>
                 <SimpleSnackbar
                     open={snackbar}
                     notification={response}
