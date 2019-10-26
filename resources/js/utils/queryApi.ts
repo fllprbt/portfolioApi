@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 
 import {
     ILoginFormData,
@@ -20,7 +20,7 @@ const {
     },
 } = process;
 
-if (NODE_ENV !== 'test') addCsrf();
+if (NODE_ENV !== 'test') addCsrf(axios);
 
 export const baseUrl =
     NODE_ENV === 'production' ? 'productionUrl' : `${APP_URL}/`;

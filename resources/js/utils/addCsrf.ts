@@ -1,6 +1,6 @@
-const axios = require('axios');
+import { AxiosStatic } from 'axios';
 
-module.exports = () => {
+module.exports = (axios: AxiosStatic) => {
     axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
     /**
