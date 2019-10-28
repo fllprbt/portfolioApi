@@ -5,6 +5,8 @@ import { IPasswordResetFormData } from 'api/interfaces';
 
 import { FormData, FormMessages, FormTypes } from 'api/constants';
 
+import { IValidatorInput } from '../interfaces';
+
 import { Form } from 'api/components/core/';
 
 interface IProps {
@@ -20,7 +22,7 @@ interface IState {
 const TYPE = FormTypes.resetPassword;
 
 export class PasswordResetForm extends React.Component<IProps, IState> {
-    private formRef: React.RefObject<HTMLInputElement>;
+    private formRef: React.RefObject<IValidatorInput>;
 
     constructor(props: IProps) {
         super(props);
@@ -59,8 +61,9 @@ export class PasswordResetForm extends React.Component<IProps, IState> {
      * Disables the submit button on form validation error
      */
     handleError = (): void => {
-        // @ts-ignore
-        this.setState({ disabled: !this.formRef.current.isFormValid() });
+        if (this.formRef.current) {
+            this.setState({ disabled: !this.formRef.current.isFormValid() });
+        }
     };
 
     /**

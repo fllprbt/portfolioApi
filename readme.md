@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/fllprbt/portfolioApi.svg?branch=master)](https://travis-ci.com/fllprbt/portfolioApi)
+[![Build Status](https://travis-ci.org/fllprbt/portfolioApi.svg?branch=staging)](https://travis-ci.org/fllprbt/portfolioApi)
 
 # Portfolio Api  
 

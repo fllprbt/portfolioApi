@@ -4,6 +4,8 @@ import {
     isPasswordResetData,
 } from './formTypeGuards';
 
+import { loginData } from './__mocks__/payload';
+
 interface IFormPayloadMock {
     email: string;
     password: string;
@@ -11,10 +13,7 @@ interface IFormPayloadMock {
     token?: string;
 }
 
-const data: IFormPayloadMock = {
-    email: 'test@test.com',
-    password: 'password',
-};
+const data: IFormPayloadMock = loginData;
 
 describe('Form type guards', () => {
     it('Fails if the required fields are missing', () => {

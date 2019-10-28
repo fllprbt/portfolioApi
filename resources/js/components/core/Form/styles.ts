@@ -14,27 +14,4 @@ export const styles = (theme: Theme) =>
                 marginRight: 'auto',
             },
         },
-        paper: {
-            marginTop: theme.spacing(8),
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: `${theme.spacing(2)}px ${theme.spacing(
-                3
-            )}px ${theme.spacing(3)}px`,
-        },
-        avatar: {
-            margin: theme.spacing(1),
-            backgroundColor: theme.palette.secondary.main,
-        },
-        form: {
-            width: '100%', // Fix IE 11 issue.
-            marginTop: theme.spacing(1),
-        },
-        buttonWrapper: {
-            display: 'flex',
-            width: '100%',
-            justifyContent: 'space-between',
-            paddingTop: theme.spacing(3),
-        },
     });

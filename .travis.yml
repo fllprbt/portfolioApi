@@ -8,3 +8,4 @@ install: ./postCloneUnix.sh
 
 script:
 - make test
+- make codecov

@@ -5,6 +5,8 @@ import { IRegistrationFormData } from 'api/interfaces';
 
 import { FormData, FormMessages, FormTypes } from 'api/constants';
 
+import { IValidatorInput } from '../interfaces';
+
 import { Form } from 'api/components/core/';
 
 interface IState {
@@ -16,7 +18,7 @@ interface IState {
 const TYPE = FormTypes.register;
 
 export class RegistrationForm extends React.Component<{}, IState> {
-    private formRef: React.RefObject<HTMLInputElement>;
+    private formRef: React.RefObject<IValidatorInput>;
 
     constructor(props: {}) {
         super(props);
@@ -54,8 +56,9 @@ export class RegistrationForm extends React.Component<{}, IState> {
      * Disables the submit button on form validation error
      */
     handleError = (): void => {
-        // @ts-ignore
-        this.setState({ disabled: !this.formRef.current.isFormValid() });
+        if (this.formRef.current) {
+            this.setState({ disabled: !this.formRef.current.isFormValid() });
+        }
     };
 
     /**
