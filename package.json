@@ -10,7 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "test": "cross-env NODE_ENV=test jest --setupFiles dotenv/config",
         "tdd": "npm run test -- --watchAll --notify",
-        "coveralls": "cross-env NODE_ENV=test jest --setupFiles dotenv/config --coverage && cat ./coverage/lcov.info | coveralls --verbose"
+        "codecov": "codecov"
     },
     "husky": {
         "hooks": {
@@ -49,7 +49,7 @@
         "@types/react-dom": "16.8.2",
         "@types/react-router": "5.1.2",
         "babel-jest": "24.9.0",
-        "coveralls": "3.0.7",
+        "codecov": "3.6.1",
         "enzyme": "3.10.0",
         "enzyme-adapter-react-16": "1.15.1",
         "husky": "2.2.0",
