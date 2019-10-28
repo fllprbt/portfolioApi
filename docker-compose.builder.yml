@@ -8,6 +8,7 @@ services:
       - ./:/var/www/html
       - nodemodules:/var/www/html/node_modules
       - ${PWD}/.env.example:/var/www/html/.env
+      - ${PWD}/.git:/var/www/html/.git
     working_dir: /var/www/html
   install:
     extends:
