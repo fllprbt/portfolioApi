@@ -49,6 +49,7 @@
         "@types/react-dom": "16.8.2",
         "@types/react-router": "5.1.2",
         "babel-jest": "24.9.0",
+        "coveralls": "3.0.7",
         "enzyme": "3.10.0",
         "enzyme-adapter-react-16": "1.15.1",
         "husky": "2.2.0",
