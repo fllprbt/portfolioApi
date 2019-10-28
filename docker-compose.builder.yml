@@ -3,12 +3,11 @@ version: '2.1'
 services:  
   nodeBase:
     container_name: node
-    image: node:11-slim
+    image: tarampampam/node:alpine
     volumes:
       - ./:/var/www/html
       - nodemodules:/var/www/html/node_modules
       - ${PWD}/.env.example:/var/www/html/.env
-      - ${PWD}/.travis.yml:/var/www/html/.travis.yml
     working_dir: /var/www/html
   install:
     extends:
