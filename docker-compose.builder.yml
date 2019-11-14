@@ -3,7 +3,7 @@ version: '2.1'
 services:  
   nodeBase:
     container_name: node
-    image: node:11-slim
+    image: tarampampam/node:alpine
     volumes:
       - ./:/var/www/html
       - nodemodules:/var/www/html/node_modules
@@ -25,10 +25,10 @@ services:
     extends:
       service: nodeBase
     command: npm run tdd
-  coveralls:
+  codecov:
     extends:
       service: nodeBase
-    command: npm run coveralls
+    command: npm run codecov
 
 volumes:
   nodemodules:
