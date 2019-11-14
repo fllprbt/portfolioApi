@@ -25,10 +25,6 @@ services:
     extends:
       service: nodeBase
     command: npm run tdd
-  codecov:
-    extends:
-      service: nodeBase
-    command: npm run codecov
 
 volumes:
   nodemodules:

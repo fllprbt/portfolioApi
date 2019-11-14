@@ -16,5 +16,3 @@ test:
 tdd:
 	docker-compose -f docker-compose.builder.yml run --rm tdd
 
-codecov:
-	docker-compose -f docker-compose.builder.yml run --rm codecov

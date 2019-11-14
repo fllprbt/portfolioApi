@@ -10,4 +10,4 @@ script:
 - make test
 
 after_success:
-- make codecov
+- bash <(curl -s https://codecov.io/bash)
