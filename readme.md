@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/fllprbt/portfolioApi.svg?branch=staging)](https://travis-ci.org/fllprbt/portfolioApi)
+[![codecov](https://codecov.io/gh/fllprbt/portfolioApi/branch/master/graph/badge.svg)](https://codecov.io/gh/fllprbt/portfolioApi)
 
 # Portfolio Api  
 
