@@ -36,7 +36,7 @@ class Login extends Controller
 	 * @param \Illuminate\Http\Requests\Login $request
 	 * @return \Illuminate\Http\Response
 	*/
-    public function testLogin(LoginRequest $request)
+    public function testLogin(LoginRequest $request, $proxy=false)
     {
         $user = User::where(['email' => $request->email])->first();
 
@@ -46,7 +46,10 @@ class Login extends Controller
             {
                 if ($user->verified)
                 {
-                    return response()->json(['meta' => [
+                    return
+                        $proxy ?
+                        response($this->loginProxy->attemptLogin($user->email, $request->password)) :
+                        response()->json(['meta' => [
                             'status' => '200',
                             'verified' => true,
                             'title' => 'Verified',
@@ -81,10 +84,7 @@ class Login extends Controller
 
     public function login(LoginRequest $request)
     {
-        $email = $request->get('email');
-        $password = $request->get('password');
-
-        return response($this->loginProxy->attemptLogin($email, $password));
+        return $this->testLogin($request, true);
     }
 
     public function refresh(Request $request)

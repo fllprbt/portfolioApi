@@ -11,8 +11,8 @@ Route::post('/' . env('ROUTE_RESET_PASSWORD'), 'Auth\ResetPassword@reset')->name
 /**
  * Authorization endpoints (OAuth)
  */
-Route::post('/' . env('ROUTE_LOGIN'), 'Auth\Login@login')->name('oauth.login');
-Route::post('/login/refresh', 'Auth\Register@resendMail')->name('oauth.refresh');
+Route::post('/login', 'Auth\Login@login')->name('oauth.login');
+Route::post('/login/refreshToken', 'Auth\Login@refresh')->name('oauth.refresh');
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/logout', 'Auth\Login@logout')->name('oauth.logout');
 });
@@ -21,4 +21,4 @@ Route::group(['middleware' => 'auth:api'], function () {
  * Helpers
  */
 Route::post('/email', 'Auth\Register@emailExists')->name('email.exists');
-Route::post('/test/login', 'Auth\Login@testLogin')->name('test.login');
+Route::post('/' . env('ROUTE_LOGIN'), 'Auth\Login@testLogin')->name('test.login');

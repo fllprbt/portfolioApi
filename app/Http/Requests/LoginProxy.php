@@ -36,21 +36,10 @@ class LoginProxy
      */
     public function attemptLogin($email, $password)
     {
-        $user = User::where('email', $email)->first();
-
-        if (!is_null($user)) {
-            return $this->proxy('password', [
-                'username' => $email,
-                'password' => $password
-            ]);
-        }
-        else
-        {
-            return response()->json(['errors' => [
-                'status' => '404',
-                'title' => 'User not found',
-            ]], 404);
-        }
+        return $this->proxy('password', [
+            'username' => $email,
+            'password' => $password
+        ]);
     }
 
     /**

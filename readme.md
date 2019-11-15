@@ -19,7 +19,7 @@ Proxied, password granted OAuth. (Laravel Passport)
 
 - php:7.2-fpm-alpine
 - nginx:alpine
-- mysql:5.7
+- mysql:5.7 (u:homestead, p:secret)
 - supervisord
 
 ##### Frontend (API registration views)
