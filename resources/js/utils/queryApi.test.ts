@@ -31,7 +31,7 @@ describe('Axios queries', () => {
     it('Ensures that endpoint urls are properly generated', () => {
         expect(APP_URL).toBe('http://0.0.0.0:8080');
         expect(ROUTE_REGISTER).toBe('register');
-        expect(ROUTE_LOGIN).toBe('login');
+        expect(ROUTE_LOGIN).toBe('test/login');
         expect(ROUTE_RESEND_VERIFICATION).toBe('resend');
         expect(ROUTE_SEND_PASSWORD_RESET_EMAIL).toBe('password/email');
         expect(ROUTE_RESET_PASSWORD).toBe('password/reset');
