@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, LinkProps } from 'react-router-dom';
 import { GithubCircle } from 'mdi-material-ui';
 import {
     Button,
@@ -18,7 +18,11 @@ import { styles } from './styles';
 
 interface IProps extends WithStyles<typeof styles> {}
 
-const toRegister = (props) => <Link to={`/${FormTypes.register}`} {...props} />;
+const toRegister = React.forwardRef<HTMLAnchorElement, Partial<LinkProps>>(
+    (props, ref) => (
+        <Link to={`/${FormTypes.register}`} {...props} ref={ref as any} />
+    )
+);
 
 const BaseWelcome = ({
     classes: { main, button, paper, italic, subheading },
