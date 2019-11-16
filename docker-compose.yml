@@ -7,7 +7,6 @@ services:
       context: ./
       dockerfile: ./dockerfiles/app.dockerfile
     volumes:
-      - ${PWD}/.env.example:/var/www/html/.env
       - ./:/var/www/html
     environment:
       - 'DB_PORT=3306'
@@ -62,7 +61,7 @@ services:
     volumes_from:
       - app
     volumes:
-      - nodemodules:/var/www/html/node_modules'
+      - nodemodules:/var/www/html/node_modules
     working_dir: /var/www/html
     command: npm run watch
 
