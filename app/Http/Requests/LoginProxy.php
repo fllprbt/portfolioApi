@@ -10,7 +10,8 @@ use DB;
 
 class LoginProxy
 {
-    const REFRESH_TOKEN = 'refreshToken';
+    private $ACCESS_TOKEN;
+    private $REFRESH_TOKEN;
 
     private $auth;
 
@@ -25,6 +26,8 @@ class LoginProxy
         $this->cookie = $app->make('cookie');
         $this->db = $app->make('db');
         $this->request = $app->make('request');
+        $this->ACCESS_TOKEN = config('constants.options.access_token');
+        $this->REFRESH_TOKEN = config('constants.options.refresh_token');
     }
 
     /**
@@ -50,7 +53,7 @@ class LoginProxy
      */
     public function attemptRefresh()
     {
-        $refreshToken = $this->request->cookie(self::REFRESH_TOKEN);
+        $refreshToken = $this->request->cookie($this->REFRESH_TOKEN);
 
         return $this->proxy('refresh_token', [
             'refresh_token' => $refreshToken
@@ -107,34 +110,36 @@ class LoginProxy
             ]], 404);
         }
 
-        if (property_exists($response, "access_token")) {
-            $cookie = app()->make('cookie');
+        $cookie = app()->make('cookie');
 
-            // Set the refresh token as an encrypted HttpOnly cookie
-            $cookie->queue(
-                self::REFRESH_TOKEN,
-                $response->refresh_token,
-                864000, // expiration, should be moved to a config file
-                null,
-                null,
-                false,
-                true // HttpOnly
-            );
+        // Set the access token as an encrypted HttpOnly cookie
+        $cookie->queue(
+            $this->ACCESS_TOKEN,
+            $response->access_token,
+            86400, // expiration, should be moved to a config file
+            null,
+            null,
+            false,
+            true // HttpOnly
+        );
 
-            return response()->json(['meta' => [
-                'status' => '200',
-                'accessToken' => $response->access_token,
-                'accessTokenExpiration' => $response->expires_in
-            ]]);
-        }
-        else
-        {
-            return response()->json(['meta' => [
-                'status' => '200',
-                'accessToken' => $response->access_token,
-                'accessTokenExpiration' => $response->expires_in
-            ]]);
-        }
+        // Set the refresh token as an encrypted HttpOnly cookie
+        $cookie->queue(
+            $this->REFRESH_TOKEN,
+            $response->refresh_token,
+            131400,
+            null,
+            null,
+            false,
+            true
+        );
+
+        return response()->json(['meta' => [
+            'status' => '200',
+            'title' => 'Access token',
+            'description' => 'Access token created',
+            'accessTokenExpiration' => $response->expires_in
+        ]]);
     }
 
     /**
@@ -154,6 +159,7 @@ class LoginProxy
 
         $accessToken->revoke();
 
-        $this->cookie->queue($this->cookie->forget(self::REFRESH_TOKEN));
+        $this->cookie->queue($this->cookie->forget($this->ACCESS_TOKEN));
+        $this->cookie->queue($this->cookie->forget($this->REFRESH_TOKEN));
     }
 }

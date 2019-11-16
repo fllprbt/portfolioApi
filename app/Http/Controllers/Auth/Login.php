@@ -95,5 +95,7 @@ class Login extends Controller
     public function logout()
     {
         $this->loginProxy->logout();
+
+        return response()->json(null, 204);
     }
 }

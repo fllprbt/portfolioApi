@@ -13,7 +13,8 @@ A Laravel **project management** RESTful API with OAuth. Under development.
 
 # Description
 
-Proxied, password granted OAuth. (Laravel Passport)
+Proxied, password-granted OAuth. (Laravel Passport). 
+The OAuth grant type is selected based on the current scope (first class front-end consumer).
 
 ##### Backend
 

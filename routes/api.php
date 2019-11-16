@@ -13,7 +13,7 @@ Route::post('/' . env('ROUTE_RESET_PASSWORD'), 'Auth\ResetPassword@reset')->name
  */
 Route::post('/login', 'Auth\Login@login')->name('oauth.login');
 Route::post('/login/refreshToken', 'Auth\Login@refresh')->name('oauth.refresh');
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => 'auth.api'], function () {
     Route::post('/logout', 'Auth\Login@logout')->name('oauth.logout');
 });
 
