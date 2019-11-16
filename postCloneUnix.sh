@@ -16,6 +16,9 @@ docker-compose up -d
 
 echo '\n\nWaiting database'; while [ $(docker inspect --format "{{json .State.Health.Status }}" database) != "\"healthy\"" ]; do printf "."; sleep 1; done
 
+echo "\n\nCopying .env.example to .env\n"
+docker-compose exec app cp .env.example .env
+
 echo "\n\nGenerating API key\n"
 docker-compose exec app php artisan key:generate
 
