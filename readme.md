@@ -33,6 +33,7 @@ The OAuth grant type is selected based on the current scope (first class front-e
 
 - docker & docker-compose
 - being able to run docker as user (`sudo usermod -aG docker $USER` & reboot)
+- Node
 
 # Installation
 

@@ -7,7 +7,7 @@ before_install:
 install: ./postCloneUnix.sh
 
 script:
-- make test
+- npm run tdd
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
