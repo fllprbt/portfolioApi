@@ -3,10 +3,9 @@ import axios from 'axios';
 import {
     ILoginFormData,
     IPasswordResetFormData,
-    IRegistrationFormData,
+    IRegistrationFormData
 } from 'api/interfaces';
-
-const addCsrf = require('./addCsrf');
+import { addCsrf } from './addCsrf';
 
 const {
     env: {
@@ -16,8 +15,8 @@ const {
         ROUTE_LOGIN,
         ROUTE_RESEND_VERIFICATION,
         ROUTE_SEND_PASSWORD_RESET_EMAIL,
-        ROUTE_RESET_PASSWORD,
-    },
+        ROUTE_RESET_PASSWORD
+    }
 } = process;
 
 if (NODE_ENV !== 'test') addCsrf(axios);
@@ -36,7 +35,7 @@ const registerUser = ({
 }: IRegistrationFormData) =>
     axios.post(`${baseUrl}${ROUTE_REGISTER}`, {
         ...other,
-        password_confirmation: passwordConfirmation,
+        password_confirmation: passwordConfirmation
     });
 
 /**
@@ -46,7 +45,7 @@ const registerUser = ({
  */
 const loginUser = (loginData: ILoginFormData) =>
     axios.post(`${baseUrl}${ROUTE_LOGIN}`, {
-        ...loginData,
+        ...loginData
     });
 
 /**
@@ -56,7 +55,7 @@ const loginUser = (loginData: ILoginFormData) =>
  */
 const resendVerification = (loginData: ILoginFormData) =>
     axios.post(`${baseUrl}${ROUTE_RESEND_VERIFICATION}`, {
-        ...loginData,
+        ...loginData
     });
 
 /**
@@ -66,7 +65,7 @@ const resendVerification = (loginData: ILoginFormData) =>
  */
 const sendPasswordResetEmail = (email: string) =>
     axios.post(`${baseUrl}${ROUTE_SEND_PASSWORD_RESET_EMAIL}`, {
-        email,
+        email
     });
 
 /**
@@ -80,7 +79,7 @@ const resetPassword = ({
 }: IPasswordResetFormData) =>
     axios.post(`${baseUrl}${ROUTE_RESET_PASSWORD}`, {
         ...other,
-        password_confirmation: passwordConfirmation,
+        password_confirmation: passwordConfirmation
     });
 
 export {
@@ -88,5 +87,5 @@ export {
     loginUser,
     sendPasswordResetEmail,
     resetPassword,
-    resendVerification,
+    resendVerification
 };

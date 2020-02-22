@@ -5,7 +5,7 @@ import {
     IconButton,
     Snackbar,
     WithStyles,
-    withStyles,
+    withStyles
 } from '@material-ui/core/';
 
 import { styles } from './styles';
@@ -24,7 +24,7 @@ const BaseSimpleSnackbar: React.SFC<IProps> = ({
     notification,
     onSnackbarClose,
     classes,
-    onSnackbarClick,
+    onSnackbarClick
 }) => (
     <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
@@ -53,7 +53,7 @@ const BaseSimpleSnackbar: React.SFC<IProps> = ({
                 onClick={(e) => onSnackbarClose(e, 'closeButtonClick')}
             >
                 <CloseIcon />
-            </IconButton>,
+            </IconButton>
         ]}
     />
 );

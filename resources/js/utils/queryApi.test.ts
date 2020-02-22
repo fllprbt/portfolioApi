@@ -5,13 +5,13 @@ import {
     loginUser,
     resendVerification,
     sendPasswordResetEmail,
-    resetPassword,
+    resetPassword
 } from './queryApi';
 
 import {
     registerData,
     loginData,
-    passwordResetData,
+    passwordResetData
 } from './__mocks__/payload';
 
 const {
@@ -21,8 +21,8 @@ const {
         ROUTE_LOGIN,
         ROUTE_RESEND_VERIFICATION,
         ROUTE_SEND_PASSWORD_RESET_EMAIL,
-        ROUTE_RESET_PASSWORD,
-    },
+        ROUTE_RESET_PASSWORD
+    }
 } = process;
 
 const baseUrl = `${APP_URL}/`;
@@ -43,14 +43,14 @@ describe('Axios queries', () => {
         expect(axios.post).toHaveBeenCalledWith(`${baseUrl}${ROUTE_REGISTER}`, {
             email: registerData.email,
             password: registerData.password,
-            password_confirmation: registerData.passwordConfirmation,
+            password_confirmation: registerData.passwordConfirmation
         });
 
         loginUser(loginData);
         expect(axios.post).toHaveBeenCalledTimes(2);
         expect(axios.post).toHaveBeenCalledWith(`${baseUrl}${ROUTE_LOGIN}`, {
             email: registerData.email,
-            password: registerData.password,
+            password: registerData.password
         });
 
         resendVerification(loginData);
@@ -59,7 +59,7 @@ describe('Axios queries', () => {
             `${baseUrl}${ROUTE_RESEND_VERIFICATION}`,
             {
                 email: registerData.email,
-                password: registerData.password,
+                password: registerData.password
             }
         );
 
@@ -78,7 +78,7 @@ describe('Axios queries', () => {
                 email: passwordResetData.email,
                 password: passwordResetData.password,
                 password_confirmation: passwordResetData.passwordConfirmation,
-                token: passwordResetData.token,
+                token: passwordResetData.token
             }
         );
     });

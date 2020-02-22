@@ -1,20 +1,20 @@
 import {
     ILoginFormData,
     IRegistrationFormData,
-    IPasswordResetFormData,
+    IPasswordResetFormData
 } from 'api/interfaces';
 
 export const loginData: ILoginFormData = {
     email: 'test@test.com',
-    password: 'pass',
+    password: 'pass'
 };
 
 export const registerData: IRegistrationFormData = {
     ...loginData,
-    passwordConfirmation: 'pass',
+    passwordConfirmation: 'pass'
 };
 
 export const passwordResetData: IPasswordResetFormData = {
     ...registerData,
-    token: '12345',
+    token: '12345'
 };

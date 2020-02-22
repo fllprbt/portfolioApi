@@ -19,5 +19,5 @@ export const FormMessages = {
     malformedEmail: 'Email is not valid',
     malformedPassword:
         'Password needs at minimum eight characters with at least one letter and one number',
-    notMatchingPasswords: 'Passwords do not match',
+    notMatchingPasswords: 'Passwords do not match'
 };

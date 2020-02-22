@@ -3,5 +3,5 @@ export { Welcome } from './Welcome';
 export {
     RegistrationForm,
     LoginForm,
-    PasswordResetForm,
+    PasswordResetForm
 } from './ValidationForms';

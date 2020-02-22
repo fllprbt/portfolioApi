@@ -1,51 +1,53 @@
 [![Build Status](https://travis-ci.org/fllprbt/portfolioApi.svg?branch=master)](https://travis-ci.org/fllprbt/portfolioApi)
 [![codecov](https://codecov.io/gh/fllprbt/portfolioApi/branch/master/graph/badge.svg)](https://codecov.io/gh/fllprbt/portfolioApi)
 
-# Portfolio Api  
+# Portfolio Api
 
-A Laravel **project management** RESTful API with OAuth. Under development. 
+A Laravel **project management** RESTful API with OAuth. Under development.
 
-
-- [Description](#description)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Development instructions](#development-instructions)
+-   [Description](#description)
+-   [Requirements](#requirements)
+-   [Installation](#installation)
+-   [Development instructions](#development-instructions)
 
 # Description
 
-Proxied, password-granted OAuth. (Laravel Passport). 
+Proxied, password-granted OAuth. (Laravel Passport).
 The OAuth grant type is selected based on the current scope (first class front-end consumer).
 
 ##### Backend
 
-- php:7.2-fpm-alpine
-- nginx:alpine
-- mysql:5.7 (u:homestead, p:secret)
-- supervisord
+-   php:7.2-fpm-alpine
+-   nginx:alpine
+-   mysql:5.7 (u:homestead, p:secret)
+-   supervisord
 
 ##### Frontend (API registration views)
 
-- ReactJS with Material-UI
-- Typescript
-- SASS
+-   ReactJS with Material-UI
+-   Typescript
+-   SASS
 
 # Requirements
 
-- docker & docker-compose
-- being able to run docker as user (`sudo usermod -aG docker $USER` & reboot)
-- Node
+-   docker & docker-compose
+-   being able to run docker as user (`sudo usermod -aG docker $USER` & reboot)
+-   Node
 
 # Installation
 
 ### Deployment & Configuration (step 5 requires su)
 
 ##### -Are you on Mac?
+
 Ensure that the directory where you cloned the project is listed in your docker app -> Preferences -> File Sharing and proceed with the section beneath
 
 ##### -Are you on UNIX?
+
 Just run this [script](https://github.com/fllprbt/portfolioApi/blob/master/postCloneUnix.sh) and jump to the **last step** of the section beneath:
 
 ##### Manual deployment
+
 1. **Clone** project and **step** in its directory
 2. **Install php deps** `docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app composer install --ignore-platform-reqs`
 3. **Install node deps & build** `docker run --rm -u $(id -u):$(id -g) -v $(pwd):/app -w /app node npm install && npm rebuild node-sass && npm run dev`

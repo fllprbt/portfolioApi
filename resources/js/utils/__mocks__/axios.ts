@@ -3,8 +3,8 @@ export default {
     defaults: {
         headers: {
             common: {
-                'X-CSRF-TOKEN': null,
-            },
-        },
-    },
+                'X-CSRF-TOKEN': null
+            }
+        }
+    }
 };

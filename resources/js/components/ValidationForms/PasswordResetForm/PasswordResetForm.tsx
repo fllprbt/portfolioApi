@@ -5,8 +5,6 @@ import { IPasswordResetFormData } from 'api/interfaces';
 
 import { FormData, FormMessages, FormTypes } from 'api/constants';
 
-import { IValidatorInput } from '../interfaces';
-
 import { Form } from 'api/components/core/';
 
 interface IProps {
@@ -22,7 +20,7 @@ interface IState {
 const TYPE = FormTypes.resetPassword;
 
 export class PasswordResetForm extends React.Component<IProps, IState> {
-    private formRef: React.RefObject<IValidatorInput>;
+    private formRef: React.RefObject<ValidatorForm>;
 
     constructor(props: IProps) {
         super(props);
@@ -32,10 +30,10 @@ export class PasswordResetForm extends React.Component<IProps, IState> {
                 email: '',
                 password: '',
                 passwordConfirmation: '',
-                token: props.token,
+                token: props.token
             },
             disabled: false,
-            submitted: false,
+            submitted: false
         };
 
         this.formRef = React.createRef();
@@ -62,27 +60,26 @@ export class PasswordResetForm extends React.Component<IProps, IState> {
      */
     handleError = (): void => {
         if (this.formRef.current) {
-            this.setState({ disabled: !this.formRef.current.isFormValid() });
+            this.formRef.current
+                .isFormValid(true)
+                .then((res) => this.setState({ disabled: !res }));
         }
     };
 
-    /**
-     * Calls the handleSubmit callback of the Form child
-     */
-    onSubmit = (handleSubmit): void => handleSubmit();
+    onSubmit = (handleSubmit: () => void): void => handleSubmit();
 
     render() {
         const { passwordResetFormData, disabled } = this.state;
         const {
             requiredField,
             notMatchingPasswords,
-            malformedEmail,
+            malformedEmail
         } = FormMessages;
 
         return (
             <ValidatorForm
                 ref={this.formRef}
-                onSubmit={this.onSubmit}
+                onSubmit={() => null}
                 onError={this.handleError}
             >
                 <Form

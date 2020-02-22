@@ -4,7 +4,7 @@ import {
     Paper,
     Typography,
     WithStyles,
-    withStyles,
+    withStyles
 } from '@material-ui/core/';
 
 import { FormData } from 'api/constants';
@@ -29,16 +29,14 @@ export const BaseFormContent: React.FC<IProps> = ({
     icon,
     children,
     onSubmit,
-    disabled,
+    disabled
 }) => {
     const { paper, avatar, buttonWrapper } = classes;
 
     return (
         <Paper className={paper}>
             {icon && <Avatar className={avatar}>{icon}</Avatar>}
-            <Typography component="h1" variant="h5">
-                {title}
-            </Typography>
+            <Typography variant="h5">{title}</Typography>
             <br />
             {children}
             <div className={buttonWrapper}>

@@ -1,7 +1,7 @@
 import {
     ILoginFormData,
     IPasswordResetFormData,
-    IRegistrationFormData,
+    IRegistrationFormData
 } from 'api/interfaces';
 
 export type TFormPayload =

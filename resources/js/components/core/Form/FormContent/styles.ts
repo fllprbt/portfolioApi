@@ -10,16 +10,16 @@ export const styles = (theme: Theme) =>
             alignItems: 'center',
             padding: `${theme.spacing(2)}px ${theme.spacing(
                 3
-            )}px ${theme.spacing(3)}px`,
+            )}px ${theme.spacing(3)}px`
         },
         avatar: {
             margin: theme.spacing(1),
-            backgroundColor: theme.palette.secondary.main,
+            backgroundColor: theme.palette.secondary.main
         },
         buttonWrapper: {
             display: 'flex',
             width: '100%',
             justifyContent: 'space-between',
-            paddingTop: theme.spacing(3),
-        },
+            paddingTop: theme.spacing(3)
+        }
     });

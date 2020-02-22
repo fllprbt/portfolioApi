@@ -6,7 +6,7 @@ import {
     Paper,
     Typography,
     WithStyles,
-    withStyles,
+    withStyles
 } from '@material-ui/core/';
 
 import { FormData, FormMessages, FormTypes } from 'api/constants/';
@@ -22,17 +22,17 @@ interface IProps extends WithStyles<typeof styles> {
 const TYPES = {
     [FormTypes.verified]: {
         title: FormMessages.verifiedTitle,
-        description: FormMessages.verifiedDescription,
+        description: FormMessages.verifiedDescription
     },
     [FormTypes.alreadyVerified]: {
         title: FormMessages.alreadyVerifiedTitle,
-        description: FormMessages.alreadyVerifiedDescription,
-    },
+        description: FormMessages.alreadyVerifiedDescription
+    }
 };
 
 const BaseSuccessCard: React.SFC<IProps> = ({
     type,
-    classes: { main, paper, avatar, buttonContainer, button },
+    classes: { main, paper, avatar, buttonContainer, button }
 }) => {
     const { title, description } = TYPES[type || FormTypes.verified];
     const { linksToType } = FormData[type];
@@ -42,7 +42,7 @@ const BaseSuccessCard: React.SFC<IProps> = ({
                 <Avatar className={avatar}>
                     <CheckIcon />
                 </Avatar>
-                <Typography component="h1" variant="h5" gutterBottom={true}>
+                <Typography variant="h5" gutterBottom={true}>
                     {title}
                 </Typography>
                 <Typography paragraph={true}>{description}</Typography>

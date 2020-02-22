@@ -5,8 +5,6 @@ import { IRegistrationFormData } from 'api/interfaces';
 
 import { FormData, FormMessages, FormTypes } from 'api/constants';
 
-import { IValidatorInput } from '../interfaces';
-
 import { Form } from 'api/components/core/';
 
 interface IState {
@@ -18,7 +16,7 @@ interface IState {
 const TYPE = FormTypes.register;
 
 export class RegistrationForm extends React.Component<{}, IState> {
-    private formRef: React.RefObject<IValidatorInput>;
+    private formRef: React.RefObject<ValidatorForm>;
 
     constructor(props: {}) {
         super(props);
@@ -27,10 +25,10 @@ export class RegistrationForm extends React.Component<{}, IState> {
             registerFormData: {
                 email: '',
                 password: '',
-                passwordConfirmation: '',
+                passwordConfirmation: ''
             },
             disabled: true,
-            submitted: false,
+            submitted: false
         };
 
         this.formRef = React.createRef();
@@ -57,27 +55,26 @@ export class RegistrationForm extends React.Component<{}, IState> {
      */
     handleError = (): void => {
         if (this.formRef.current) {
-            this.setState({ disabled: !this.formRef.current.isFormValid() });
+            this.formRef.current
+                .isFormValid(true)
+                .then((res) => this.setState({ disabled: !res }));
         }
     };
 
-    /**
-     * Calls the handleSubmit callback of the Form child
-     */
-    onSubmit = (handleSubmit): void => handleSubmit();
+    onSubmit = (handleSubmit: () => void): void => handleSubmit();
 
     render() {
         const { registerFormData, disabled } = this.state;
         const {
             requiredField,
             malformedEmail,
-            notMatchingPasswords,
+            notMatchingPasswords
         } = FormMessages;
 
         return (
             <ValidatorForm
                 ref={this.formRef}
-                onSubmit={this.onSubmit}
+                onSubmit={() => null}
                 onError={this.handleError}
             >
                 <Form

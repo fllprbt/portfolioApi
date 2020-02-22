@@ -1,6 +1,6 @@
 import React from 'react';
-import classNames from 'classnames';
-import { Link, LinkProps } from 'react-router-dom';
+import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 import { GithubCircle } from 'mdi-material-ui';
 import {
     Button,
@@ -9,7 +9,7 @@ import {
     Paper,
     Typography,
     withStyles,
-    WithStyles,
+    WithStyles
 } from '@material-ui/core/';
 
 import { FormTypes } from 'api/constants';
@@ -18,14 +18,8 @@ import { styles } from './styles';
 
 interface IProps extends WithStyles<typeof styles> {}
 
-const toRegister = React.forwardRef<HTMLAnchorElement, Partial<LinkProps>>(
-    (props, ref) => (
-        <Link to={`/${FormTypes.register}`} {...props} ref={ref as any} />
-    )
-);
-
 const BaseWelcome = ({
-    classes: { main, button, paper, italic, subheading },
+    classes: { main, button, paper, italic, subheading }
 }: IProps) => (
     <main className={main}>
         <CssBaseline />
@@ -37,14 +31,15 @@ const BaseWelcome = ({
                 This project is under development
             </Typography>
             <Typography
-                className={classNames([italic, subheading])}
+                className={clsx([italic, subheading])}
                 variant="subtitle2"
                 gutterBottom={true}
             >
                 The OAuth endpoints require a verified user
             </Typography>
             <Button
-                component={toRegister}
+                component={Link}
+                to={`/${FormTypes.register}`}
                 variant="contained"
                 className={button}
                 color="primary"

@@ -6,7 +6,7 @@ import { WithStyles, withStyles } from '@material-ui/core/';
 import {
     FormData as FormInformation,
     FormMessages,
-    FormTypes,
+    FormTypes
 } from 'api/constants';
 
 import { IApiResponsePayload } from 'api/interfaces';
@@ -21,13 +21,14 @@ import {
     resendVerification,
     resetPassword,
     sendPasswordResetEmail,
-    TFormPayload,
+    TFormPayload
 } from 'api/utils';
 
 import { styles } from './styles';
 
 import { SimpleSnackbar } from 'api/components/core';
 import { FormContent } from './FormContent/FormContent';
+import { AxiosError } from 'axios';
 
 interface IProps extends WithStyles<typeof styles> {
     type: string;
@@ -55,12 +56,12 @@ class BaseForm extends React.Component<IProps, IState> {
         formData: {
             email: '',
             password: '',
-            passwordConfirmation: '',
+            passwordConfirmation: ''
         },
         disabled: false,
 
         onMenuChange: () => null,
-        onSubmit: () => null,
+        onSubmit: () => null
     };
 
     constructor(props: IProps) {
@@ -71,7 +72,7 @@ class BaseForm extends React.Component<IProps, IState> {
             snackbar: false,
             snackbarAction: null,
             response: '',
-            pendingRequest: false,
+            pendingRequest: false
         };
     }
 
@@ -105,25 +106,25 @@ class BaseForm extends React.Component<IProps, IState> {
         if (type === register && isRegistrationData(formData)) {
             registerUser(formData)
                 .then(() => this.storeLastResponse(FormMessages.userCreated))
-                .catch((errors) => this.handleSubmitErrors(errors));
+                .catch((errors: AxiosError) => this.handleSubmitErrors(errors));
         } else if (type === login && isLoginData(formData)) {
             loginUser(formData)
                 .then(() => this.storeLastResponse(FormMessages.loginSuccess))
-                .catch((errors) => this.handleSubmitErrors(errors));
+                .catch((errors: AxiosError) => this.handleSubmitErrors(errors));
         } else if (type === resetPwd && isPasswordResetData(formData)) {
             resetPassword(formData)
                 .then(() => this.storeLastResponse(FormMessages.passwordReset))
-                .catch((errors) => this.handleSubmitErrors(errors));
+                .catch((errors: AxiosError) => this.handleSubmitErrors(errors));
         } else this.setState({ pendingRequest: false });
     };
 
     /**
      * Handle's the form's behavior on erroneous responses
      */
-    handleSubmitErrors = (payload): void => {
-        const {
-            errors,
-        }: { errors: IApiResponsePayload } = payload.response.data;
+    handleSubmitErrors = (payload: AxiosError): void => {
+        const { errors }: { errors: IApiResponsePayload } =
+            // tslint:disable-next-line: no-unsafe-any
+            payload.response && payload.response.data;
         const response = this.responseToString(errors);
         this.storeLastResponse(response, errors.status);
     };
@@ -143,14 +144,18 @@ class BaseForm extends React.Component<IProps, IState> {
                         .then(() =>
                             this.storeLastResponse(FormMessages.resendEmail)
                         )
-                        .catch((errors) => this.handleSubmitErrors(errors));
+                        .catch((errors: AxiosError) =>
+                            this.handleSubmitErrors(errors)
+                        );
             } else if (status === '401') {
                 return () =>
                     sendPasswordResetEmail(formData.email)
                         .then(() => {
                             this.storeLastResponse(FormMessages.resendEmail);
                         })
-                        .catch((errors) => this.handleSubmitErrors(errors));
+                        .catch((errors: AxiosError) =>
+                            this.handleSubmitErrors(errors)
+                        );
             }
         } else if (
             type === resetPwd &&
@@ -162,7 +167,9 @@ class BaseForm extends React.Component<IProps, IState> {
                     .then(() => {
                         this.storeLastResponse(FormMessages.resendEmail);
                     })
-                    .catch((errors) => this.handleSubmitErrors(errors));
+                    .catch((errors: AxiosError) =>
+                        this.handleSubmitErrors(errors)
+                    );
         }
 
         return null;
@@ -176,7 +183,7 @@ class BaseForm extends React.Component<IProps, IState> {
             response,
             pendingRequest: false,
             snackbar: true,
-            status,
+            status
         });
 
     render() {
@@ -186,7 +193,7 @@ class BaseForm extends React.Component<IProps, IState> {
             disabled,
             onSubmit,
             type,
-            classes: { main },
+            classes: { main }
         } = this.props;
         const { pendingRequest, snackbar, response, status } = this.state;
         const { linksToType } = FormInformation[type];

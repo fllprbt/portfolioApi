@@ -3,5 +3,5 @@ export { IApiResponsePayload } from './IApiResponsePayload';
 export {
     IRegistrationFormData,
     ILoginFormData,
-    IPasswordResetFormData,
+    IPasswordResetFormData
 } from './IFormData';

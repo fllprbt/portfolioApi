@@ -2,6 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 import axios from 'axios';
 
+import { addCsrf } from './addCsrf';
+
 const token = '12345';
 
 describe('CSRF on different environments', () => {
@@ -16,17 +18,16 @@ describe('CSRF on different environments', () => {
         process.env = OLD_ENV;
     });
 
-    const addCsrf = require('./addCsrf');
-
     it('Will fetch token in dev', () => {
         const Meta = mount(<meta name="csrf-token" content={token} />, {
-            attachTo: document.head,
+            attachTo: document.head
         });
 
         process.env.NODE_ENV = 'dev';
 
         addCsrf(axios);
 
+        // tslint:disable-next-line: no-unsafe-any
         expect(axios.defaults.headers.common['X-CSRF-TOKEN']).toMatch(token);
 
         Meta.unmount();
@@ -34,13 +35,14 @@ describe('CSRF on different environments', () => {
 
     it('Will fetch token in test', () => {
         const Meta = mount(<meta name="csrf-token" content={token} />, {
-            attachTo: document.head,
+            attachTo: document.head
         });
 
         process.env.NODE_ENV = 'test';
 
         addCsrf(axios);
 
+        // tslint:disable-next-line: no-unsafe-any
         expect(axios.defaults.headers.common['X-CSRF-TOKEN']).toMatch(token);
 
         Meta.unmount();

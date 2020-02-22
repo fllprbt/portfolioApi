@@ -5,20 +5,20 @@ const { login, register, alreadyVerified, verified, resetPassword } = FormTypes;
 export const FormData = {
     [register]: {
         title: 'Register to API',
-        linksToType: login,
+        linksToType: login
     },
     [login]: {
         title: 'Test login',
-        linksToType: register,
+        linksToType: register
     },
     [verified]: {
-        linksToType: login,
+        linksToType: login
     },
     [alreadyVerified]: {
-        linksToType: login,
+        linksToType: login
     },
     [resetPassword]: {
         title: 'Password Reset',
-        linksToType: login,
-    },
+        linksToType: login
+    }
 };

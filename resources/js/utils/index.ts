@@ -5,7 +5,7 @@ export {
     isRegistrationData,
     isLoginData,
     isPasswordResetData,
-    TFormPayload,
+    TFormPayload
 } from './formTypeGuards';
 
 export {
@@ -13,5 +13,5 @@ export {
     loginUser,
     resendVerification,
     resetPassword,
-    sendPasswordResetEmail,
+    sendPasswordResetEmail
 } from './queryApi';

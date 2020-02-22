@@ -11,12 +11,12 @@ export const styles = (theme: Theme) =>
             [theme.breakpoints.up(400 + theme.spacing(6))]: {
                 width: 400,
                 marginLeft: 'auto',
-                marginRight: 'auto',
-            },
+                marginRight: 'auto'
+            }
         },
         button: {
             marginTop: theme.spacing(1),
-            marginBottom: theme.spacing(1),
+            marginBottom: theme.spacing(1)
         },
         paper: {
             marginTop: theme.spacing(8),
@@ -25,12 +25,12 @@ export const styles = (theme: Theme) =>
             alignItems: 'center',
             padding: `${theme.spacing(2)}px ${theme.spacing(
                 3
-            )}px ${theme.spacing(3)}px`,
+            )}px ${theme.spacing(3)}px`
         },
         italic: {
-            fontStyle: 'italic',
+            fontStyle: 'italic'
         },
         subheading: {
-            marginTop: theme.spacing(1),
-        },
+            marginTop: theme.spacing(1)
+        }
     });

@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mix = require('laravel-mix');
-let webpack = require('webpack')
+let webpack = require('webpack');
 
 const {
     env: {
@@ -10,20 +10,22 @@ const {
         ROUTE_LOGIN,
         ROUTE_RESEND_VERIFICATION,
         ROUTE_SEND_PASSWORD_RESET_EMAIL,
-        ROUTE_RESET_PASSWORD,
-    },
+        ROUTE_RESET_PASSWORD
+    }
 } = process;
 let dotenvplugin = new webpack.DefinePlugin({
     'process.env': {
         NODE_ENV: JSON.stringify(NODE_ENV || 'development'),
         APP_URL: JSON.stringify(APP_URL),
         ROUTE_REGISTER: JSON.stringify(ROUTE_REGISTER),
-        ROUTE_LOGIN:JSON.stringify(ROUTE_LOGIN),
-        ROUTE_RESEND_VERIFICATION:JSON.stringify(ROUTE_RESEND_VERIFICATION),
-        ROUTE_SEND_PASSWORD_RESET_EMAIL:JSON.stringify(ROUTE_SEND_PASSWORD_RESET_EMAIL),
-        ROUTE_RESET_PASSWORD:JSON.stringify(ROUTE_RESET_PASSWORD),
+        ROUTE_LOGIN: JSON.stringify(ROUTE_LOGIN),
+        ROUTE_RESEND_VERIFICATION: JSON.stringify(ROUTE_RESEND_VERIFICATION),
+        ROUTE_SEND_PASSWORD_RESET_EMAIL: JSON.stringify(
+            ROUTE_SEND_PASSWORD_RESET_EMAIL
+        ),
+        ROUTE_RESET_PASSWORD: JSON.stringify(ROUTE_RESET_PASSWORD)
     }
-})
+});
 
 mix.ts('resources/js/App.tsx', 'public/js')
     .options({
@@ -34,8 +36,6 @@ mix.ts('resources/js/App.tsx', 'public/js')
         resolve: {
             alias: { api: path.resolve('', 'resources/js') }
         },
-        plugins: [
-            dotenvplugin,
-        ]
+        plugins: [dotenvplugin]
     })
     .disableNotifications();

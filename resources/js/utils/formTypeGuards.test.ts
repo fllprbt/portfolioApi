@@ -1,7 +1,7 @@
 import {
     isRegistrationData,
     isLoginData,
-    isPasswordResetData,
+    isPasswordResetData
 } from './formTypeGuards';
 
 import { loginData } from './__mocks__/payload';

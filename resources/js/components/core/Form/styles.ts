@@ -11,7 +11,7 @@ export const styles = (theme: Theme) =>
             [theme.breakpoints.up(400 + theme.spacing(6))]: {
                 width: 400,
                 marginLeft: 'auto',
-                marginRight: 'auto',
-            },
-        },
+                marginRight: 'auto'
+            }
+        }
     });

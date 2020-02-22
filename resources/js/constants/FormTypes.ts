@@ -3,5 +3,5 @@ export const FormTypes = {
     register: 'register',
     verified: 'verificationSuccess',
     alreadyVerified: 'verificationError',
-    resetPassword: 'resetPassword',
+    resetPassword: 'resetPassword'
 };

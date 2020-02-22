@@ -10,7 +10,7 @@ import {
     LoginForm,
     PasswordResetForm,
     RegistrationForm,
-    Welcome,
+    Welcome
 } from 'api/components';
 import { SuccessCard } from 'api/components/core';
 

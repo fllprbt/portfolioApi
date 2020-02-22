@@ -4,9 +4,11 @@
  * @param {string} separator - a string to separate each value of the object
  * @returns {string} the object values string
  */
-export const objValuesToString = (object, separator?: string): string => {
-    const result = Object.keys(object)
-        .map((e) => object[e])
+export const objValuesToString = (
+    object: Record<string, string>,
+    separator?: string
+): string => {
+    const result = Object.values(object)
         .concat()
         .filter(Boolean)
         .join(separator ? separator : '. ')
