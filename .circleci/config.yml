@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  setup:
     docker:
       # Specify the version you desire here
       - image: circleci/php:7.2-node-browsers
@@ -15,7 +15,6 @@ jobs:
       # Using the RAM variation mitigates I/O contention
       # for database intensive operations.
       # - image: circleci/mysql:5.7-ram
-      # 
       # - image: redis:3
 
     steps:
@@ -59,12 +58,30 @@ jobs:
       - run: touch storage/testing.sqlite
       - run: php artisan migrate --env=testing --database=sqlite_testing --force
 
+    test BE:
       # run tests with phpunit or codecept
-      #- run: ./vendor/bin/phpunit
+      - run: ./vendor/bin/phpunit
       # this example uses codecept but you're not limited to it
-      - run: ./vendor/bin/codecept build
-      - run: ./vendor/bin/codecept run --xml result.xml
+      #- run: ./vendor/bin/codecept build
+      #- run: ./vendor/bin/codecept run --xml result.xml
       - store_test_results:
           path: tests/_output
       - store_artifacts:
           path: tests/_output
+
+    test FE:
+      # run tests with phpunit or codecept
+      - run: npm test
+
+    workflows:
+        version: 2
+        test:
+          jobs:
+            - setup
+            - test BE:
+              requires:
+                - build
+            - test FE:
+              requires:
+                - build
+                    
