@@ -17,6 +17,7 @@ jobs:
 
       - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
+      - run: sudo composer self-update
 
       # Download and cache dependencies
 
@@ -75,8 +76,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ./
-      
-      - run: php artisan key:generate
 
       - run:
           command: |
@@ -99,7 +98,7 @@ jobs:
 
       # Setup steps omitted
       - run:
-          command: yarn TS
+          command: yarn ts
           background: true
 
       - run:
