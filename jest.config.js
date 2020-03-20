@@ -7,6 +7,5 @@ module.exports = {
         '(:?^|s)api/(.*)$': '<rootDir>/resources/js/$2'
     },
     setupFilesAfterEnv: ['<rootDir>resources/js/setupTests.ts'],
-    collectCoverage: true,
-    reporters: ["default", "jest-junit"]
+    collectCoverage: true
 };
