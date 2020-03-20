@@ -2,19 +2,15 @@
 #
 # Check https://circleci.com/docs/2.0/language-php/ for more details
 #
+
+defaults: &defaults
+  docker:
+    - image: circleci/php:7.2-node-browsers
+
 version: 2
 jobs:
   setup:
-    docker:
-      - image: circleci/php:7.2-node-browsers
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # Using the RAM variation mitigates I/O contention
-      # for database intensive operations.
-      # - image: circleci/mysql:5.7-ram
-      # - image: redis:3
+    <<: *defaults
 
     steps:
       - checkout
@@ -58,11 +54,9 @@ jobs:
       - run: php artisan migrate --env=testing --database=sqlite_testing --force
 
   test BE:
-    docker:
-      - image: circleci/php:7.2-node-browsers
+    <<: *defaults
 
     steps:
-      # run tests with phpunit or codecept
       - run: ./vendor/bin/phpunit
       # this example uses codecept but you're not limited to it
       #- run: ./vendor/bin/codecept build
@@ -73,11 +67,11 @@ jobs:
           path: tests/_output
 
   test FE:
-    docker:
-      - image: circleci/php:7.2-node-browsers
+    <<: *defaults
 
     steps:
-      # run tests with phpunit or codecept
+      - checkout
+
       - run: npm test
 
 workflows:
