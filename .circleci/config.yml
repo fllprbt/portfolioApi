@@ -58,7 +58,7 @@ jobs:
       - run: touch storage/testing.sqlite
       - run: php artisan migrate --env=testing --database=sqlite_testing --force
 
-    test BE:
+  test BE:
       # run tests with phpunit or codecept
       - run: ./vendor/bin/phpunit
       # this example uses codecept but you're not limited to it
@@ -69,7 +69,7 @@ jobs:
       - store_artifacts:
           path: tests/_output
 
-    test FE:
+  test FE:
       # run tests with phpunit or codecept
       - run: npm test
 
@@ -78,10 +78,10 @@ workflows:
     test:
         jobs:
         - setup
-        - test BE:
+        - test_BE:
             requires:
             - setup
-        - test FE:
+        - test_FE:
             requires:
             - setup
                     
