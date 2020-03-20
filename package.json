@@ -6,11 +6,14 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "ts": "tsc -p . --noEmit",
-        "format:prettier": "prettier --write 'resources/**/*.{ts,tsx,json,md,js,scss}'",
-        "format:ts": "tslint --project tsconfig.json --fix 'resources/**/*.{ts,tsx}'",
+        "prettier": "prettier --check 'resources/**/*.{ts,tsx,json,md,js,scss}'",
+        "tslint": "tslint --project tsconfig.json 'resources/**/*.{ts,tsx}'",
         "jest": "cross-env NODE_ENV=test jest --setupFiles dotenv/config",
         "tdd": "npm run jest -- --watchAll --notify",
-        "precommit": "npm run jest && npm run format:prettier && npm run format:ts && npm run ts"
+        "precommit": "npm run jest && npm run format:prettier && npm run format:ts && npm run ts",
+        "test": "npm run prettier && npm run ts && npm run tslint",
+        "format:prettier": "prettier --write 'resources/**/*.{ts,tsx,json,md,js,scss}'",
+        "format:ts": "tslint --project tsconfig.json --fix 'resources/**/*.{ts,tsx}'"
     },
     "dependencies": {
         "@material-ui/core": "4.9.3",

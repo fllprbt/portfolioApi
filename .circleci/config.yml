@@ -42,7 +42,7 @@ jobs:
           keys:
             - node-v4-{{ checksum "package.json" }}
             - node-v4-
-      - run: npm install
+      - run: yarn
       - save_cache:
           key: node-v4-{{ checksum "package.json" }}
           paths:
@@ -58,21 +58,37 @@ jobs:
       - run: touch storage/testing.sqlite
       - run: php artisan migrate --env=testing --database=sqlite_testing --force
 
+  linters:
+    <<: *defaults
+    
+    steps:
+      - run:
+        - attach_workspace:
+          at: ./
+
+          name: "JavaScript Linter"
+          command: yarn lint -- --format junit -o reports/junit/js-lint-results.xml
+
   test BE:
     <<: *defaults
 
     steps:
       - attach_workspace:
           at: ./
+      
+      - run: php artisan key:generate
 
-      - run: ./vendor/bin/phpunit
-      # this example uses codecept but you're not limited to it
-      #- run: ./vendor/bin/codecept build
-      #- run: ./vendor/bin/codecept run --xml result.xml
+      - run:
+          command: |
+            mkdir -p ~/phpunit
+            ./vendor/bin/phpunit --log-junit ~/phpunit/junit.xml tests
+          when: always
+
       - store_test_results:
-          path: tests/BE
+          path: ~/phpunit
+
       - store_artifacts:
-          path: tests/BE
+          path: ~/phpunit
 
   test FE:
     <<: *defaults
@@ -81,12 +97,27 @@ jobs:
       - attach_workspace:
           at: ./
 
-      - run: npm test
+      # Setup steps omitted
+      - run:
+          command: yarn TS
+          background: true
 
+      - run:
+          command: yarn prettier
+          background: true
+
+      - run:
+          command: yarn tslint
+          background: true
+
+      - run:
+          name: "JavaScript Tests Suite"
+          # yarn here makes sure we are using the local jest binary
+          command: yarn jest -- --ci --testResultsProcessor="jest-junit"
+          environment:
+            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
       - store_test_results:
-          path: tests/FE
-      - store_artifacts:
-          path: tests/FE
+          path: reports/junit
 
 workflows:
     version: 2
