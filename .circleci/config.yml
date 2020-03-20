@@ -80,8 +80,8 @@ workflows:
         - setup
         - test BE:
             requires:
-            - build
+            - setup
         - test FE:
             requires:
-            .circleci/config.yml- build
+            - setup
                     
