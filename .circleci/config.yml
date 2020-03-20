@@ -73,15 +73,15 @@ jobs:
       # run tests with phpunit or codecept
       - run: npm test
 
-    workflows:
-        version: 2
-        test:
-          jobs:
-            - setup
-            - test BE:
-              requires:
-                - build
-            - test FE:
-              requires:
-                - build
+workflows:
+    version: 2
+    test:
+        jobs:
+        - setup
+        - test BE:
+            requires:
+            - build
+        - test FE:
+            requires:
+            .circleci/config.yml- build
                     
