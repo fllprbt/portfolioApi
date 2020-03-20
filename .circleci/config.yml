@@ -49,6 +49,11 @@ jobs:
             - node_modules
             - ~/.yarn
 
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./
+
       # prepare the database
       - run: touch storage/testing.sqlite
       - run: php artisan migrate --env=testing --database=sqlite_testing --force
@@ -57,7 +62,8 @@ jobs:
     <<: *defaults
 
     steps:
-      - checkout
+      - attach_workspace:
+          at: ./
 
       - run: ./vendor/bin/phpunit
       # this example uses codecept but you're not limited to it
@@ -72,7 +78,8 @@ jobs:
     <<: *defaults
 
     steps:
-      - checkout
+      - attach_workspace:
+          at: ./
 
       - run: npm test
 
