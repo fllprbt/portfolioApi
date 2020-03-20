@@ -59,6 +59,7 @@ jobs:
       - run: php artisan migrate --env=testing --database=sqlite_testing --force
 
   test BE:
+    steps:
       # run tests with phpunit or codecept
       - run: ./vendor/bin/phpunit
       # this example uses codecept but you're not limited to it
@@ -70,6 +71,7 @@ jobs:
           path: tests/_output
 
   test FE:
+    steps:
       # run tests with phpunit or codecept
       - run: npm test
 
