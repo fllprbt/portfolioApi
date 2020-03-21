@@ -108,6 +108,8 @@ jobs:
           path: reports/junit
       - store_artifacts:
           path: reports/junit
+      - store_artifacts:
+          path: coverage
 
 workflows:
     version: 2
