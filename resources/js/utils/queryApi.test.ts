@@ -26,7 +26,6 @@ const {
 } = process;
 
 const baseUrl = `${APP_URL}/`;
-console.log(process.env);
 
 describe('Axios queries', () => {
     it('Ensures that endpoint urls are properly generated', () => {

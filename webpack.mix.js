@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mix = require('laravel-mix');
-let webpack = require('webpack');
+const webpack = require('webpack');
 
 const {
     env: {
@@ -13,7 +13,8 @@ const {
         ROUTE_RESET_PASSWORD
     }
 } = process;
-let dotenvplugin = new webpack.DefinePlugin({
+
+const dotenvplugin = new webpack.DefinePlugin({
     'process.env': {
         NODE_ENV: JSON.stringify(NODE_ENV || 'development'),
         APP_URL: JSON.stringify(APP_URL),

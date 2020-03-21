@@ -8,7 +8,7 @@
         "ts": "tsc -p . --noEmit",
         "prettier": "prettier --check 'resources/**/*.{ts,tsx,json,md,js,scss}'",
         "tslint": "tslint --project tsconfig.json 'resources/**/*.{ts,tsx}'",
-        "jest": "cross-env NODE_ENV=test jest --setupFiles dotenv/config",
+        "jest": "cross-env NODE_ENV=test jest",
         "tdd": "npm run jest -- --watchAll --notify",
         "precommit": "npm run jest && npm run format:prettier && npm run format:ts && npm run ts",
         "test": "npm run prettier && npm run ts && npm run tslint",
