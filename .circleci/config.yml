@@ -7,7 +7,7 @@ defaults: &defaults
   docker:
     - image: circleci/php:7.2-node-browsers
 
-version: 2
+version: 2.1
 orbs:
   codecov: codecov/codecov@1.0.2
 jobs:
@@ -116,7 +116,7 @@ jobs:
           file: coverage/lcov-report
 
 workflows:
-    version: 2
+    version: 2.1
     test:
         jobs:
         - setup
