@@ -113,7 +113,7 @@ jobs:
       - store_artifacts:
           path: coverage/lcov-report
       - codecov/upload:
-          file: coverage/lcov-report
+          file: {{ coverage_report_filepath }}
 
 workflows:
     version: 2.1
